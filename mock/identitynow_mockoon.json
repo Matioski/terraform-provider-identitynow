@@ -1,0 +1,2084 @@
+{
+  "uuid": "a0ee9e02-2856-4081-a60e-11b09e0d2b78",
+  "lastMigration": 32,
+  "name": "Identitynow mock",
+  "endpointPrefix": "",
+  "latency": 0,
+  "port": 3000,
+  "hostname": "",
+  "folders": [
+    {
+      "uuid": "afb2b31b-5104-4bbe-92cc-bd8beae69e22",
+      "name": "Source",
+      "children": [
+        {
+          "type": "route",
+          "uuid": "ee233951-1096-4207-8759-43c10677334c"
+        },
+        {
+          "type": "route",
+          "uuid": "b29bb58a-d3f2-4903-8b51-b0fda4604e4c"
+        },
+        {
+          "type": "route",
+          "uuid": "f43d1479-e9ca-4bd2-bae1-d4c87e7db172"
+        },
+        {
+          "type": "route",
+          "uuid": "c5d1dc4d-7407-4991-95f1-4a566f7e3579"
+        },
+        {
+          "type": "route",
+          "uuid": "382c0d8e-e4ec-49ff-8b53-f540943e2785"
+        }
+      ]
+    },
+    {
+      "uuid": "b6d364c7-95c7-4ca1-b105-4cd198156bad",
+      "name": "Identity Profile",
+      "children": [
+        {
+          "type": "route",
+          "uuid": "cdcbaee2-996e-41b2-a1b2-7eb7508c60de"
+        },
+        {
+          "type": "route",
+          "uuid": "237b1083-7268-4686-8255-e5d18efa2865"
+        },
+        {
+          "type": "route",
+          "uuid": "edc1d83c-3111-4749-abf1-5e1893d2e548"
+        },
+        {
+          "type": "route",
+          "uuid": "d03c750c-0142-4e34-a57e-200c7d54e65b"
+        }
+      ]
+    },
+    {
+      "uuid": "c092e4cb-aa33-42d0-b56b-3a7e862d95c1",
+      "name": "Source Schema",
+      "children": [
+        {
+          "type": "route",
+          "uuid": "b1980fd0-a007-42db-8d9b-b8c30775ccad"
+        },
+        {
+          "type": "route",
+          "uuid": "60480140-b7f6-45e9-bec6-d1599aab5a20"
+        },
+        {
+          "type": "route",
+          "uuid": "5370bebc-55f3-4fb1-bb17-3c2487fdb9f4"
+        },
+        {
+          "type": "route",
+          "uuid": "19dbf610-29f9-4b75-8126-896ef05d5ef4"
+        },
+        {
+          "type": "route",
+          "uuid": "64bc72c2-c308-4552-8765-31551e261223"
+        }
+      ]
+    },
+    {
+      "uuid": "d2125e1a-c84a-49b0-b353-6d121a316285",
+      "name": "Transform",
+      "children": [
+        {
+          "type": "route",
+          "uuid": "67cd2d68-fb28-40d9-be13-5b56eebb2fb7"
+        },
+        {
+          "type": "route",
+          "uuid": "705a1e6c-de94-456f-b83f-2da5f4cf0edb"
+        },
+        {
+          "type": "route",
+          "uuid": "a483eb8d-4eb2-4cbc-8645-62db014f92d4"
+        },
+        {
+          "type": "route",
+          "uuid": "84e5dcf6-e71a-4bb2-bbde-d99ea1a3930d"
+        }
+      ]
+    },
+    {
+      "uuid": "1e819a8f-2507-4971-8267-502977d2e4f1",
+      "name": "Lifecycle State",
+      "children": [
+        {
+          "type": "route",
+          "uuid": "c2ec98a6-753e-415f-8626-7233060f6cd6"
+        },
+        {
+          "type": "route",
+          "uuid": "b8397aa0-efcf-4ed2-933c-4b763d633936"
+        },
+        {
+          "type": "route",
+          "uuid": "3aff9b7f-3791-4aca-9ca5-b37cf71ee34b"
+        },
+        {
+          "type": "route",
+          "uuid": "a4edd4f2-40c1-4d49-8f5b-05f79506a81d"
+        },
+        {
+          "type": "route",
+          "uuid": "88f65324-d04f-4ca8-a483-e711df9a36db"
+        }
+      ]
+    },
+    {
+      "uuid": "0ddaf5b8-deb2-486e-a799-052973c05c4c",
+      "name": "Connector Rule",
+      "children": [
+        {
+          "type": "route",
+          "uuid": "1a0a1c6a-56f4-499b-b843-d7219848afa8"
+        },
+        {
+          "type": "route",
+          "uuid": "d498e888-007f-4221-9f3e-e7d79eb62f38"
+        },
+        {
+          "type": "route",
+          "uuid": "b77584b8-1fb5-4fbf-ae78-5890eb8247ab"
+        },
+        {
+          "type": "route",
+          "uuid": "522d26d8-049b-4b50-80a9-d4d1c69943f9"
+        }
+      ]
+    },
+    {
+      "uuid": "4cfb7c93-2d6a-4428-a11e-a268007a52ac",
+      "name": "Workflow",
+      "children": [
+        {
+          "type": "route",
+          "uuid": "5910cf00-9bbd-4be6-8ca7-969cfdf2c977"
+        },
+        {
+          "type": "route",
+          "uuid": "acdda775-52cc-4cab-b7c4-c78be1b15846"
+        },
+        {
+          "type": "route",
+          "uuid": "69c7c7ca-8ea4-483e-910c-6cf3d1170ed1"
+        },
+        {
+          "type": "route",
+          "uuid": "135cae6e-4099-411e-b63d-7778d14d7bae"
+        }
+      ]
+    },
+    {
+      "uuid": "b5f63d82-909f-4a70-8886-4e5cee92d686",
+      "name": "Entitlement",
+      "children": [
+        {
+          "type": "route",
+          "uuid": "b8914249-9499-431e-a154-bcc7cfcc2629"
+        }
+      ]
+    }
+  ],
+  "routes": [
+    {
+      "uuid": "bdcb0835-7aef-4642-9e04-7f570e462927",
+      "type": "http",
+      "documentation": "OAuth2 Token API",
+      "method": "post",
+      "endpoint": "oauth/token",
+      "responses": [
+        {
+          "uuid": "2fb4c50b-7c62-4968-9ca1-5a0040d60330",
+          "body": "{\r\n \"access_token\": \"{{data 'token'}}\",\r\n \"token_type\": \"bearer\",\r\n \"expires_in\": 43199\r\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null
+    },
+    {
+      "uuid": "01d55c6f-9b8f-4f64-8d78-586c60ebfff0",
+      "type": "http",
+      "documentation": "List Identities",
+      "method": "get",
+      "endpoint": "beta/identities",
+      "responses": [
+        {
+          "uuid": "3fee8325-dfbe-44da-80d9-dec33814a777",
+          "body": "[\r\n  {\r\n    \"id\": \"id12345\",\r\n    \"name\": \"John Doe\",\r\n    \"created\": \"2023-01-03T21:16:22.432Z\",\r\n    \"modified\": \"2023-01-03T21:16:22.432Z\",\r\n    \"alias\": \"John.Doe\",\r\n    \"emailAddress\": \"john.doe@example.com\",\r\n    \"processingState\": \"OK\",\r\n    \"identityStatus\": \"ACTIVE\",\r\n    \"managerRef\": null,\r\n    \"isManager\": true,\r\n    \"lastRefresh\": \"2020-11-22T15:42:31.123Z\",\r\n    \"attributes\": {},\r\n    \"lifecycleState\": {\r\n      \"stateName\": \"active\",\r\n      \"manuallyUpdated\": true\r\n    }\r\n  }\r\n]",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [
+            {
+              "key": "",
+              "value": ""
+            }
+          ],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "header",
+              "modifier": "Authorization",
+              "value": "{{data 'token'}}",
+              "invert": false,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null
+    },
+    {
+      "uuid": "9799f15d-1c76-4b93-860e-4b62c156b98a",
+      "type": "crud",
+      "documentation": "Identity Attributes CRUD",
+      "method": "",
+      "endpoint": "beta/identity-attributes",
+      "responses": [
+        {
+          "uuid": "eeeb797f-1c13-4c1c-9870-904e757fedd4",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "alqa",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "name",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null
+    },
+    {
+      "uuid": "ee233951-1096-4207-8759-43c10677334c",
+      "type": "http",
+      "documentation": "Create Source",
+      "method": "post",
+      "endpoint": "v3/sources",
+      "responses": [
+        {
+          "uuid": "8f1f40f9-4841-4049-a428-3e87a1f6b32c",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 201,
+          "label": "",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "3gh2",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null
+    },
+    {
+      "uuid": "b29bb58a-d3f2-4903-8b51-b0fda4604e4c",
+      "type": "http",
+      "documentation": "Get Source by ID",
+      "method": "get",
+      "endpoint": "v3/sources/:id",
+      "responses": [
+        {
+          "uuid": "f912b00c-411d-44c7-8ca5-32fe5c410a59",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "93lz",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "f1914151-1078-43ee-8868-22f3bd399bb2",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "93lz",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "7e182bb1-7ac1-455c-ace0-123edd45d142",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "xy24",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": "SEQUENTIAL"
+    },
+    {
+      "uuid": "f43d1479-e9ca-4bd2-bae1-d4c87e7db172",
+      "type": "http",
+      "documentation": "Delete source by ID",
+      "method": "delete",
+      "endpoint": "v3/sources/:id",
+      "responses": [
+        {
+          "uuid": "f252c268-6232-4eae-b03f-8a9e9cb2e31c",
+          "body": "{\n  \"type\": \"TASK\",\n  \"id\": \"taskId\",\n  \"name\": \"taskName\"\n}",
+          "latency": 0,
+          "statusCode": 202,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null
+    },
+    {
+      "uuid": "c5d1dc4d-7407-4991-95f1-4a566f7e3579",
+      "type": "http",
+      "documentation": "Patch Source by ID",
+      "method": "patch",
+      "endpoint": "v3/sources/:id",
+      "responses": [
+        {
+          "uuid": "0c85f836-aaf6-4da0-9881-efca3308af66",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "93lz",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "ff3dee39-08f2-46db-8352-67ce210a156d",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "xy24",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": "SEQUENTIAL"
+    },
+    {
+      "uuid": "086f40cc-8825-43b3-af86-c7b6e5f36440",
+      "type": "http",
+      "documentation": "List of managed clusters",
+      "method": "get",
+      "endpoint": "beta/managed-clusters",
+      "responses": [
+        {
+          "uuid": "2aa0177f-e111-4452-85e1-d0d0537a6612",
+          "body": "[\r\n    {\r\n        \"id\": \"clusterId\",\r\n        \"name\": \"clusterName\",\r\n        \"pod\": \"eu-pod\",\r\n        \"org\": \"test-org\",\r\n        \"type\": \"idn\",\r\n        \"configuration\": {\r\n            \"clusterType\": \"sqsCluster\",\r\n            \"clusterExternalId\": \"clusterId\",\r\n            \"debug\": \"false\",\r\n            \"ccId\": \"35\",\r\n            \"gmtOffset\": \"1\"\r\n        },\r\n        \"keyPair\": {\r\n            \"publicKey\": null,\r\n            \"publicKeyThumbprint\": null,\r\n            \"publicKeyCertificate\": null\r\n        },\r\n        \"attributes\": {\r\n            \"queue\": {\r\n                \"name\": \"host\",\r\n                \"region\": \"eu\"\r\n            },\r\n            \"keystore\": null\r\n        },\r\n        \"redis\": {\r\n            \"redisHost\": \"host\",\r\n            \"redisPort\": 6379\r\n        },\r\n        \"description\": \"description\",\r\n        \"clientType\": \"CCG\",\r\n        \"ccgVersion\": \"333.33\",\r\n        \"pinnedConfig\": false,\r\n        \"logConfiguration\": null,\r\n        \"operational\": false,\r\n        \"status\": \"NO_CLIENTS\",\r\n        \"publicKeyCertificate\": null,\r\n        \"publicKeyThumbprint\": null,\r\n        \"publicKey\": null,\r\n        \"alertKey\": \"NO_CLIENTS\",\r\n        \"clientIds\": [],\r\n        \"serviceCount\": 0,\r\n        \"ccId\": \"0\",\r\n        \"createdAt\": \"2024-01-16T10:26:50.815650Z\",\r\n        \"updatedAt\": null\r\n    }\r\n]",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "header",
+              "modifier": "Authorization",
+              "value": "{{data 'token'}}",
+              "invert": false,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null
+    },
+    {
+      "uuid": "7f7ecfa5-b6b1-46f0-8974-050b07cfef45",
+      "type": "http",
+      "documentation": "List of managed clusters",
+      "method": "get",
+      "endpoint": "beta/connectors",
+      "responses": [
+        {
+          "uuid": "558297d9-8a53-4482-a9cf-19761be90ca3",
+          "body": "[\r\n    {\r\n        \"name\": \"ACF2\",\r\n        \"directConnect\": true,\r\n        \"type\": \"ACF2 - Full\",\r\n        \"status\": \"RELEASED\",\r\n        \"scriptName\": \"acf2-angularsc\",\r\n        \"features\": [\r\n            \"PROVISIONING\",\r\n            \"SYNC_PROVISIONING\",\r\n            \"SEARCH\",\r\n            \"UNSTRUCTURED_TARGETS\",\r\n            \"ENABLE\",\r\n            \"PASSWORD\",\r\n            \"UNLOCK\"\r\n        ],\r\n        \"connectorMetadata\": {\r\n            \"docLink\": \"https://documentation.sailpoint.com/connectors/ibm/ca/acf2/help\",\r\n            \"supportedUI\": \"ANGULAR\",\r\n            \"platform\": \"ccg\",\r\n            \"scope\": \"*:*\",\r\n            \"shortDesc\": \"The integration provides capabilities to manage end-to-end CA ACF2 accounts and groups for deep governance with features such as data collection, accounts and permission assignment.\",\r\n            \"category\": \"source\"\r\n        }\r\n    },\r\n    {\r\n        \"name\": \"ADAM\",\r\n        \"directConnect\": true,\r\n        \"type\": \"ADAM - Direct\",\r\n        \"status\": \"RELEASED\",\r\n        \"scriptName\": \"adam-angularsc\",\r\n        \"features\": [\r\n            \"AUTHENTICATE\",\r\n            \"PROVISIONING\",\r\n            \"GROUP_PROVISIONING\",\r\n            \"SYNC_PROVISIONING\",\r\n            \"ENABLE\",\r\n            \"PASSWORD\",\r\n            \"MANAGER_LOOKUP\",\r\n            \"SEARCH\",\r\n            \"GROUPS_HAVE_MEMBERS\"\r\n        ],\r\n        \"connectorMetadata\": {\r\n            \"docLink\": \"https://documentation.sailpoint.com/connectors/adam/help\",\r\n            \"supportedUI\": \"ANGULAR\",\r\n            \"platform\": \"ccg\",\r\n            \"scope\": \"*:*\",\r\n            \"shortDesc\": \"The SailPoint Lightweight Directory Service connector can load and provision LDS accounts as well as provision access certifications, unlock accounts, and manage passwords.\",\r\n            \"category\": \"source\"\r\n        }\r\n    }\r\n]",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "header",
+              "modifier": "Authorization",
+              "value": "{{data 'token'}}",
+              "invert": false,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "9c324a0f-2d6a-43d7-ac90-e8997c13e782",
+          "body": "[\r\n  \r\n    {\r\n        \"name\": \"ADAM\",\r\n        \"directConnect\": true,\r\n        \"type\": \"ADAM - Direct\",\r\n        \"status\": \"RELEASED\",\r\n        \"scriptName\": \"adam-angularsc\",\r\n        \"features\": [\r\n            \"AUTHENTICATE\",\r\n            \"PROVISIONING\",\r\n            \"GROUP_PROVISIONING\",\r\n            \"SYNC_PROVISIONING\",\r\n            \"ENABLE\",\r\n            \"PASSWORD\",\r\n            \"MANAGER_LOOKUP\",\r\n            \"SEARCH\",\r\n            \"GROUPS_HAVE_MEMBERS\"\r\n        ],\r\n        \"connectorMetadata\": {\r\n            \"docLink\": \"https://documentation.sailpoint.com/connectors/adam/help\",\r\n            \"supportedUI\": \"ANGULAR\",\r\n            \"platform\": \"ccg\",\r\n            \"scope\": \"*:*\",\r\n            \"shortDesc\": \"The SailPoint Lightweight Directory Service connector can load and provision LDS accounts as well as provision access certifications, unlock accounts, and manage passwords.\",\r\n            \"category\": \"source\"\r\n        }\r\n    }\r\n]",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "query",
+              "modifier": "filters",
+              "value": "name sw \"ADAM\"",
+              "invert": false,
+              "operator": "equals"
+            },
+            {
+              "target": "query",
+              "modifier": "limit",
+              "value": "1",
+              "invert": false,
+              "operator": "equals"
+            },
+            {
+              "target": "header",
+              "modifier": "Authorization",
+              "value": "{{data 'token'}}",
+              "invert": false,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "AND",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null
+    },
+    {
+      "uuid": "cdcbaee2-996e-41b2-a1b2-7eb7508c60de",
+      "type": "http",
+      "documentation": "Create Identity Profile",
+      "method": "post",
+      "endpoint": "beta/identity-profiles",
+      "responses": [
+        {
+          "uuid": "f7df2aed-04c7-4d78-9d48-7e4dca37be34",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 201,
+          "label": "",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "94c7",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null
+    },
+    {
+      "uuid": "237b1083-7268-4686-8255-e5d18efa2865",
+      "type": "http",
+      "documentation": "Get Identity Profile by ID",
+      "method": "get",
+      "endpoint": "beta/identity-profiles/:id",
+      "responses": [
+        {
+          "uuid": "72a3608a-e3cf-4518-8d53-4dad493387e7",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "94c7",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "9de92d94-f42d-44d7-a393-687beb14963f",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "94c7",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "1aaa2102-723e-4e81-af7b-f8fc9afebcf0",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "u4nz",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": "SEQUENTIAL"
+    },
+    {
+      "uuid": "edc1d83c-3111-4749-abf1-5e1893d2e548",
+      "type": "http",
+      "documentation": "Delete Identity Profile by ID",
+      "method": "delete",
+      "endpoint": "beta/identity-profiles/:id",
+      "responses": [
+        {
+          "uuid": "e969caa3-2ab1-4d04-a23e-c0808e073386",
+          "body": "",
+          "latency": 0,
+          "statusCode": 204,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null
+    },
+    {
+      "uuid": "d03c750c-0142-4e34-a57e-200c7d54e65b",
+      "type": "http",
+      "documentation": "Patch Source by ID",
+      "method": "patch",
+      "endpoint": "beta/identity-profiles/:id",
+      "responses": [
+        {
+          "uuid": "e590d846-6ca7-41d8-b381-6909df4e44ad",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "yetm",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "da092f7c-9e2f-4ce6-a581-11aa186215a5",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "request_number",
+              "modifier": "",
+              "value": "",
+              "invert": false,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null
+    },
+    {
+      "uuid": "60480140-b7f6-45e9-bec6-d1599aab5a20",
+      "type": "http",
+      "documentation": "Create Source Schema",
+      "method": "post",
+      "endpoint": "v3/sources/:schemaId/schemas",
+      "responses": [
+        {
+          "uuid": "732c3ed1-f67f-4bfb-a123-401d6a10ab6d",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 201,
+          "label": "",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "u5vi",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null
+    },
+    {
+      "uuid": "5370bebc-55f3-4fb1-bb17-3c2487fdb9f4",
+      "type": "http",
+      "documentation": "Get Source Schema by ID",
+      "method": "get",
+      "endpoint": "v3/sources/:schemaId/schemas/:id",
+      "responses": [
+        {
+          "uuid": "fb645c98-c0fa-4e64-87b7-825b52d8f25b",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "u5vi",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "9b51f7f4-e908-4061-9a63-7faec3c3d0d4",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "u5vi",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "f319e082-9f2e-431d-b949-c977a8ed395f",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "02zw",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": "SEQUENTIAL"
+    },
+    {
+      "uuid": "19dbf610-29f9-4b75-8126-896ef05d5ef4",
+      "type": "http",
+      "documentation": "Delete Source Schema by ID",
+      "method": "delete",
+      "endpoint": "v3/sources/:schemaId/schemas/:id",
+      "responses": [
+        {
+          "uuid": "55cca89d-e6b7-4905-bd2b-dfa7b71d1c98",
+          "body": "",
+          "latency": 0,
+          "statusCode": 204,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null
+    },
+    {
+      "uuid": "64bc72c2-c308-4552-8765-31551e261223",
+      "type": "http",
+      "documentation": "Put Source by ID",
+      "method": "put",
+      "endpoint": "v3/sources/:schemaId/schemas/:id",
+      "responses": [
+        {
+          "uuid": "7c549eb7-0a3d-488c-8a75-3ba8a2558354",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "iq31",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "7a5ae126-e7be-4294-a698-45ab9c379355",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "request_number",
+              "modifier": "",
+              "value": "",
+              "invert": false,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null
+    },
+    {
+      "uuid": "b1980fd0-a007-42db-8d9b-b8c30775ccad",
+      "type": "http",
+      "documentation": "List Source Schemas",
+      "method": "get",
+      "endpoint": "v3/sources/:schemaId/schemas",
+      "responses": [
+        {
+          "uuid": "548159a7-3f8d-4005-a5aa-d3a913987666",
+          "body": "[]",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": "SEQUENTIAL"
+    },
+    {
+      "uuid": "67cd2d68-fb28-40d9-be13-5b56eebb2fb7",
+      "type": "http",
+      "documentation": "Create Trasnform",
+      "method": "post",
+      "endpoint": "v3/transforms",
+      "responses": [
+        {
+          "uuid": "75c117fd-5131-4bdf-b986-7daaac343df5",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 201,
+          "label": "",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "smfs",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null
+    },
+    {
+      "uuid": "705a1e6c-de94-456f-b83f-2da5f4cf0edb",
+      "type": "http",
+      "documentation": "Get Transform by ID",
+      "method": "get",
+      "endpoint": "v3/transforms/:id",
+      "responses": [
+        {
+          "uuid": "92c8ae35-5557-4fdd-93bb-b4c2f81bb4e7",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "smfs",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "39619f3f-2b52-4434-b79b-a29a12126a73",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "smfs",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "17d10603-7e97-4697-812f-6af92eacec75",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "821q",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": "SEQUENTIAL"
+    },
+    {
+      "uuid": "a483eb8d-4eb2-4cbc-8645-62db014f92d4",
+      "type": "http",
+      "documentation": "Delete Transform by ID",
+      "method": "delete",
+      "endpoint": "v3/transforms/:id",
+      "responses": [
+        {
+          "uuid": "393c6be9-f737-4c1e-bd3e-da1906a0eb85",
+          "body": "",
+          "latency": 0,
+          "statusCode": 204,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null
+    },
+    {
+      "uuid": "84e5dcf6-e71a-4bb2-bbde-d99ea1a3930d",
+      "type": "http",
+      "documentation": "Put Transform by ID",
+      "method": "put",
+      "endpoint": "v3/transforms/:id",
+      "responses": [
+        {
+          "uuid": "e4f7620b-b3e7-4fa6-ac55-e7c2c10f7799",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "z32l",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "d3f925ca-1071-4f97-9793-0e81559164b3",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "request_number",
+              "modifier": "",
+              "value": "",
+              "invert": false,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null
+    },
+    {
+      "uuid": "c2ec98a6-753e-415f-8626-7233060f6cd6",
+      "type": "http",
+      "documentation": "Create Lifecycle State",
+      "method": "post",
+      "endpoint": "v3/identity-profiles/:identityProfileId/lifecycle-states",
+      "responses": [
+        {
+          "uuid": "c5aad835-e367-48fb-972a-453e8f300a40",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 201,
+          "label": "",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "cpru",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null
+    },
+    {
+      "uuid": "3aff9b7f-3791-4aca-9ca5-b37cf71ee34b",
+      "type": "http",
+      "documentation": "Get Lifecycle State by ID",
+      "method": "get",
+      "endpoint": "v3/identity-profiles/:identityProfileId/lifecycle-states/:id",
+      "responses": [
+        {
+          "uuid": "0a525ed9-78b2-4be6-a913-d46509ad5dd4",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "cpru",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "7ada184b-31c6-40eb-b64d-a22be18c94cc",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "cpru",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "92b47410-1837-413d-bf48-e84e04f7c99b",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "ugsd",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": "SEQUENTIAL"
+    },
+    {
+      "uuid": "a4edd4f2-40c1-4d49-8f5b-05f79506a81d",
+      "type": "http",
+      "documentation": "Delete Lifecycle State by ID",
+      "method": "delete",
+      "endpoint": "v3/identity-profiles/:identityProfileId/lifecycle-states/:id",
+      "responses": [
+        {
+          "uuid": "b8af56c7-a12a-4da4-be2c-892529b57e61",
+          "body": "",
+          "latency": 0,
+          "statusCode": 204,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null
+    },
+    {
+      "uuid": "88f65324-d04f-4ca8-a483-e711df9a36db",
+      "type": "http",
+      "documentation": "Patch Lifecycle State by ID",
+      "method": "patch",
+      "endpoint": "v3/identity-profiles/:identityProfileId/lifecycle-states/:id",
+      "responses": [
+        {
+          "uuid": "0754ba56-2b4f-4e92-b8c6-888f9c57148c",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "ujaz",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null
+    },
+    {
+      "uuid": "b8397aa0-efcf-4ed2-933c-4b763d633936",
+      "type": "http",
+      "documentation": "List Lifecycle States",
+      "method": "get",
+      "endpoint": "v3/identity-profiles/:identityProfileId/lifecycle-states",
+      "responses": [
+        {
+          "uuid": "fb847611-694e-42e3-a136-7ccc2fec6622",
+          "body": "[]",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": "SEQUENTIAL"
+    },
+    {
+      "uuid": "1a0a1c6a-56f4-499b-b843-d7219848afa8",
+      "type": "http",
+      "documentation": "Create Connector Rule",
+      "method": "post",
+      "endpoint": "beta/connector-rules",
+      "responses": [
+        {
+          "uuid": "5e457c21-78c8-4de0-97fa-378a2d2d5b29",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 201,
+          "label": "",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "nk6v",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null
+    },
+    {
+      "uuid": "d498e888-007f-4221-9f3e-e7d79eb62f38",
+      "type": "http",
+      "documentation": "Get Connector Rule by ID",
+      "method": "get",
+      "endpoint": "beta/connector-rules/:id",
+      "responses": [
+        {
+          "uuid": "04431ac0-2f31-4692-8023-a49fa1960038",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "nk6v",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "e5d074ab-955f-4978-beeb-9aadc3f24346",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "nk6v",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "41a83d2b-00ec-42a1-8e48-2bb484140a73",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "cagr",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": "SEQUENTIAL"
+    },
+    {
+      "uuid": "b77584b8-1fb5-4fbf-ae78-5890eb8247ab",
+      "type": "http",
+      "documentation": "Delete Connector Rule by ID",
+      "method": "delete",
+      "endpoint": "beta/connector-rules/:id",
+      "responses": [
+        {
+          "uuid": "086a0608-572d-4e08-82ee-355585234790",
+          "body": "",
+          "latency": 0,
+          "statusCode": 204,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null
+    },
+    {
+      "uuid": "522d26d8-049b-4b50-80a9-d4d1c69943f9",
+      "type": "http",
+      "documentation": "Update Connector Rule by ID",
+      "method": "put",
+      "endpoint": "beta/connector-rules/:id",
+      "responses": [
+        {
+          "uuid": "54b15088-59b5-47af-9395-3d37c8dff5b3",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "ln48",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "8c045373-cc63-4765-9f81-921f0507ee2f",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "request_number",
+              "modifier": "",
+              "value": "",
+              "invert": false,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null
+    },
+    {
+      "uuid": "5910cf00-9bbd-4be6-8ca7-969cfdf2c977",
+      "type": "http",
+      "documentation": "Create Workflow",
+      "method": "post",
+      "endpoint": "beta/workflows",
+      "responses": [
+        {
+          "uuid": "bc665173-edad-4211-b88b-a89ebded073d",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 201,
+          "label": "",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "bujc",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null
+    },
+    {
+      "uuid": "acdda775-52cc-4cab-b7c4-c78be1b15846",
+      "type": "http",
+      "documentation": "Get Workflow by ID",
+      "method": "get",
+      "endpoint": "beta/workflows/:id",
+      "responses": [
+        {
+          "uuid": "0166a3d7-68d6-4e0f-b38a-cfb9edeb055a",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "bujc",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "6937dc11-6b6f-4731-9590-c05ab6dea830",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "bujc",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "7693c8c0-5ef7-4df1-96e8-e43138399c9f",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "tl3p",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": "SEQUENTIAL"
+    },
+    {
+      "uuid": "69c7c7ca-8ea4-483e-910c-6cf3d1170ed1",
+      "type": "http",
+      "documentation": "Delete Workflow by ID",
+      "method": "delete",
+      "endpoint": "beta/workflows/:id",
+      "responses": [
+        {
+          "uuid": "84d7a642-e2e7-4b86-ad85-9587ed060aab",
+          "body": "",
+          "latency": 0,
+          "statusCode": 204,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null
+    },
+    {
+      "uuid": "135cae6e-4099-411e-b63d-7778d14d7bae",
+      "type": "http",
+      "documentation": "Patch Source by ID",
+      "method": "patch",
+      "endpoint": "beta/workflows/:id",
+      "responses": [
+        {
+          "uuid": "e4486f82-cdbf-4647-bb0b-d0d1d5cf4e69",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "eajj",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null
+    },
+    {
+      "uuid": "9340631a-417c-4420-9725-1e667c745f51",
+      "type": "http",
+      "documentation": "Task Result (Delete)",
+      "method": "get",
+      "endpoint": "beta/task-status/:id",
+      "responses": [
+        {
+          "uuid": "ab1360fe-0925-40a1-a7fc-b3ba26e216c6",
+          "body": "{\n  \"id\": \"id\",\n  \"type\": \"type\",\n  \"uniqueName\": \"uniqueName\",\n  \"description\": \"description\",\n  \"parentName\": \"\",\n  \"launcher\": \"\",\n  \"messages\": [],\n  \"returns\": [],\n  \"progress\": \"\",\n  \"percentComplete\": 0,\n  \"created\": \"2024-02-28T14:27:30.471Z\",\n  \"modified\": \"2024-02-28T14:27:30.471Z\",\n  \"launched\": \"2024-02-28T14:27:30.471Z\",\n  \"completed\": \"2024-02-28T14:27:30.471Z\",\n  \"attributes\": {},\n  \"completionStatus\": \"SUCCESS\"\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null
+    },
+    {
+      "uuid": "382c0d8e-e4ec-49ff-8b53-f540943e2785",
+      "type": "http",
+      "documentation": "Upload connector files",
+      "method": "post",
+      "endpoint": "v3/sources/:id/upload-connector-file",
+      "responses": [
+        {
+          "uuid": "dcea2072-f1c5-4058-bf1a-95f9f4861ae6",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "93lz",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "2b01f01c-6989-4711-b43c-db759dc1c2fc",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "xy24",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": "SEQUENTIAL"
+    },
+    {
+      "uuid": "b8914249-9499-431e-a154-bcc7cfcc2629",
+      "type": "http",
+      "documentation": "List Entitlements",
+      "method": "get",
+      "endpoint": "beta/entitlements",
+      "responses": [
+        {
+          "uuid": "9629d5e1-a9cb-459b-b44f-2ed2ddd32fce",
+          "body": "[\r\n    {\r\n        \"attribute\": null,\r\n        \"value\": \"ROLE_ADMIN\",\r\n        \"description\": \"Role Administrator access to IdentityNow\",\r\n        \"sourceSchemaObjectType\": \"level\",\r\n        \"privileged\": false,\r\n        \"cloudGoverned\": false,\r\n        \"requestable\": false,\r\n        \"attributes\": {\r\n            \"name\": \"Role Administrator\",\r\n            \"description\": \"Role Administrator access to IdentityNow\",\r\n            \"type\": \"Level\"\r\n        },\r\n        \"source\": {\r\n            \"id\": \"1234567890\",\r\n            \"name\": \"IdentityNow\",\r\n            \"type\": \"SOURCE\"\r\n        },\r\n        \"owner\": null,\r\n        \"directPermissions\": [],\r\n        \"segments\": [],\r\n        \"manuallyUpdatedFields\": {\r\n            \"DISPLAY_NAME\": false,\r\n            \"DESCRIPTION\": false\r\n        },\r\n        \"accessModelMetadata\": {\r\n            \"attributes\": []\r\n        },\r\n        \"modified\": \"2024-05-14T18:54:54.988792Z\",\r\n        \"created\": \"2024-05-14T18:54:54.997014Z\",\r\n        \"id\": \"31d5e3d5-5f18421bb51f74e847767657\",\r\n        \"name\": \"Role Administrator\"\r\n    }\r\n]",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [
+            {
+              "key": "",
+              "value": ""
+            }
+          ],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "header",
+              "modifier": "Authorization",
+              "value": "{{data 'token'}}",
+              "invert": false,
+              "operator": "equals"
+            },
+            {
+              "target": "query",
+              "modifier": "filters",
+              "value": "source.id eq \"1234567890\" and value eq \"ROLE_ADMIN\"",
+              "invert": false,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "AND",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "b09df5d1-b15a-49cd-a2e6-36b265a89fd4",
+          "body": "[]",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null
+    }
+  ],
+  "rootChildren": [
+    {
+      "type": "route",
+      "uuid": "bdcb0835-7aef-4642-9e04-7f570e462927"
+    },
+    {
+      "type": "route",
+      "uuid": "01d55c6f-9b8f-4f64-8d78-586c60ebfff0"
+    },
+    {
+      "type": "route",
+      "uuid": "9799f15d-1c76-4b93-860e-4b62c156b98a"
+    },
+    {
+      "type": "route",
+      "uuid": "086f40cc-8825-43b3-af86-c7b6e5f36440"
+    },
+    {
+      "type": "route",
+      "uuid": "7f7ecfa5-b6b1-46f0-8974-050b07cfef45"
+    },
+    {
+      "type": "folder",
+      "uuid": "afb2b31b-5104-4bbe-92cc-bd8beae69e22"
+    },
+    {
+      "type": "folder",
+      "uuid": "b6d364c7-95c7-4ca1-b105-4cd198156bad"
+    },
+    {
+      "type": "folder",
+      "uuid": "c092e4cb-aa33-42d0-b56b-3a7e862d95c1"
+    },
+    {
+      "type": "folder",
+      "uuid": "d2125e1a-c84a-49b0-b353-6d121a316285"
+    },
+    {
+      "type": "folder",
+      "uuid": "1e819a8f-2507-4971-8267-502977d2e4f1"
+    },
+    {
+      "type": "folder",
+      "uuid": "0ddaf5b8-deb2-486e-a799-052973c05c4c"
+    },
+    {
+      "type": "folder",
+      "uuid": "4cfb7c93-2d6a-4428-a11e-a268007a52ac"
+    },
+    {
+      "type": "route",
+      "uuid": "9340631a-417c-4420-9725-1e667c745f51"
+    },
+    {
+      "type": "folder",
+      "uuid": "b5f63d82-909f-4a70-8886-4e5cee92d686"
+    }
+  ],
+  "proxyMode": false,
+  "proxyHost": "",
+  "proxyRemovePrefix": false,
+  "tlsOptions": {
+    "enabled": false,
+    "type": "CERT",
+    "pfxPath": "",
+    "certPath": "",
+    "keyPath": "",
+    "caPath": "",
+    "passphrase": ""
+  },
+  "cors": true,
+  "headers": [
+    {
+      "key": "Content-Type",
+      "value": "application/json"
+    }
+  ],
+  "proxyReqHeaders": [
+    {
+      "key": "",
+      "value": ""
+    }
+  ],
+  "proxyResHeaders": [
+    {
+      "key": "",
+      "value": ""
+    }
+  ],
+  "data": [
+    {
+      "uuid": "f466a78b-f322-4318-935c-ec50c56172c3",
+      "id": "zbdo",
+      "name": "token",
+      "documentation": "",
+      "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9."
+    },
+    {
+      "uuid": "3e5fb83d-b7e1-477f-b0ae-c6cd4a125f55",
+      "id": "alqa",
+      "name": "Identity Attirubtes",
+      "documentation": "",
+      "value": ""
+    },
+    {
+      "uuid": "f43612b2-1769-497e-9cf9-44f564ff83f9",
+      "id": "3gh2",
+      "name": "Source Initial",
+      "documentation": "",
+      "value": "{\r\n  \"id\": \"6TaKaAyjUMyJ9eZ\",\r\n  \"cluster\": {{body 'cluster'}},\r\n  \"connector\": \"{{body 'connector'}}\",\r\n  \"description\": \"{{body 'description'}}\",\r\n  \"name\": \"{{body 'name'}}\",\r\n  \"owner\": {{body 'owner'}}\r\n}\r\n"
+    },
+    {
+      "uuid": "acd891d6-9b3b-4ff2-8397-04ad3d72fe9d",
+      "id": "93lz",
+      "name": "Source",
+      "documentation": "",
+      "value": "{\r\n  \"id\": \"6TaKaAyjUMyJ9eZ\",\r\n  \"authoritative\": false,\r\n  \"features\": {{body '0.value'}},\r\n  \"connectorAttributes\": {\r\n    \"enableLCS\": {{body '1.value'}},\r\n    \"inherited\": {{body '2.value'}},\r\n    \"cloudExternalId\": \"123345\",\r\n    \"connector_files\": \"ojdbc10-19.18.0.0.txt\"\r\n  },\r\n  \"deleteThreshold\": {{body '3.value'}},\r\n  \"owner\": {\r\n    \"id\": \"{{dataRaw '3gh2' 'owner.id'}}\",\r\n    \"name\": \"{{dataRaw '3gh2' 'owner.name'}}\",\r\n    \"type\": \"{{dataRaw '3gh2' 'owner.type'}}\"\r\n  },\r\n  \"cluster\": {\r\n    \"id\": \"{{dataRaw '3gh2' 'cluster.id'}}\",\r\n    \"name\": \"{{dataRaw '3gh2' 'cluster.name'}}\",\r\n    \"type\": \"{{dataRaw '3gh2' 'cluster.type'}}\"\r\n  },\r\n   \"accountCorrelationConfig\": {{body '5.value'}},\r\n   \"accountCorrelationRule\": {{body '6.value'}},\r\n  \"managerCorrelationMapping\": {{body '4.value'}},\r\n  \"managerCorrelationRule\": {{body '7.value'}},\r\n  \"beforeProvisioningRule\": {{body '8.value'}},\r\n  \"managementWorkgroup\": {{body '9.value'}},\r\n  \"connectionType\": \"someType\",\r\n  \"connector\": \"{{dataRaw '3gh2' 'connector'}}\",\r\n  \"connectorClass\": \"connectorClass\",\r\n  \"connectorId\": \"connectorId\",\r\n  \"connectorImplementationId\": \"connectorImplementationId\",\r\n  \"connectorName\": \"connectorName\",\r\n  \"description\": \"{{dataRaw '3gh2' 'description'}}\",\r\n  \"healthy\": false,\r\n  \"name\": \"{{dataRaw '3gh2' 'name'}}\",\r\n  \"passwordPolicies\": [],\r\n  \"status\": \"\",\r\n  \"type\": \"connectorType\",\r\n  \"connectionType\": \"direct\"\r\n}"
+    },
+    {
+      "uuid": "7d910fde-1182-40b0-9e18-8c3d3f2d8126",
+      "id": "m8mi",
+      "name": "Source Patch",
+      "documentation": "",
+      "value": "{\r\n  \"kacen\": \"test\",\r\n  \"id\": \"6TaKaAyjUMyJ9eZ\",\r\n  \"authoritative\": {{dataRaw '93lz' 'authoritative'}},\r\n  \"owner\": {\r\n    \"id\": \"{{body '10.value'}}\",\r\n    \"name\": \"{{dataRaw '93lz' 'owner.name'}}\",\r\n    \"type\": \"{{dataRaw '93lz' 'owner.type'}}\"\r\n  },\r\n  \"cluster\": {\r\n    \"id\": \"{{body '11.value'}}\",\r\n    \"name\": \"{{dataRaw '93lz' 'cluster.name'}}\",\r\n    \"type\": \"{{dataRaw '93lz' 'cluster.type'}}\"\r\n  },\r\n   \"accountCorrelationConfig\": {\r\n    \"id\": \"{{body '12.value'}}\",\r\n    \"name\": \"{{dataRaw '93lz' 'accountCorrelationConfig.name'}}\",\r\n    \"type\": \"{{dataRaw '93lz' 'accountCorrelationConfig.type'}}\"\r\n  },\r\n   \"accountCorrelationRule\": {\r\n    \"id\": \"{{body '13.value'}}\",\r\n    \"name\": \"{{dataRaw '93lz' 'accountCorrelationRule.name'}}\",\r\n    \"type\": \"{{dataRaw '93lz' 'accountCorrelationRule.type'}}\"\r\n  },\r\n  \"managerCorrelationMapping\": {\r\n    \"accountAttributeName\": \"{{body '8.value'}}\",\r\n    \"identityAttributeName\": \"{{body '9.value'}}\"\r\n  },\r\n  \"managerCorrelationRule\": {\r\n    \"id\": \"{{body '14.value'}}\",\r\n    \"name\": \"{{dataRaw '93lz' 'managerCorrelationRule.name'}}\",\r\n    \"type\": \"{{dataRaw '93lz' 'managerCorrelationRule.type'}}\"\r\n  },\r\n  \"beforeProvisioningRule\": {\r\n    \"id\": \"{{body '15.value'}}\",\r\n    \"name\": \"{{dataRaw '93lz' 'beforeProvisioningRule.name'}}\",\r\n    \"type\": \"{{dataRaw '93lz' 'beforeProvisioningRule.type'}}\"\r\n  },\r\n  \"managementWorkgroup\": {\r\n    \"id\": \"{{body '16.value'}}\",\r\n    \"name\": \"{{dataRaw '93lz' 'managementWorkgroup.name'}}\",\r\n    \"type\": \"{{dataRaw '93lz' 'managementWorkgroup.type'}}\"\r\n  },\r\n  \"connectionType\": \"{{dataRaw '93lz' 'connectionType'}}\",\r\n  \"connector\": \"{{dataRaw '93lz' 'connector'}}\",\r\n  \"connectorAttributes\": {\r\n    \"anotherBigAttribute\": \"{{dataRaw '93lz' 'connectorAttributes.anotherBigAttribute'}}\",\r\n    \"enableLCS\": {{dataRaw '93lz' 'connectorAttributes.enableLCS'}},\r\n    \"inherited\": {\r\n      \"first\": \"{{body '4.value'}}\",\r\n      \"seconds\": \"{{dataRaw '93lz' 'connectorAttributes.inherited.seconds'}}\",\r\n      \"clientId\": \"{{dataRaw '93lz' 'connectorAttributes.inherited.clientId'}}\",\r\n      \"clientSecret\": \"{{body '3.value'}}\"\r\n    },\r\n    \"test_attribute_1\": \"{{body '5.value'}}\",\r\n    \"password\": \"{{body '6.value'}}\",\r\n    \"cloudExternalId\": \"123345\"\r\n  },\r\n  \"connectorClass\": \"{{dataRaw '93lz' 'connectorClass'}}\",\r\n  \"connectorId\": \"{{dataRaw '93lz' 'connectorId'}}\",\r\n  \"connectorImplementationId\": \"{{dataRaw '93lz' 'connectorImplementationId'}}\",\r\n  \"connectorName\": \"{{dataRaw '93lz' 'connectorName'}}\",\r\n  \"deleteThreshold\": {{body '7.value'}},\r\n  \"description\": \"{{body '1.value'}}\",\r\n  \"features\": {{body '2.value'}},\r\n  \"healthy\": false,\r\n  \"name\": \"{{body '0.value'}}\",\r\n  \r\n  \"passwordPolicies\": [],\r\n  \"status\": \"\",\r\n  \"type\": \"{{dataRaw '93lz' 'type'}}\",\r\n  \"connectionType\": \"{{dataRaw '93lz' 'connectionType'}}\"\r\n}"
+    },
+    {
+      "uuid": "c67eb22c-feea-42c4-918c-95f0a500e855",
+      "id": "xy24",
+      "name": "Source After Patch",
+      "documentation": "",
+      "value": "{\r\n  \"id\": \"6TaKaAyjUMyJ9eZ\",\r\n  \"authoritative\": false,\r\n  \"cluster\": {\r\n    \"id\": \"clusterIdUpd\",\r\n    \"name\": \"clusterNameUpd\",\r\n    \"type\": \"CLUSTER\"\r\n  },\r\n  \"accountCorrelationConfig\": {\r\n    \"id\": \"accCorIdUpd\",\r\n    \"name\": \"\",\r\n    \"type\": \"ACCOUNT_CORRELATION_CONFIG\"\r\n  },\r\n  \"accountCorrelationRule\": {\r\n    \"id\": \"accCorRuleIdUpd\",\r\n    \"name\": \"\",\r\n    \"type\": \"RULE\"\r\n  },\r\n  \"managerCorrelationMapping\": {\r\n    \"accountAttributeName\": \"manAccAttrUpd\",\r\n    \"identityAttributeName\": \"manIdentAttrUpd\"\r\n  },\r\n  \"managerCorrelationRule\": {\r\n    \"id\": \"manCorRuleIdUpd\",\r\n    \"name\": \"\",\r\n    \"type\": \"RULE\"\r\n  },\r\n  \"beforeProvisioningRule\": {\r\n    \"id\": \"befProvRuleIdUpd\",\r\n    \"name\": \"\",\r\n    \"type\": \"RULE\"\r\n  },\r\n  \"managementWorkgroup\": {\r\n    \"id\": \"manWorkIdUpd\",\r\n    \"name\": \"\",\r\n    \"type\": \"GOVERNANCE_GROUP\"\r\n  },\r\n  \"connectionType\": \"direct\",\r\n  \"connector\": \"custom connector\",\r\n  \"connectorAttributes\": {\r\n    \"enableLCS\": true,\r\n    \"inherited\": {\r\n      \"first\": \"1Upd\",\r\n      \"seconds\": \"2\",\r\n      \"clientId\": \"clientId\",\r\n      \"clientSecret\": \"clientSecretUpd\"\r\n    },\r\n    \"cloudExternalId\": \"123345\",\r\n    \"connector_files\": \"ojdbc10-19.18.0.0.txt,ojdbc10-19.21.0.0.txt\"\r\n  },\r\n  \"connectorClass\": \"connectorClass\",\r\n  \"connectorId\": \"connectorId\",\r\n  \"connectorImplementationId\": \"connectorImplementationId\",\r\n  \"connectorName\": \"connectorName\",\r\n  \"deleteThreshold\": 15,\r\n  \"description\": \"Creating from integration tests update\",\r\n  \"features\": [\r\n     \"AUTHENTICATE\", \"ENABLE\"\r\n  ],\r\n  \"healthy\": false,\r\n  \"name\": \"test source update\",\r\n  \"owner\": {\r\n    \"id\": \"ownerIdUpd\",\r\n    \"name\": \"\",\r\n    \"type\": \"IDENTITY\"\r\n  },\r\n  \"passwordPolicies\": [],\r\n  \"status\": \"\",\r\n  \"type\": \"connectorType\"\r\n}"
+    },
+    {
+      "uuid": "798dd016-ad2a-4ad3-8395-3a9b41053de0",
+      "id": "94c7",
+      "name": "Identity Profile",
+      "documentation": "",
+      "value": "{\r\n    \"description\": \"{{body 'description'}}\",\r\n    \"owner\": {\r\n        \"type\": \"{{body 'owner.type'}}\",\r\n        \"id\": \"{{body 'owner.id'}}\",\r\n        \"name\": \"{{body 'owner.name'}}\"\r\n    },\r\n    \"priority\": {{body 'priority' 1}},\r\n    \"authoritativeSource\": {\r\n        \"type\": \"{{body 'authoritativeSource.type'}}\",\r\n        \"id\": \"{{body 'authoritativeSource.id'}}\",\r\n        \"name\": \"{{body 'authoritativeSource.name'}}\"\r\n    },\r\n    \"identityRefreshRequired\": false,\r\n    \"identityCount\": 1,\r\n    \"identityAttributeConfig\": {\r\n        \"enabled\": {{body 'identityAttributeConfig.enabled'}},\r\n        \"attributeTransforms\": [\r\n            {\r\n                \"identityAttributeName\": \"{{body 'identityAttributeConfig.attributeTransforms.0.identityAttributeName'}}\",\r\n                \"transformDefinition\": {\r\n                    \"type\": \"{{body 'identityAttributeConfig.attributeTransforms.0.transformDefinition.type'}}\",\r\n                    \"attributes\": {\r\n                        \"attributeName\": \"{{body 'identityAttributeConfig.attributeTransforms.0.transformDefinition.attributes.attributeName'}}\",\r\n                        \"sourceName\": \"{{body 'identityAttributeConfig.attributeTransforms.0.transformDefinition.attributes.sourceName'}}\",\r\n                        \"sourceId\": \"{{body 'identityAttributeConfig.attributeTransforms.0.transformDefinition.attributes.sourceId'}}\"\r\n                    }\r\n                }\r\n            },\r\n             {\r\n                \"identityAttributeName\": \"{{body 'identityAttributeConfig.attributeTransforms.1.identityAttributeName'}}\",\r\n                \"transformDefinition\": {\r\n                    \"type\": \"{{body 'identityAttributeConfig.attributeTransforms.1.transformDefinition.type'}}\",\r\n                    \"attributes\": {\r\n                        \"attributeName\": \"{{body 'identityAttributeConfig.attributeTransforms.1.transformDefinition.attributes.attributeName'}}\",\r\n                        \"sourceName\": \"{{body 'identityAttributeConfig.attributeTransforms.1.transformDefinition.attributes.sourceName'}}\",\r\n                        \"sourceId\": \"{{body 'identityAttributeConfig.attributeTransforms.1.transformDefinition.attributes.sourceId'}}\"\r\n                    }\r\n                }\r\n            }\r\n        ]\r\n    },\r\n    \"identityExceptionReportReference\": null,\r\n    \"hasTimeBasedAttr\": false,\r\n    \"id\": \"identity_profile_id\",\r\n    \"name\": \"{{body 'name'}}\",\r\n    \"created\": \"2024-01-01T14:30:38.917Z\",\r\n    \"modified\": \"2024-01-31T14:20:10.141Z\"\r\n}"
+    },
+    {
+      "uuid": "eab1bdfc-4401-46f7-a707-7e11ae668391",
+      "id": "yetm",
+      "name": "Identity Profile Patch",
+      "documentation": "",
+      "value": "{\r\n    \"description\": \"{{body '1.value'}}\",\r\n    \"owner\": {\r\n        \"type\": \"{{dataRaw '94c7' 'owner.type'}}\",\r\n        \"id\": \"{{body '5.value'}}\",\r\n        \"name\": \"{{dataRaw '94c7' 'owner.name'}}\"\r\n    },\r\n    \"priority\": {{body '2.value'}},\r\n    \"authoritativeSource\": {\r\n        \"type\": \"{{dataRaw '94c7' 'authoritativeSource.type'}}\",\r\n        \"id\": \"{{body '6.value'}}\",\r\n        \"name\": \"{{dataRaw '94c7' 'authoritativeSource.name'}}\"\r\n    },\r\n    \"identityRefreshRequired\": false,\r\n    \"identityCount\": 1,\r\n    \"identityAttributeConfig\": {\r\n        \"enabled\": {{body '3.value'}},\r\n        \"attributeTransforms\": {{body '4.value'}}\r\n    },\r\n    \"identityExceptionReportReference\": null,\r\n    \"hasTimeBasedAttr\": false,\r\n    \"id\": \"identity_profile_id\",\r\n    \"name\": \"{{body '0.value'}}\",\r\n    \"created\": \"2024-01-01T14:30:38.917Z\",\r\n    \"modified\": \"2024-01-31T14:20:10.141Z\"\r\n}"
+    },
+    {
+      "uuid": "8271a46f-ce36-4926-937a-d9722552af39",
+      "id": "u4nz",
+      "name": "Identity Profile After Patch",
+      "documentation": "",
+      "value": "{\r\n  \"description\": \"Test Identity Profile UPDATED\",\r\n  \"owner\": {\r\n    \"type\": \"IDENTITY\",\r\n    \"id\": \"ownerIdUpd\",\r\n    \"name\": \"\"\r\n  },\r\n  \"priority\": 10,\r\n  \"authoritativeSource\": {\r\n    \"type\": \"SOURCE\",\r\n    \"id\": \"auth_sourceUpd\",\r\n    \"name\": \"\"\r\n  },\r\n  \"identityRefreshRequired\": false,\r\n  \"identityCount\": 1,\r\n  \"identityAttributeConfig\": {\r\n    \"enabled\": false,\r\n    \"attributeTransforms\": [\r\n      {\r\n        \"identityAttributeName\": \"uid\",\r\n        \"transformDefinition\": {\r\n          \"attributes\": {\r\n            \"attributeName\": \"uid\",\r\n            \"sourceId\": \"sourceId\",\r\n            \"sourceName\": \"sourceName\"\r\n          },\r\n          \"type\": \"accountAttribute\"\r\n        }\r\n      },\r\n      {\r\n        \"identityAttributeName\": \"email\",\r\n        \"transformDefinition\": {\r\n          \"attributes\": {\r\n            \"attributeName\": \"mailaddr\",\r\n            \"sourceId\": \"sourceId\",\r\n            \"sourceName\": \"sourceName\"\r\n          },\r\n          \"type\": \"accountAttribute\"\r\n        }\r\n      },\r\n      {\r\n        \"identityAttributeName\": \"displayName\",\r\n        \"transformDefinition\": {\r\n          \"attributes\": {\r\n            \"attributeName\": \"displayName\",\r\n            \"sourceId\": \"sourceId\",\r\n            \"sourceName\": \"sourceName\"\r\n          },\r\n          \"type\": \"accountAttribute\"\r\n        }\r\n      }\r\n    ]\r\n  },\r\n  \"identityExceptionReportReference\": null,\r\n  \"hasTimeBasedAttr\": false,\r\n  \"id\": \"identity_profile_id\",\r\n  \"name\": \"Test Identity Profile UPDATED\",\r\n  \"created\": \"2024-01-01T14:30:38.917Z\",\r\n  \"modified\": \"2024-01-31T14:20:10.141Z\"\r\n}"
+    },
+    {
+      "uuid": "7bc519e6-7cec-45c2-8564-be2686af8841",
+      "id": "u5vi",
+      "name": "Source Schema",
+      "documentation": "",
+      "value": "{\r\n  \"nativeObjectType\": \"{{body 'nativeObjectType'}}\",\r\n  \"identityAttribute\": \"{{body 'identityAttribute'}}\",\r\n  \"displayAttribute\": \"{{body 'displayAttribute'}}\",\r\n  \"hierarchyAttribute\": \"{{body 'hierarchyAttribute'}}\",\r\n  \"includePermissions\": {{body 'includePermissions'}},\r\n  \"features\": [\"{{body 'features.0'}}\"],\r\n  \"configuration\": {\r\n    \"key\": \"{{body 'configuration.key'}}\"\r\n  },\r\n  \"attributes\": [\r\n    {\r\n      \"name\": \"{{body 'attributes.0.name'}}\",\r\n      \"type\": \"{{body 'attributes.0.type'}}\",\r\n      \"schema\": {\r\n        \"type\": \"{{body 'attributes.0.schema.type'}}\",\r\n        \"id\": \"{{body 'attributes.0.schema.id'}}\",\r\n        \"name\": \"{{body 'attributes.0.schema.name'}}\"\r\n      },\r\n      \"description\": \"{{body 'attributes.0.description'}}\",\r\n      \"isMulti\": {{body 'attributes.0.isMulti'}},\r\n      \"isEntitlement\": {{body 'attributes.0.isEntitlement'}},\r\n      \"isGroup\": {{body 'attributes.0.isGroup'}}\r\n    },\r\n    {\r\n      \"name\": \"{{body 'attributes.1.name'}}\",\r\n      \"type\": \"{{body 'attributes.1.type'}}\",\r\n      \"schema\": {\r\n        \"type\": \"{{body 'attributes.1.schema.type'}}\",\r\n        \"id\": \"{{body 'attributes.1.schema.id'}}\",\r\n        \"name\": \"{{body 'attributes.1.schema.name'}}\"\r\n      },\r\n      \"description\": \"{{body 'attributes.1.description'}}\",\r\n      \"isMulti\": {{body 'attributes.1.isMulti'}},\r\n      \"isEntitlement\": {{body 'attributes.1.isEntitlement'}},\r\n      \"isGroup\": {{body 'attributes.1.isGroup'}}\r\n    }\r\n  ],\r\n  \"id\": \"source_schema_id\",\r\n  \"name\": \"{{body 'name'}}\",\r\n  \"created\": \"2024-01-01T14:28:26.632Z\",\r\n  \"modified\": \"2024-01-17T14:48:08.484Z\"\r\n}"
+    },
+    {
+      "uuid": "4eed7441-9b19-47af-a797-e00fca22857e",
+      "id": "iq31",
+      "name": "Source Schema Put",
+      "documentation": "",
+      "value": "{\r\n  \"nativeObjectType\": \"{{body 'nativeObjectType'}}\",\r\n  \"identityAttribute\": \"{{body 'identityAttribute'}}\",\r\n  \"displayAttribute\": \"{{body 'displayAttribute'}}\",\r\n  \"hierarchyAttribute\": \"{{body 'hierarchyAttribute'}}\",\r\n  \"includePermissions\": {{body 'includePermissions'}},\r\n  \"features\": [\"{{body 'features.0'}}\", \"{{body 'features.1'}}\"],\r\n  \"configuration\": {\r\n    \"key\": \"{{body 'configuration.key'}}\"\r\n  },\r\n  \"attributes\": [\r\n    {\r\n      \"name\": \"{{body 'attributes.0.name'}}\",\r\n      \"type\": \"{{body 'attributes.0.type'}}\",\r\n      \"schema\": {\r\n        \"type\": \"{{body 'attributes.0.schema.type'}}\",\r\n        \"id\": \"{{body 'attributes.0.schema.id'}}\",\r\n        \"name\": \"{{body 'attributes.0.schema.name'}}\"\r\n      },\r\n      \"description\": \"{{body 'attributes.0.description'}}\",\r\n      \"isMulti\": {{body 'attributes.0.isMulti'}},\r\n      \"isEntitlement\": {{body 'attributes.0.isEntitlement'}},\r\n      \"isGroup\": {{body 'attributes.0.isGroup'}}\r\n    },\r\n    {\r\n      \"name\": \"{{body 'attributes.1.name'}}\",\r\n      \"type\": \"{{body 'attributes.1.type'}}\",\r\n      \"schema\": {\r\n        \"type\": \"{{body 'attributes.1.schema.type'}}\",\r\n        \"id\": \"{{body 'attributes.1.schema.id'}}\",\r\n        \"name\": \"{{body 'attributes.1.schema.name'}}\"\r\n      },\r\n      \"description\": \"{{body 'attributes.1.description'}}\",\r\n      \"isMulti\": {{body 'attributes.1.isMulti'}},\r\n      \"isEntitlement\": {{body 'attributes.1.isEntitlement'}},\r\n      \"isGroup\": {{body 'attributes.1.isGroup'}}\r\n    }\r\n  ],\r\n  \"id\": \"source_schema_id\",\r\n  \"name\": \"{{body 'name'}}\",\r\n  \"created\": \"2024-01-01T14:28:26.632Z\",\r\n  \"modified\": \"2024-01-17T14:48:08.484Z\"\r\n}"
+    },
+    {
+      "uuid": "0af2edb3-4419-4a65-9b9c-9714eee3fc53",
+      "id": "02zw",
+      "name": "Source Schema After Put",
+      "documentation": "",
+      "value": "{\r\n  \"nativeObjectType\": \"UserUpd\",\r\n  \"identityAttribute\": \"another_idUpd\",\r\n  \"displayAttribute\": \"nameUpd\",\r\n  \"hierarchyAttribute\": \"uid\",\r\n  \"includePermissions\": true,\r\n  \"features\": [\r\n    \"AUTHENTICATE\",\r\n    \"ENABLE\"\r\n  ],\r\n  \"configuration\": {\r\n    \"key\": \"valueUpd\"\r\n  },\r\n  \"attributes\": [\r\n    {\r\n      \"name\": \"idUpd\",\r\n      \"type\": \"BOOLEAN\",\r\n      \"schema\": {\r\n        \"type\": \"CONNECTOR_SCHEMA\",\r\n        \"id\": \"yes\",\r\n        \"name\": \"nameUpd\"\r\n      },\r\n      \"description\": \"ID of the user Upd\",\r\n      \"isMulti\": false,\r\n      \"isEntitlement\": false,\r\n      \"isGroup\": false\r\n    },\r\n    {\r\n      \"name\": \"uidUpd\",\r\n      \"type\": \"STRING\",\r\n      \"schema\": {\r\n        \"type\": \"CONNECTOR_SCHEMA\",\r\n        \"id\": \"no\",\r\n        \"name\": \"nameUpd\"\r\n      },\r\n      \"description\": \"UID of the user Upd\",\r\n      \"isMulti\": true,\r\n      \"isEntitlement\": true,\r\n      \"isGroup\": true\r\n    }\r\n  ],\r\n  \"id\": \"source_schema_id\",\r\n  \"name\": \"accountUpd\",\r\n  \"created\": \"2024-01-01T14:28:26.632Z\",\r\n  \"modified\": \"2024-01-17T14:48:08.484Z\"\r\n}"
+    },
+    {
+      "uuid": "f11b9d3b-0276-4c7b-938d-2b79d673764e",
+      "id": "tz1x",
+      "name": "",
+      "documentation": "",
+      "value": ""
+    },
+    {
+      "uuid": "5a5ed31d-c90a-49c5-ac85-5f1a3f7ac0bc",
+      "id": "smfs",
+      "name": "Transform",
+      "documentation": "",
+      "value": "{\r\n    \"id\": \"transform-id\",\r\n    \"name\": \"{{body 'name'}}\",\r\n    \"type\": \"{{body 'type'}}\",\r\n    \"attributes\": {\r\n      \"end\": {{body 'attributes.end'}},\r\n      \"begin\": {\r\n        \"type\": \"{{body 'attributes.begin.type'}}\"\r\n      },\r\n      \"beginOffset\": {{body 'attributes.beginOffset'}}\r\n    },\r\n    \"internal\": false\r\n}"
+    },
+    {
+      "uuid": "a4fe8e8f-e214-4083-8ab7-3e3d26457bb8",
+      "id": "z32l",
+      "name": "Transform Put",
+      "documentation": "",
+      "value": "{\r\n    \"id\": \"transform-id\",\r\n    \"name\": \"{{body 'name'}}\",\r\n    \"type\": \"{{body 'type'}}\",\r\n    \"attributes\": {\r\n      \"end\": {{body 'attributes.end'}},\r\n      \"begin\": {\r\n        \"type\": \"{{body 'attributes.begin.type'}}\"\r\n      },\r\n      \"beginOffset\": {{body 'attributes.beginOffset'}}\r\n    },\r\n    \"internal\": false\r\n}"
+    },
+    {
+      "uuid": "72a4ca7a-c24e-4bef-b3f6-9e6b7f9c63a0",
+      "id": "821q",
+      "name": "Transform After Put",
+      "documentation": "",
+      "value": "{\r\n  \"id\": \"transform-id\",\r\n  \"name\": \"test\",\r\n  \"type\": \"update\",\r\n  \"attributes\": {\r\n    \"end\": 5,\r\n    \"begin\": {\r\n      \"type\": \"indexOf\"\r\n    },\r\n    \"beginOffset\": 1\r\n  },\r\n  \"internal\": false\r\n}"
+    },
+    {
+      "uuid": "fb78a936-ed2b-4588-b716-9c13f7abe38f",
+      "id": "cpru",
+      "name": "Lifecycle State",
+      "documentation": "",
+      "value": "{\r\n  \"enabled\": {{body 'enabled'}},\r\n  \"technicalName\": \"{{body 'technicalName'}}\",\r\n  \"description\": \"{{body 'description'}}\",\r\n  \"identityCount\": 0,\r\n  \"emailNotificationOption\": {\r\n    \"notifyManagers\": {{body 'emailNotificationOption.notifyManagers'}},\r\n    \"notifyAllAdmins\": {{body 'emailNotificationOption.notifyAllAdmins'}},\r\n    \"notifySpecificUsers\": {{body 'emailNotificationOption.notifySpecificUsers'}},\r\n    \"emailAddressList\": [\"{{body 'emailNotificationOption.emailAddressList.0'}}\", \"{{body 'emailNotificationOption.emailAddressList.1'}}\"]\r\n  },\r\n  \"accountActions\": [\r\n    {\r\n      \"action\": \"{{body 'accountActions.0.action'}}\",\r\n      \"sourceIds\": [\"{{body 'accountActions.0.sourceIds.0'}}\", \"{{body 'accountActions.0.sourceIds.1'}}\"]\r\n    },\r\n    {\r\n      \"action\": \"{{body 'accountActions.1.action'}}\",\r\n      \"sourceIds\": [\"{{body 'accountActions.1.sourceIds.0'}}\", \"{{body 'accountActions.1.sourceIds.1'}}\"]\r\n    }\r\n  ],\r\n  \"accessProfileIds\": [\"{{body 'accessProfileIds.0'}}\", \"{{body 'accessProfileIds.1'}}\"],\r\n  \"identityState\": null,\r\n  \"id\": \"randomId\",\r\n  \"name\": \"{{body 'name'}}\",\r\n  \"created\": \"2024-02-15T09:50:48.565Z\",\r\n  \"modified\": \"2024-02-15T09:53:02.701Z\"\r\n}"
+    },
+    {
+      "uuid": "a457e7f5-99b1-4268-85fb-1cf84488ecf1",
+      "id": "ujaz",
+      "name": "Lifecycle State Patch",
+      "documentation": "",
+      "value": "{\r\n  \"enabled\": {{body '0.value'}},\r\n  \"technicalName\": \"{{dataRaw 'cpru' 'technicalName'}}\",\r\n  \"description\": \"{{body '1.value'}}\",\r\n  \"identityCount\": 0,\r\n  \"emailNotificationOption\": {\r\n    \"notifyManagers\": {{body '2.value'}},\r\n    \"notifyAllAdmins\": {{body '3.value'}},\r\n    \"notifySpecificUsers\": {{body '4.value'}},\r\n    \"emailAddressList\": {{body '5.value'}}\r\n  },\r\n  \"accountActions\": {{body '6.value'}},\r\n  \"accessProfileIds\": {{body '7.value'}},\r\n  \"identityState\": null,\r\n  \"id\": \"randomId\",\r\n  \"name\": \"{{dataRaw 'cpru' 'name'}}\",\r\n  \"created\": \"2024-02-15T09:50:48.565Z\",\r\n  \"modified\": \"2024-02-15T09:53:02.701Z\"\r\n}"
+    },
+    {
+      "uuid": "55a06970-a1fa-4400-af3a-f72dcd40e60c",
+      "id": "ugsd",
+      "name": "Lifecycle State After Patch",
+      "documentation": "",
+      "value": "{\r\n  \"enabled\": true,\r\n  \"technicalName\": \"active\",\r\n  \"description\": \"my test descriptionUpd\",\r\n  \"identityCount\": 0,\r\n  \"emailNotificationOption\": {\r\n    \"notifyManagers\": true,\r\n    \"notifyAllAdmins\": false,\r\n    \"notifySpecificUsers\": false,\r\n    \"emailAddressList\": [\"email1\"]\r\n  },\r\n  \"accountActions\": [{\"action\":\"ENABLE\",\"sourceIds\":[\"sourceId1\"]}],\r\n  \"accessProfileIds\": [\"accessProfileId1\",\"accessProfileId2\",\"accessProfileId3\"],\r\n  \"identityState\": null,\r\n  \"id\": \"randomId\",\r\n  \"name\": \"Active\",\r\n  \"created\": \"2024-02-15T09:50:48.565Z\",\r\n  \"modified\": \"2024-02-15T09:53:02.701Z\"\r\n}"
+    },
+    {
+      "uuid": "8869ea6a-69f7-45ff-8ff1-7a9cdb6f9249",
+      "id": "nk6v",
+      "name": "Connector Rule",
+      "documentation": "",
+      "value": "{\r\n  \"id\": \"randomId\",\r\n  \"name\": \"{{body 'name'}}\",\r\n  \"description\": \"{{body 'description'}}\",\r\n  \"type\": \"{{body 'type'}}\",\r\n  \"signature\": {\r\n    \"input\": {{body 'signature.input'}},\r\n    \"output\": {{body 'signature.output'}}\r\n  },\r\n  \"sourceCode\":  {{body 'sourceCode'}},\r\n  \"attributes\": {{body 'attributes'}},\r\n  \"created\": \"2024-02-15T09:50:48.565Z\",\r\n  \"modified\": \"2024-02-15T09:53:02.701Z\"\r\n}"
+    },
+    {
+      "uuid": "5ffd944f-e269-44a1-b708-5d96e837cc72",
+      "id": "ln48",
+      "name": "Connector Rule Put",
+      "documentation": "",
+      "value": "{\r\n  \"id\": \"randomId\",\r\n  \"name\": \"{{body 'name'}}\",\r\n  \"description\": \"{{body 'description'}}\",\r\n  \"type\": \"{{body 'type'}}\",\r\n  \"signature\": {\r\n    \"input\": {{body 'signature.input'}},\r\n    \"output\": {{body 'signature.output'}}\r\n  },\r\n  \"sourceCode\":  {{body 'sourceCode'}},\r\n  \"attributes\": {{body 'attributes'}},\r\n  \"created\": \"2024-02-15T09:50:48.565Z\",\r\n  \"modified\": \"2024-02-15T09:53:02.701Z\"\r\n}"
+    },
+    {
+      "uuid": "0f036bff-62fd-46b4-bcd0-91c2ebb8c8f8",
+      "id": "cagr",
+      "name": "Connector Rule After Put",
+      "documentation": "",
+      "value": "{\r\n  \"id\": \"randomId\",\r\n  \"name\": \"test\",\r\n  \"description\": \"test rule descriptionUpd\",\r\n  \"type\": \"BuildMap\",\r\n  \"signature\": {\r\n    \"input\": [\r\n      {\r\n        \"description\": \"First Name of identityUpd\",\r\n        \"name\": \"firstNameUpd\",\r\n        \"type\": \"Boolean\"\r\n      },\r\n      {\r\n        \"description\": \"Last Name of identityUpd\",\r\n        \"name\": \"lastNameUpd\",\r\n        \"type\": \"Boolean\"\r\n      }\r\n    ],\r\n    \"output\": {\r\n      \"description\": \"Full Name of identityUpd\",\r\n      \"name\": \"fullNameUpd\",\r\n      \"type\": \"Boolean\"\r\n    }\r\n  },\r\n  \"sourceCode\": {\r\n    \"script\": \"return firstNameUpd + \\\" \\\" + lastNameUpd;\",\r\n    \"version\": \"1.1\"\r\n  },\r\n  \"attributes\": {\r\n    \"attribute1\": \"no\",\r\n    \"attribute2\": \"yes\"\r\n  },\r\n  \"created\": \"2024-02-15T09:50:48.565Z\",\r\n  \"modified\": \"2024-02-15T09:53:02.701Z\"\r\n}"
+    },
+    {
+      "uuid": "9b36c165-1d75-4ed6-a66f-8d5c2460b39f",
+      "id": "bujc",
+      "name": "Workflow",
+      "documentation": "",
+      "value": "{\r\n  \"id\": \"workflowId\",\r\n  \"name\": \"{{body 'name'}}\",\r\n  \"description\": \"{{body 'description'}}\",\r\n  \"created\": \"2024-02-16T12:19:04.26101544Z\",\r\n  \"modified\": \"2024-02-16T12:19:30.783054232Z\",\r\n  \"modifiedBy\": {\r\n    \"type\": \"IDENTITY\",\r\n    \"id\": \"id\",\r\n    \"name\": \"name\"\r\n  },\r\n  \"definition\": {{body 'definition'}},\r\n  \"enabled\": {{body 'enabled'}},\r\n  \"executionCount\": 0,\r\n  \"failureCount\": 0,\r\n  \"creator\": {\r\n    \"type\": \"IDENTITY\",\r\n    \"id\": \"id\",\r\n    \"name\": \"name\"\r\n  },\r\n  \"owner\": {{body 'owner'}},\r\n  \"trigger\": {{body 'trigger'}}\r\n}"
+    },
+    {
+      "uuid": "76594130-5090-4449-9629-c4529c00f65f",
+      "id": "eajj",
+      "name": "Workflow Patch",
+      "documentation": "",
+      "value": "{\r\n  \"id\": \"workflowId\",\r\n  \"name\": \"{{body '0.value'}}\",\r\n  \"description\": \"{{body '1.value'}}\",\r\n  \"created\": \"2024-02-16T12:19:04.26101544Z\",\r\n  \"modified\": \"2024-02-16T12:19:30.783054232Z\",\r\n  \"modifiedBy\": {\r\n    \"type\": \"IDENTITY\",\r\n    \"id\": \"id\",\r\n    \"name\": \"name\"\r\n  },\r\n  \"definition\":{\r\n    \"start\": \"{{body '3.value'}}\",\r\n    \"steps\": {\r\n      \"End Step\": {\r\n        \"displayName\": \"\",\r\n        \"type\": \"success\"\r\n      },\r\n      \"Get List of Identities\": {\r\n        \"actionId\": \"sp:get-identities\",\r\n        \"attributes\": {\r\n          \"inputQuery\": \"*\",\r\n          \"searchBy\": \"searchQuery\"\r\n        },\r\n        \"displayName\": \"{{body '4.value'}}\",\r\n        \"nextStep\": \"End Step\",\r\n        \"type\": \"action\",\r\n        \"versionNumber\": \"2\"\r\n      }\r\n    }\r\n  },\r\n  \"enabled\": {{body '2.value'}},\r\n  \"executionCount\": 0,\r\n  \"failureCount\": 0,\r\n  \"creator\": {\r\n    \"type\": \"IDENTITY\",\r\n    \"id\": \"id\",\r\n    \"name\": \"name\"\r\n  },\r\n  \"owner\": {\r\n    \"id\": \"{{dataRaw 'bujc' 'owner.id'}}\",\r\n    \"name\": \"\",\r\n    \"type\": \"IDENTITY\"\r\n  },\r\n  \"trigger\": {\r\n    \"attributes\": {\r\n      \"cronString\": \"cron stringUpd\",\r\n      \"description\": \"descriptionUpd\",\r\n      \"filter.$\": \"filterUpd\",\r\n      \"id\": \"idn:identity-createdUpd\",\r\n      \"name\": \"nameUpd\"\r\n    },\r\n    \"type\": \"{{body '5.value'}}\"\r\n  }\r\n}"
+    },
+    {
+      "uuid": "2b456800-5ea5-4a6e-bc79-35bf4ff1906b",
+      "id": "tl3p",
+      "name": "Workflow After Patch",
+      "documentation": "",
+      "value": "{\r\n  \"id\": \"workflowId\",\r\n  \"name\": \"test workflowUpd\",\r\n  \"description\": \"test workflow from terraformUpd\",\r\n  \"created\": \"2024-02-16T12:19:04.26101544Z\",\r\n  \"modified\": \"2024-02-16T12:19:30.783054232Z\",\r\n  \"modifiedBy\": {\r\n    \"type\": \"IDENTITY\",\r\n    \"id\": \"id\",\r\n    \"name\": \"name\"\r\n  },\r\n  \"definition\": {\r\n    \"start\": \"Get List of IdentitiesUpd\",\r\n    \"steps\": {\r\n      \"End Step\": {\r\n        \"displayName\": \"\",\r\n        \"type\": \"success\"\r\n      },\r\n      \"Get List of Identities\": {\r\n        \"actionId\": \"sp:get-identities\",\r\n        \"attributes\": {\r\n          \"inputQuery\": \"*\",\r\n          \"searchBy\": \"searchQuery\"\r\n        },\r\n        \"displayName\": \"Get List of IdentitiesUpd\",\r\n        \"nextStep\": \"End Step\",\r\n        \"type\": \"action\",\r\n        \"versionNumber\": \"2\"\r\n      }\r\n    }\r\n  },\r\n  \"enabled\": true,\r\n  \"executionCount\": 0,\r\n  \"failureCount\": 0,\r\n  \"creator\": {\r\n    \"type\": \"IDENTITY\",\r\n    \"id\": \"id\",\r\n    \"name\": \"name\"\r\n  },\r\n  \"owner\": {\r\n    \"id\": \"ownerId\",\r\n    \"name\": \"\",\r\n    \"type\": \"IDENTITY\"\r\n  },\r\n  \"trigger\": {\r\n    \"attributes\": {\r\n      \"cronString\": \"cron stringUpd\",\r\n      \"description\": \"descriptionUpd\",\r\n      \"filter.$\": \"filterUpd\",\r\n      \"id\": \"idn:identity-createdUpd\",\r\n      \"name\": \"nameUpd\"\r\n    },\r\n    \"type\": \"EXTERNAL\"\r\n  }\r\n}"
+    }
+  ],
+  "callbacks": []
+}
