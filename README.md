@@ -1,9 +1,9 @@
-# Terraform Provider for Identity Now
+# IdentityNow Terraform Provider
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Build And Test](https://github.com/SwissRe/terraform-provider-identitynow/actions/workflows/build-and-test-go.yaml/badge.svg)](https://github.com/SwissRe/terraform-provider-identitynow/actions/workflows/build-and-test-go.yaml)
 
-Terraform provider is based on latest Terraform Plugin Framework and IdentityNow Go SDK
-* https://github.com/hashicorp/terraform-plugin-framework
-* https://github.com/sailpoint-oss/golang-sdk
 
+Terraform provider is based on latest [Terraform Plugin Framework](https://github.com/hashicorp/terraform-plugin-framework) and [IdentityNow Go SDK](https://github.com/sailpoint-oss/golang-sdk)
 
 ## Usage
 Include provider
@@ -37,6 +37,7 @@ List of implemented data sources:
 * Identity - `identitynow_identity`
 * Cluster - `identitynow_cluster`
 * Connector - `identitynow_connector`
+* Entitlement - `identitynow_entitlement`
 
 ### Supported Terraform Resources
 List of implemented resources:
@@ -44,7 +45,6 @@ List of implemented resources:
 * Transform - `identitynow_transform`
 * Source - `identitynow_source`
 * Source Schema - `identitynow_source_schema`
-* Source Aggregation Schedule - `identitynow_source_aggregation_schedule`
 * Identity Profile - `identitynow_identity_profile`
 * Lifecycle State - `identitynow_lifecycle_state`
 * Connector Rule - `identitynow_connector_rule`
@@ -57,10 +57,10 @@ https://stackoverflow.com/questions/75024670/how-can-i-create-an-attribute-in-my
 
 ## Local Development
 ### Install Go
-Download and install Go from https://go.dev/doc/install
+[Download](https://go.dev/doc/install) and install Go
 
 ### Install Terraform
-Download latest terraform (>= 1.7.2) from https://www.terraform.io/downloads and add it to the PATH.
+[Download](https://www.terraform.io/downloads) latest terraform (>= 1.7.2) and add it to the PATH.
 
 ### Configure Terraform Plugin Framework
 For local development follow up steps - https://developer.hashicorp.com/terraform/tutorials/providers-plugin-framework/providers-plugin-framework-provider#prepare-terraform-for-local-provider-install
@@ -92,11 +92,10 @@ go install .
 
 ## Integration Tests
 Terraform Plugin Framework supports integration tests - and it is recommended to use mock server for testing.
-For mocking IdentityNow API we have used Mockoon - https://mockoon.com/ which allows to create and run mock servers.
+For mocking IdentityNow API we have used [Mockoon](https://mockoon.com/) which allows to create and run mock servers.
 
 ### Mockoon Configuration
-1. Download and install Mockoon Desktop App
-   https://mockoon.com/download/ -> portable version
+1. [Download](https://mockoon.com/download/) and install Mockoon Desktop App (use portable version)
 2. Import `mock/identitynow_mockoon.json` configuration file
 
 ### Run Mockoon from Command Line

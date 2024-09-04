@@ -1,0 +1,62 @@
+---
+name: Build And Test
+
+permissions:
+  contents: read
+  pull-requests: write
+  checks: write
+
+on:
+  pull_request:
+    types: ['opened', 'synchronize']
+    paths:
+      - '.github/workflows/build-and-test-go.yaml'
+      - '**.go'
+
+concurrency:
+  group: 'build-go-${{ github.head_ref }}'
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build and Test Terraform Provider
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332  #4.1.7
+      - uses: actions/setup-go@0a12ed9d6a96ab950c8f026ed9f722fe0da7ef32  #5.0.2
+        with:
+          go-version-file: ./go.mod
+      - name: Install dependencies
+        run: |
+          go version
+          go install github.com/jstemmer/go-junit-report/v2@latest
+          go install github.com/axw/gocov/gocov@latest
+          go install github.com/AlekSi/gocov-xml@latest
+
+          chmod +x ./scripts/install_golangci-lint.sh
+          ./scripts/install_golangci-lint.sh -b $(go env GOPATH)/bin v1.56.2
+          golangci-lint --version
+      - name: Build
+        run: |
+          go clean -modcache
+          go mod tidy
+          go build -v ./...
+      - name: Run Code Quality Checks
+        run: |
+          golangci-lint run --timeout 10m
+      - name: Run Unit Tests
+        run: |
+          export TF_ACC=1
+          docker run --name idn-mock -d --mount type=bind,source=./mock/identitynow_mockoon.json,target=/data,readonly -p 3000:3000 mockoon/cli:latest -d data -p 3000
+          go test -v -coverprofile=coverage.txt -covermode count ./... > test_results.txt
+          cat test_results.txt
+          go-junit-report < test_results.txt > report.xml
+          docker stop idn-mock
+      - name: Publish Test Report
+        uses: mikepenz/action-junit-report@v4.3.1
+        if: success() || failure() # always run even if the previous step fails
+        with:
+          report_paths: ./report.xml
+          require_passed_tests: true
+          detailed_summary: true
+
