@@ -19,7 +19,7 @@ if [[ ! -f CHANGELOG.md ]]; then
   exit 2
 fi
 
-RELEASE="$(sed -r -n 's/^## v?([0-9.]+) \(Unreleased\)/\1/p' CHANGELOG.md)"
+RELEASE="$(sed -r -n 's/^## \[([0-9.]+)\] \(Unreleased\)/\1/p' CHANGELOG.md)"
 if [[ "${RELEASE}" == "" ]]; then
   echo "Error: could not determine next release in CHANGELOG.md" >&2
   exit 3
@@ -30,16 +30,14 @@ fi
 ( set -x; ${debug}git pull --rebase origin "${TRUNK})" )
 
 # Set the date for the latest release
-( set -x; ${debug}sed -r "s/^(## \[[0-9.]+\]) \(Unreleased\)/\1 (${DATE})/i" CHANGELOG.md )
+( set -x; ${debug}sed -r -i.bak "s/^(## \[[0-9.]+\]) \(Unreleased\)/\1 (${DATE})/i" CHANGELOG.md )
+
+${debug}rm CHANGELOG.md.bak
 
 echo "Preparing release v${RELEASE}..."
-
-(
-  set -x
-  ${debug}git checkout -b "release-prep/${RELEASE}"
-  ${debug}git add CHANGELOG.md
-  ${debug}git commit -m "Prepare release v${RELEASE}"
-  ${debug}git push origin"
-)
-
-
+echo "  - Creating release preparation branch 'release-prep/${RELEASE}'"
+${debug}git checkout -b "release-prep/${RELEASE}"
+echo "  - Commiting CHANGELOG.md"
+${debug}git commit CHANGELOG.md -m "Prepare release v${RELEASE}"
+echo "  - Pushing to origin"
+${debug}git push --set-upstream origin "release-prep/${RELEASE}"
