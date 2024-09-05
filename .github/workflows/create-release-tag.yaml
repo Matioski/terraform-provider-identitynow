@@ -25,7 +25,8 @@ jobs:
     steps:
       - name: Get branch name
         run: |
-          echo "TAG_NAME=${${{ github.event.pull_request.base.ref }}#release-prep/}" >> $GITHUB_ENV
+          branch_name="${{ github.event.pull_request.head.ref }}"
+          echo "TAG_NAME=${branch_name#release-prep/}" >> $GITHUB_ENV
       - name: Create tag
         uses: actions/github-script@v5
         with:
