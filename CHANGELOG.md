@@ -18,3 +18,4 @@ Initial version of IdentityNow Terraform Provider
   * `identitynow_source_schema` - manage Source Schema
   * `identitynow_transform` - manage Transform
   * `identitynow_workflow` - manage Workflow
+
