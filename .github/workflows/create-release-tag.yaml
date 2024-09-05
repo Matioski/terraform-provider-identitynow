@@ -1,0 +1,37 @@
+---
+name: Create Release Tag
+
+permissions:
+  contents: read
+  pull-requests: read
+
+on:
+  pull_request:
+    types: ['closed']
+    branches:
+      - 'release-prep/**'
+    paths:
+      - 'CHANGELOG.md'
+
+concurrency:
+  group: 'create-release-${{ github.head_ref }}'
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Create Release Tag
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get branch name
+        run: echo "BRANCH_NAME=${GITHUB_REF#refs/heads/release-prep/}" >> $GITHUB_ENV
+      - name: Create tag
+        uses: actions/github-script@v5
+        with:
+          script: |
+            echo "Creating tag v${{ env.BRANCH_NAME }}"
+            github.rest.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: 'refs/tags/v${{ env.BRANCH_NAME }}',
+              sha: context.sha
+            })

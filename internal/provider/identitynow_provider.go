@@ -20,7 +20,6 @@ import (
 	"terraform-provider-identitynow/internal/role"
 	"terraform-provider-identitynow/internal/sailpoint/custom"
 	"terraform-provider-identitynow/internal/source"
-	"terraform-provider-identitynow/internal/source_aggregation_schedule"
 	"terraform-provider-identitynow/internal/source_schema"
 	"terraform-provider-identitynow/internal/transform"
 	"terraform-provider-identitynow/internal/workflow"
@@ -203,7 +202,6 @@ func (p *identityNowProvider) Resources(_ context.Context) []func() resource.Res
 		source.NewSourceResource,
 		identity_profile.NewIdentityProfileResource,
 		source_schema.NewSourceSchemaResource,
-		source_aggregation_schedule.NewSourceAggregationScheduleResource,
 		lifecycle_state.NewLifecycleStateResource,
 		connector_rule.NewConnectorRuleResource,
 		workflow.NewWorkflowResource,
