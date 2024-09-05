@@ -32,9 +32,9 @@ jobs:
         with:
           github-token: ${{ github.token }}
           script: |
-            echo "Creating tag v${{ env.TAG_NAME }}"
             github.rest.git.createRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              ref: 'refs/tags/v${{ env.TAG_NAME }}'
+              ref: 'refs/tags/v${{ env.TAG_NAME }}',
+              sha: context.sha
             })
