@@ -9,7 +9,7 @@ on:
   pull_request:
     types: ['closed']
     branches:
-      - 'release-prep/**'
+      - 'main'
     paths:
       - 'CHANGELOG.md'
 
@@ -20,18 +20,20 @@ concurrency:
 jobs:
   build:
     name: Create Release Tag
+    if: github.event.pull_request.merged == true && startsWith(github.event.pull_request.head.ref, 'release-prep/')
     runs-on: ubuntu-latest
     steps:
       - name: Get branch name
-        run: echo "BRANCH_NAME=${GITHUB_REF#refs/heads/release-prep/}" >> $GITHUB_ENV
+        run: |
+          echo "TAG_NAME=${${{ github.event.pull_request.base.ref }}#release-prep/}" >> $GITHUB_ENV
       - name: Create tag
         uses: actions/github-script@v5
         with:
           script: |
-            echo "Creating tag v${{ env.BRANCH_NAME }}"
+            echo "Creating tag v${{ env.TAG_NAME }}"
             github.rest.git.createRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              ref: 'refs/tags/v${{ env.BRANCH_NAME }}',
+              ref: 'refs/tags/v${{ env.TAG_NAME }}',
               sha: context.sha
             })
