@@ -132,6 +132,6 @@ go run github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs
 
 # Release
 Add all release notes in `CHANGELOG.md` with new version number and date.
-Create new branch starting with `release-prep/vX.Y.Z` and create a pull request to `main` branch.
+Create new branch starting with `release-prep/X.Y.Z` and create a pull request to `main` branch.
 
 When Pull Request will be merged to `main` branch, then release process will start automatically.
