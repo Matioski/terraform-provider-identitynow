@@ -131,13 +131,7 @@ go run github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs
 
 
 # Release
-To release new version of the provider follow-up steps:
-* From `main` branch search for latest tag and increment it by 1
-```bash
-git tag
-git tag vX.Y.Z
-```
-* Push tag to the repository
-```bash
-git push origin vX.Y.Z
-```
+Add all release notes in `CHANGELOG.md` with new version number and date.
+Create new branch starting with `release-prep/vX.Y.Z` and create a pull request to `main` branch.
+
+When Pull Request will be merged to `main` branch, then release process will start automatically.

@@ -1,4 +1,4 @@
-## [0.1.0] (September 05, 2024)
+## [1.0.0] (October 03, 2024)
 Initial version of IdentityNow Terraform Provider
 
 
