@@ -32,8 +32,15 @@ jobs:
       - name: Install latest GPG
         run: |
           gpg --version
-          sudo apt-get update
-          sudo apt-get install -y gnupg
+          cd /tmp
+          wget https://gnupg.org/ftp/gcrypt/gnupg/gnupg-2.4.5.tar.bz2
+          bzip2 -d gnupg-2.4.5.tar.bz2
+          tar xvf gnupg-2.4.5.tar
+          cd gnupg-2.4.5
+          chmod +x configure
+          ./configure
+          make
+          ls -lart
           gpg --version
       - name: Import GPG key
         uses: crazy-max/ghaction-import-gpg@01dd5d3ca463c7f10f7f4f7b4f177225ac661ee4 # v6.1.0
