@@ -26,7 +26,6 @@ jobs:
 #          name: release-notes
 #          path: release-notes.txt
 #          retention-days: 1
-      - uses: olafurpg/setup-gpg@v3
       - uses: actions/setup-go@0a12ed9d6a96ab950c8f026ed9f722fe0da7ef32 # v5.0.2
         with:
           go-version-file: 'go.mod'
@@ -45,4 +44,4 @@ jobs:
           # GitHub sets the GITHUB_TOKEN secret automatically.
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GPG_FINGERPRINT: ${{ steps.import_gpg.outputs.fingerprint }}
-          GPG_TTY: tty
+#          GPG_TTY: tty
