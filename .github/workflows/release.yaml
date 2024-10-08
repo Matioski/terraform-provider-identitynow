@@ -20,7 +20,6 @@ jobs:
         run: |
           sed -n -e "1{/# /d;}" -e "2{/^$/d;}" -e "/# $(git describe --abbrev=0 --exclude="$(git describe --abbrev=0 --match='v*.*.*' --tags)" --match='v*.*.*' --tags | tr -d v)/q;p" CHANGELOG.md > /tmp/release-notes.txt
           cat /tmp/release-notes.txt
-          gpg --version
 #      - uses: actions/upload-artifact@v4
 #        with:
 #          name: release-notes
@@ -37,7 +36,13 @@ jobs:
           gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
           passphrase: ${{ secrets.GPG_PASSPHRASE }}
       - name: List Keys
-        run: gpg -K && gpg --version
+        run: |
+          gpg -K
+          gpg --version
+          touch /tmp/gpg.txt
+          gpg --batch --local-user $(GPG_FINGERPRINT) --output /tmp/gpg.encr --detach-sign /tmp/gpg.txt
+        env:
+          GPG_FINGERPRINT: ${{ steps.import_gpg.outputs.fingerprint }}
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@286f3b13b1b49da4ac219696163fb8c1c93e1200 # v6.0.0
         with:
