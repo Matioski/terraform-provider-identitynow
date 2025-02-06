@@ -4,6 +4,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"os"
+	"path/filepath"
+	"reflect"
+	"strings"
+	"terraform-provider-identitynow/internal/patch"
+	"terraform-provider-identitynow/internal/sailpoint/custom"
+	"terraform-provider-identitynow/internal/util"
+
 	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
@@ -23,13 +31,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	sailpoint "github.com/sailpoint-oss/golang-sdk/v2"
 	sailpoint_v3 "github.com/sailpoint-oss/golang-sdk/v2/api_v3"
-	"os"
-	"path/filepath"
-	"reflect"
-	"strings"
-	"terraform-provider-identitynow/internal/patch"
-	"terraform-provider-identitynow/internal/sailpoint/custom"
-	"terraform-provider-identitynow/internal/util"
 )
 
 // Implementation of IdentityNow Source CRUD - https://developer.sailpoint.com/idn/api/v3/create-source
@@ -73,13 +74,6 @@ func (r *sourceResource) Schema(ctx context.Context, req resource.SchemaRequest,
 		Attributes: map[string]schema.Attribute{
 			"id": schema.StringAttribute{
 				Computed: true,
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.UseStateForUnknown(),
-				},
-			},
-			"cloud_external_id": schema.StringAttribute{
-				Description: "Legacy Source ID for interacting with CC API",
-				Computed:    true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.UseStateForUnknown(),
 				},
@@ -249,8 +243,18 @@ func (r *sourceResource) Create(ctx context.Context, req resource.CreateRequest,
 		return
 	}
 
+	provisionAsCsv := false
+	if !util.IsNil(source.ConnectionType) {
+		provisionAsCsv = (*source.ConnectionType == "file")
+	}
+	if !util.IsNil(source.ConnectorName) {
+		provisionAsCsv = (*source.ConnectorName == "DelimitedFile") || (*source.ConnectorName == "Delimited File")
+	}
+	if !util.IsNil(source.Connector) {
+		provisionAsCsv = (source.Connector == "delimited-file-angularsc")
+	}
 	tflog.Info(ctx, fmt.Sprintf("Creating source '%s': %s", source.Name, util.PrettyPrint(source)))
-	sourceResponse, spResp, err := r.apiClient.V3.SourcesAPI.CreateSource(ctx).Source(source).Execute()
+	sourceResponse, spResp, err := r.apiClient.V3.SourcesAPI.CreateSource(ctx).Source(source).ProvisionAsCsv(provisionAsCsv).Execute()
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error Creating Source",
@@ -304,6 +308,10 @@ func (r *sourceResource) Read(ctx context.Context, req resource.ReadRequest, res
 	}
 
 	source, spResp, err := r.apiClient.V3.SourcesAPI.GetSource(ctx, state.Id.ValueString()).Execute()
+	if spResp.StatusCode == 404 {
+		resp.State.RemoveResource(ctx)
+		return
+	}
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error Reading Source",
@@ -587,9 +595,6 @@ func (r *sourceResource) mergeSlices(leftSlice, rightSlice []interface{}) []inte
 
 func (r *sourceResource) mapToTerraformModel(tfModel *sourceModel, source *sailpoint_v3.Source, diagnostics *diag.Diagnostics) {
 	tfModel.Id = types.StringPointerValue(source.Id)
-	if val, ok := source.ConnectorAttributes["cloudExternalId"]; ok {
-		tfModel.CloudExternalId = types.StringValue(val.(string))
-	}
 	if val, ok := source.ConnectorAttributes["connector_files"]; ok {
 		if strVal, ok := val.(string); ok {
 			files := strings.Split(strVal, ",")
@@ -682,7 +687,7 @@ func (r *sourceResource) generateJsonPatch(newModel *sailpoint_v3.Source, oldMod
 		)
 		return nil
 	}
-	v3JsonPatch, err := patch.ConvertFromBetaToV3(jsonPatch)
+	v3JsonPatch, err := patch.ConvertPatchOperationFromBetaToV3(jsonPatch)
 	if err != nil {
 		diagnostics.AddError(
 			"Error Generating Update Patch",

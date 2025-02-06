@@ -113,6 +113,10 @@ func (r *transformResource) Read(ctx context.Context, req resource.ReadRequest, 
 	}
 
 	transformRead, spResp, err := r.apiClient.V3.TransformsAPI.GetTransform(ctx, state.Id.ValueString()).Execute()
+	if spResp.StatusCode == 404 {
+		resp.State.RemoveResource(ctx)
+		return
+	}
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error Reading Transform",

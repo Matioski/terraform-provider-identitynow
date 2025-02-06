@@ -5,14 +5,16 @@ package provider
 import (
 	"context"
 	"fmt"
-	"github.com/hashicorp/terraform-plugin-framework/providerserver"
-	"github.com/hashicorp/terraform-plugin-go/tfprotov6"
-	sailpoint "github.com/sailpoint-oss/golang-sdk/v2"
-	sailpointBeta "github.com/sailpoint-oss/golang-sdk/v2/api_beta"
 	"os"
 	"strings"
 	"terraform-provider-identitynow/internal/util"
 	"time"
+
+	"github.com/sailpoint-oss/golang-sdk/v2/api_v2024"
+
+	"github.com/hashicorp/terraform-plugin-framework/providerserver"
+	"github.com/hashicorp/terraform-plugin-go/tfprotov6"
+	sailpoint "github.com/sailpoint-oss/golang-sdk/v2"
 )
 
 const (
@@ -29,6 +31,7 @@ provider "identitynow" {
 	updatedOwnerIdentityName  = "TODO"
 	updatedOwnerIdentityEmail = "TODO"
 	tenSeconds                = 10 * time.Second
+	defaultTimeZone           = "UTC"
 )
 
 var (
@@ -88,8 +91,8 @@ func checkForPendingCisTask(ctx context.Context) {
 	}
 }
 
-func getSources(limit int32, ctx context.Context) []sailpointBeta.Source {
-	sources, spResp, err := SPApiClient.Beta.SourcesAPI.ListSources(ctx).Limit(limit).Execute()
+func getSources(limit int32, filters string) []api_v2024.Source {
+	sources, spResp, err := SPApiClient.V2024.SourcesAPI.ListSources(context.Background()).Filters(filters).Limit(limit).Execute()
 	if err != nil {
 		fmt.Printf("Error fetching sources: %s\n%s\n", err, util.GetBody(spResp))
 	}
@@ -99,8 +102,8 @@ func getSources(limit int32, ctx context.Context) []sailpointBeta.Source {
 	return sources
 }
 
-func getAccessProfiles(limit int32, ctx context.Context) []sailpointBeta.AccessProfile {
-	accessProfiles, spResp, err := SPApiClient.Beta.AccessProfilesAPI.ListAccessProfiles(context.Background()).Limit(limit).Execute()
+func getAccessProfiles(limit int32) []api_v2024.AccessProfile {
+	accessProfiles, spResp, err := SPApiClient.V2024.AccessProfilesAPI.ListAccessProfiles(context.Background()).Limit(limit).Execute()
 	if err != nil {
 		fmt.Printf("Error fetching access profiles: %s\n%s", err, util.GetBody(spResp))
 	}
@@ -111,8 +114,8 @@ func getAccessProfiles(limit int32, ctx context.Context) []sailpointBeta.AccessP
 
 }
 
-func getManagedClusters(limit int32, ctx context.Context) []sailpointBeta.ManagedCluster {
-	managedClusters, spResp, err := SPApiClient.Beta.ManagedClustersAPI.GetManagedClusters(context.Background()).Limit(limit).Execute()
+func getManagedClusters(limit int32) []api_v2024.ManagedCluster {
+	managedClusters, spResp, err := SPApiClient.V2024.ManagedClustersAPI.GetManagedClusters(context.Background()).Limit(limit).Execute()
 	if err != nil {
 		fmt.Printf("Error fetching managed cluster(s): %s\n%s", err, util.GetBody(spResp))
 	}

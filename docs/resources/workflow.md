@@ -27,7 +27,7 @@ resource "identitynow_workflow" "test" {
         displayName   = "Get List of Identities"
         type          = "action"
         actionId      = "sp:get-identities"
-        versionNumber = "2"
+        versionNumber = 2
         attributes = {
           inputQuery = "*"
           searchBy   = "searchQuery"
@@ -100,6 +100,7 @@ Required:
 
 Optional:
 
+- `attribute_to_filter` (String) For events triggered by attribute changes, the name of the attribute that changed. EVENT trigger type
 - `cron_string` (String) A valid CRON expression. SCHEDULED trigger type
 - `description` (String) Additonal context about the external trigger. EXTERNAL trigger type
 - `filter` (String) JSON path expression that will limit which events the trigger will fire on. EVENT trigger type

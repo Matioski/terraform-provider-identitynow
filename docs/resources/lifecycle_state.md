@@ -18,6 +18,7 @@ resource "identitynow_lifecycle_state" "demo_active" {
   technical_name      = "active"
   identity_profile_id = "profileId"
   description         = "my test description"
+  identity_state      = "ACTIVE"
   enabled             = false
   email_notification_option = {
     notify_managers       = false
@@ -55,6 +56,7 @@ resource "identitynow_lifecycle_state" "demo_active" {
 - `account_actions` (Attributes List) This is used for representing email configuration for a lifecycle state (see [below for nested schema](#nestedatt--account_actions))
 - `description` (String) Lifecycle state description.
 - `email_notification_option` (Attributes) This is used for representing email configuration for a lifecycle state (see [below for nested schema](#nestedatt--email_notification_option))
+- `identity_state` (String) Identity state for this lifecycle state. Allowed values: ACTIVE, INACTIVE_SHORT_TERM, INACTIVE_LONG_TERM.
 
 ### Read-Only
 
@@ -66,7 +68,7 @@ resource "identitynow_lifecycle_state" "demo_active" {
 Required:
 
 - `action` (String) Describes if action will be enabled or disabled
-- `source_ids` (List of String) List of unique source IDs. The sources must have the ENABLE feature or flat file source. See "/sources" endpoint for source features
+- `source_ids` (Set of String) List of unique source IDs. The sources must have the ENABLE feature or flat file source. See "/sources" endpoint for source features
 
 
 <a id="nestedatt--email_notification_option"></a>

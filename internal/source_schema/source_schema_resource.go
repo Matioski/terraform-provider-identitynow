@@ -3,6 +3,9 @@ package source_schema
 import (
 	"context"
 	"fmt"
+	"terraform-provider-identitynow/internal/sailpoint/custom"
+	"terraform-provider-identitynow/internal/util"
+
 	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -13,8 +16,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	sailpoint "github.com/sailpoint-oss/golang-sdk/v2"
 	sailpointV3 "github.com/sailpoint-oss/golang-sdk/v2/api_v3"
-	"terraform-provider-identitynow/internal/sailpoint/custom"
-	"terraform-provider-identitynow/internal/util"
 )
 
 var (
@@ -188,7 +189,7 @@ func (r *sourceSchemaResource) Create(ctx context.Context, req resource.CreateRe
 }
 
 func (r *sourceSchemaResource) findSchema(ctx context.Context, sourceId, schemaName string, diagnostics *diag.Diagnostics) *sailpointV3.Schema {
-	schemas, spResp, err := r.apiClient.V3.SourcesAPI.ListSourceSchemas(ctx, sourceId).Execute()
+	schemas, spResp, err := r.apiClient.V3.SourcesAPI.GetSourceSchemas(ctx, sourceId).Execute()
 	if err != nil {
 		diagnostics.AddError(
 			"Error Creating Source Schema",
@@ -213,6 +214,10 @@ func (r *sourceSchemaResource) Read(ctx context.Context, req resource.ReadReques
 	sourceId := state.SourceId.ValueString()
 	schemaId := state.Id.ValueString()
 	schema, spResp, err := r.apiClient.V3.SourcesAPI.GetSourceSchema(ctx, sourceId, schemaId).Execute()
+	if spResp.StatusCode == 404 {
+		resp.State.RemoveResource(ctx)
+		return
+	}
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error Reading Source Schema",

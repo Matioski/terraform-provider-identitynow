@@ -175,6 +175,10 @@ func (r *identityProfileResource) Read(ctx context.Context, req resource.ReadReq
 	}
 
 	identityProfile, spResp, err := r.apiClient.Beta.IdentityProfilesAPI.GetIdentityProfile(ctx, state.Id.ValueString()).Execute()
+	if spResp.StatusCode == 404 {
+		resp.State.RemoveResource(ctx)
+		return
+	}
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error Reading Identity Profile",
@@ -220,7 +224,6 @@ func (r *identityProfileResource) Update(ctx context.Context, req resource.Updat
 		)
 		return
 	}
-	tflog.Info(ctx, fmt.Sprintf("Patch: %s", util.PrettyPrint(patchOperations)))
 	identityProfileResp, spResp, err := r.apiClient.Beta.IdentityProfilesAPI.UpdateIdentityProfile(ctx, plan.Id.ValueString()).JsonPatchOperation(patchOperations).Execute()
 	if err != nil {
 		resp.Diagnostics.AddError(
@@ -229,7 +232,6 @@ func (r *identityProfileResource) Update(ctx context.Context, req resource.Updat
 		)
 		return
 	}
-	tflog.Info(ctx, fmt.Sprintf("Updated Identity Profile: %s", util.PrettyPrint(identityProfileResp)))
 
 	r.mapToTerraformModel(&plan, identityProfileResp, &resp.Diagnostics)
 	if resp.Diagnostics.HasError() {

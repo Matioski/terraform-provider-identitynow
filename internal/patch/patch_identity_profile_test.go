@@ -4,8 +4,9 @@ package patch
 
 import (
 	"encoding/json"
-	sailpointBeta "github.com/sailpoint-oss/golang-sdk/v2/api_beta"
 	"testing"
+
+	sailpointBeta "github.com/sailpoint-oss/golang-sdk/v2/api_beta"
 )
 
 func IdentityProfile_MultipleAttributeAdd_ExpectedResult() []sailpointBeta.JsonPatchOperation {
@@ -18,67 +19,69 @@ func IdentityProfile_MultipleAttributeAdd_ExpectedResult() []sailpointBeta.JsonP
 			},
 		},
 	}
+	newOwner := map[string]interface{}{
+		"id": "newOwner",
+	}
+	newOwnerValue := sailpointBeta.MapmapOfStringAnyAsUpdateMultiHostSourcesRequestInnerValue(&newOwner)
+
+	idAttrsConfig := map[string]interface{}{
+		"enabled":             true,
+		"attributeTransforms": []interface{}{test},
+	}
+	idAttrsConfigValue := sailpointBeta.MapmapOfStringAnyAsUpdateMultiHostSourcesRequestInnerValue(&idAttrsConfig)
+
 	return []sailpointBeta.JsonPatchOperation{
 		{
 			Op:   "add",
 			Path: "/name",
-			Value: &sailpointBeta.JsonPatchOperationValue{
+			Value: &sailpointBeta.UpdateMultiHostSourcesRequestInnerValue{
 				String: sailpointBeta.PtrString("newName"),
 			},
 		},
 		{
 			Op:   "add",
 			Path: "/description",
-			Value: &sailpointBeta.JsonPatchOperationValue{
+			Value: &sailpointBeta.UpdateMultiHostSourcesRequestInnerValue{
 				String: sailpointBeta.PtrString("newDescription"),
 			},
 		},
 		{
-			Op:   "add",
-			Path: "/owner",
-			Value: &sailpointBeta.JsonPatchOperationValue{
-				MapmapOfStringinterface: &map[string]interface{}{
-					"id": "newOwner",
-				},
-			},
+			Op:    "add",
+			Path:  "/owner",
+			Value: &newOwnerValue,
 		},
 		{
 			Op:   "replace",
 			Path: "/authoritativeSource/id",
-			Value: &sailpointBeta.JsonPatchOperationValue{
+			Value: &sailpointBeta.UpdateMultiHostSourcesRequestInnerValue{
 				String: sailpointBeta.PtrString("newAuthoritativeSource"),
 			},
 		},
 		{
 			Op:   "add",
 			Path: "/priority",
-			Value: &sailpointBeta.JsonPatchOperationValue{
+			Value: &sailpointBeta.UpdateMultiHostSourcesRequestInnerValue{
 				Int32: sailpointBeta.PtrInt32(99),
 			},
 		},
 		{
 			Op:   "add",
 			Path: "/identityRefreshRequired",
-			Value: &sailpointBeta.JsonPatchOperationValue{
+			Value: &sailpointBeta.UpdateMultiHostSourcesRequestInnerValue{
 				Bool: sailpointBeta.PtrBool(true),
 			},
 		},
 		{
 			Op:   "add",
 			Path: "/hasTimeBasedAttr",
-			Value: &sailpointBeta.JsonPatchOperationValue{
+			Value: &sailpointBeta.UpdateMultiHostSourcesRequestInnerValue{
 				Bool: sailpointBeta.PtrBool(true),
 			},
 		},
 		{
-			Op:   "add",
-			Path: "/identityAttributeConfig",
-			Value: &sailpointBeta.JsonPatchOperationValue{
-				MapmapOfStringinterface: &map[string]interface{}{
-					"enabled":             true,
-					"attributeTransforms": []interface{}{test},
-				},
-			},
+			Op:    "add",
+			Path:  "/identityAttributeConfig",
+			Value: &idAttrsConfigValue,
 		},
 	}
 }
@@ -122,63 +125,63 @@ func IdentityProfile_MultipleAttributeReplace_ExpectedResult() []sailpointBeta.J
 		{
 			Op:   "replace",
 			Path: "/name",
-			Value: &sailpointBeta.JsonPatchOperationValue{
+			Value: &sailpointBeta.UpdateMultiHostSourcesRequestInnerValue{
 				String: sailpointBeta.PtrString("newName"),
 			},
 		},
 		{
 			Op:   "replace",
 			Path: "/description",
-			Value: &sailpointBeta.JsonPatchOperationValue{
+			Value: &sailpointBeta.UpdateMultiHostSourcesRequestInnerValue{
 				String: sailpointBeta.PtrString("newDescription"),
 			},
 		},
 		{
 			Op:   "replace",
 			Path: "/owner/id",
-			Value: &sailpointBeta.JsonPatchOperationValue{
+			Value: &sailpointBeta.UpdateMultiHostSourcesRequestInnerValue{
 				String: sailpointBeta.PtrString("newOwner"),
 			},
 		},
 		{
 			Op:   "replace",
 			Path: "/authoritativeSource/id",
-			Value: &sailpointBeta.JsonPatchOperationValue{
+			Value: &sailpointBeta.UpdateMultiHostSourcesRequestInnerValue{
 				String: sailpointBeta.PtrString("newAuthoritativeSource"),
 			},
 		},
 		{
 			Op:   "replace",
 			Path: "/priority",
-			Value: &sailpointBeta.JsonPatchOperationValue{
+			Value: &sailpointBeta.UpdateMultiHostSourcesRequestInnerValue{
 				Int32: sailpointBeta.PtrInt32(99),
 			},
 		},
 		{
 			Op:   "replace",
 			Path: "/identityRefreshRequired",
-			Value: &sailpointBeta.JsonPatchOperationValue{
+			Value: &sailpointBeta.UpdateMultiHostSourcesRequestInnerValue{
 				Bool: sailpointBeta.PtrBool(true),
 			},
 		},
 		{
 			Op:   "replace",
 			Path: "/hasTimeBasedAttr",
-			Value: &sailpointBeta.JsonPatchOperationValue{
+			Value: &sailpointBeta.UpdateMultiHostSourcesRequestInnerValue{
 				Bool: sailpointBeta.PtrBool(true),
 			},
 		},
 		{
 			Op:   "replace",
 			Path: "/identityAttributeConfig/enabled",
-			Value: &sailpointBeta.JsonPatchOperationValue{
+			Value: &sailpointBeta.UpdateMultiHostSourcesRequestInnerValue{
 				Bool: sailpointBeta.PtrBool(true),
 			},
 		},
 		{
 			Op:   "replace",
 			Path: "/identityAttributeConfig/attributeTransforms",
-			Value: &sailpointBeta.JsonPatchOperationValue{
+			Value: &sailpointBeta.UpdateMultiHostSourcesRequestInnerValue{
 				ArrayOfArrayInner: &attributeTransforms,
 			},
 		},
@@ -268,7 +271,7 @@ func IdentityProfile_MultipleAttributeRemove_ExpectedResult() []sailpointBeta.Js
 		{
 			Op:   "replace",
 			Path: "/identityAttributeConfig/attributeTransforms",
-			Value: &sailpointBeta.JsonPatchOperationValue{
+			Value: &sailpointBeta.UpdateMultiHostSourcesRequestInnerValue{
 				ArrayOfArrayInner: &attributeTransforms,
 			},
 		},

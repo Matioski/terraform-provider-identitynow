@@ -5,20 +5,23 @@ package provider
 import (
 	"context"
 	"fmt"
-	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
-	sailpointBeta "github.com/sailpoint-oss/golang-sdk/v2/api_beta"
+	"strconv"
 	"terraform-provider-identitynow/internal/util"
 	"testing"
+	"time"
+
+	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	sailpointBeta "github.com/sailpoint-oss/golang-sdk/v2/api_beta"
 )
 
 func TestIntegrationRole_CreateRoleAndUpdateMissingFields(t *testing.T) {
-	entitlements := getEntitlements(2, context.Background())
+	entitlements := getEntitlements(2)
 	entitlementOne := entitlements[0]
 	entitlementTwo := entitlements[1]
 
-	accessProfileOne := getAccessProfiles(1, context.Background())[0]
+	accessProfileOne := getAccessProfiles(1)[0]
 
-	segment := getSegments(1, context.Background())[0]
+	segment := getSegments(1)[0]
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: TestAccProtoV6ProviderFactories,
@@ -141,12 +144,12 @@ resource "identitynow_role" "test" {
 }
 
 func TestIntegrationRole_CreateRoleAndRemoveOptionalFields(t *testing.T) {
-	entitlements := getEntitlements(2, context.Background())
+	entitlements := getEntitlements(2)
 	entitlementOne := entitlements[0]
 	entitlementTwo := entitlements[1]
 
-	accessProfileOne := getAccessProfiles(1, context.Background())[0]
-	segment := getSegments(1, context.Background())[0]
+	accessProfileOne := getAccessProfiles(1)[0]
+	segment := getSegments(1)[0]
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: TestAccProtoV6ProviderFactories,
@@ -363,15 +366,15 @@ resource "identitynow_role" "test" {
 }
 
 func TestIntegrationRole_CreateRoleAndEditFields(t *testing.T) {
-	entitlements := getEntitlements(2, context.Background())
+	entitlements := getEntitlements(2)
 	entitlementOne := entitlements[0]
 	entitlementTwo := entitlements[1]
 
-	accessProfiles := getAccessProfiles(2, context.Background())
+	accessProfiles := getAccessProfiles(2)
 	accessProfileOne := accessProfiles[0]
 	accessProfileTwo := accessProfiles[1]
 
-	segments := getSegments(2, context.Background())
+	segments := getSegments(2)
 	segmentOne := segments[0]
 	segmentTwo := segments[1]
 
@@ -564,7 +567,7 @@ resource "identitynow_role" "test" {
 }
 
 func TestIntegrationRole_CreateRoleAndEditFields_TriggersRecreation(t *testing.T) {
-	entitlements := getEntitlements(2, context.Background())
+	entitlements := getEntitlements(2)
 	entitlementOne := entitlements[0]
 	entitlementTwo := entitlements[1]
 
@@ -706,7 +709,7 @@ resource "identitynow_role" "test" {
 	})
 }
 
-func getEntitlements(limit int32, ctx context.Context) []sailpointBeta.Entitlement {
+func getEntitlements(limit int32) []sailpointBeta.Entitlement {
 	entitlements, spResp, err := SPApiClient.Beta.EntitlementsAPI.ListEntitlements(context.Background()).Limit(limit).Execute()
 	if err != nil {
 		fmt.Printf("Error fetching entitlements: %s\n%s", err, util.GetBody(spResp))
@@ -717,7 +720,7 @@ func getEntitlements(limit int32, ctx context.Context) []sailpointBeta.Entitleme
 	return entitlements
 }
 
-func getSegments(limit int32, ctx context.Context) []sailpointBeta.Segment {
+func getSegments(limit int32) []sailpointBeta.Segment {
 	segments, spResp, err := SPApiClient.Beta.SegmentsAPI.ListSegments(context.Background()).Limit(limit).Execute()
 	if err != nil {
 		fmt.Printf("Error fetching segments: %s\n%s", err, util.GetBody(spResp))
@@ -726,4 +729,108 @@ func getSegments(limit int32, ctx context.Context) []sailpointBeta.Segment {
 		fmt.Printf("Unable to provide %d segments; %d found\n", limit, len(segments))
 	}
 	return segments
+}
+
+func TestIntegrationRole_CreateRoleWithStandardMembership(t *testing.T) {
+	unixTimeStamp := strconv.FormatInt(time.Now().UTC().UnixNano(), 10)
+	entitlements := getEntitlements(1)
+	entitlementOne := entitlements[0]
+
+	resource.Test(t, resource.TestCase{
+		ProtoV6ProviderFactories: TestAccProtoV6ProviderFactories,
+		Steps: []resource.TestStep{
+			// Create and Read testing. We just need to verify that we can create a role with standard membership
+			{
+				Config: providerIntegrationConfig + `
+resource "identitynow_role" "test" {
+  name        = "TestIntegrationRole_CreateRoleWithStandardMembership_` + unixTimeStamp + `"
+  owner = {
+    id   = "` + ownerIdentityId + `"
+    name = "` + ownerIdentityName + `"
+  }
+  entitlements = [
+    {
+        id = "` + *entitlementOne.Id + `"
+        name = "` + *entitlementOne.Name + `"
+        type = "ENTITLEMENT"
+    }
+  ]
+  access_profiles = []
+  membership = {
+    type = "STANDARD"
+    criteria = {
+      operation   = "AND"
+      key         = null
+      string_value = null
+      children = [
+        {
+          operation   = "OR"
+          key         = null
+          string_value = null
+          children = [
+            {
+              operation = "EQUALS"
+              key = {
+                type     = "IDENTITY"
+                property = "attribute.cloudLifecycleState"
+                sourceId = null
+              }
+              string_value = "Initiated"
+              children    = null
+            },
+            {
+              operation = "EQUALS"
+              key = {
+                type     = "IDENTITY"
+                property = "attribute.cloudLifecycleState"
+                sourceId = null
+              }
+              string_value = "Active"
+              children    = null
+            }
+          ]
+        },
+        {
+          operation   = "OR"
+          key         = null
+          string_value = null
+          children = [
+            {
+              operation = "EQUALS"
+              key = {
+                type     = "IDENTITY"
+                property = "attribute.type"
+                sourceId = null
+              }
+              string_value = "INTERNAL"
+              children    = null
+            },
+            {
+              operation = "EQUALS"
+              key = {
+                type     = "IDENTITY"
+                property = "attribute.type"
+                sourceId = null
+              }
+              string_value = "EXTERNAL"
+              children    = null
+            }
+          ]
+        }
+      ]
+    },
+    identities = null
+  }
+}
+`,
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckResourceAttrSet("identitynow_role.test", "id"),
+					resource.TestCheckResourceAttr("identitynow_role.test", "name", "TestIntegrationRole_CreateRoleWithStandardMembership_"+unixTimeStamp),
+					resource.TestCheckResourceAttr("identitynow_role.test", "owner.type", "IDENTITY"),
+					resource.TestCheckResourceAttr("identitynow_role.test", "owner.id", ownerIdentityId),
+					resource.TestCheckResourceAttr("identitynow_role.test", "owner.name", ownerIdentityName),
+				),
+			},
+		},
+	})
 }
