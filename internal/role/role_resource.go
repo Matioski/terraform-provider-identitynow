@@ -6,6 +6,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
+	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/boolplanmodifier"
@@ -26,6 +27,7 @@ import (
 var (
 	_ resource.Resource              = &roleResource{}
 	_ resource.ResourceWithConfigure = &roleResource{}
+	_ resource.ResourceWithImportState = &roleResource{}
 )
 
 func NewRoleResource() resource.Resource {
@@ -705,4 +707,10 @@ func (r *roleResource) generateJsonPatch(newModel *sailpoint_v3.Role, oldModel *
 		return nil
 	}
 	return v3JsonPatch
+}
+
+
+func (r *roleResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+    // Retrieve import ID and save to id attribute
+    resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
 }
