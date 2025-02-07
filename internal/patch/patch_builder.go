@@ -3,12 +3,13 @@ package patch
 import (
 	"encoding/json"
 	"fmt"
-	sailpointBeta "github.com/sailpoint-oss/golang-sdk/v2/api_beta"
 	"reflect"
 	"strconv"
 	"strings"
 	"terraform-provider-identitynow/internal/util"
 	"unsafe"
+
+	sailpointBeta "github.com/sailpoint-oss/golang-sdk/v2/api_beta"
 )
 
 const (
@@ -78,7 +79,7 @@ func (pb *abstractPatchBuilder) compareValue(modifiedVal, currentVal interface{}
 	modified := reflect.ValueOf(modifiedVal)
 	current := reflect.ValueOf(currentVal)
 	// the data structures must be identical
-	if modified.Kind() != current.Kind() {
+	if modifiedVal != nil && currentVal != nil && modified.Kind() != current.Kind() {
 		return fmt.Errorf("kind does not match at: %s modified: %s current: %s", path, modified.Kind(), current.Kind())
 	}
 	switch modified.Kind() {
@@ -93,7 +94,16 @@ func (pb *abstractPatchBuilder) compareValue(modifiedVal, currentVal interface{}
 		//case reflect.Interface:
 	//	return pb.processInterface(modified, current, pointer)
 	case reflect.String:
-		return pb.compareString(modified.String(), current.String(), path)
+		var modifiedString, currentString *string
+		if modifiedVal != nil {
+			val := modified.String()
+			modifiedString = &val
+		}
+		if currentVal != nil {
+			val := current.String()
+			currentString = &val
+		}
+		return pb.compareString(modifiedString, currentString, path)
 	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
 		return pb.compareInt64(modified.Int(), current.Int(), path)
 	case reflect.Bool:
@@ -101,6 +111,9 @@ func (pb *abstractPatchBuilder) compareValue(modifiedVal, currentVal interface{}
 	case reflect.Float32, reflect.Float64:
 		return pb.compareFloat64(modified.Float(), current.Float(), path)
 	case reflect.Invalid:
+		if modifiedVal == nil && currentVal != nil {
+			return pb.remove(path)
+		}
 		// undefined interfaces are ignored for now
 		return nil
 	default:
@@ -122,16 +135,16 @@ func (pb *abstractPatchBuilder) comparePointer(modified reflect.Value, current r
 	return nil
 }
 
-func (pb *abstractPatchBuilder) compareString(modified, current, path string) error {
-	if modified == current {
+func (pb *abstractPatchBuilder) compareString(modified, current *string, path string) error {
+	if modified == current || (modified != nil && current != nil && *modified == *current) {
 		return nil
 	}
-	if modified == "" {
+	if modified == nil || *modified == "" {
 		return pb.remove(path)
-	} else if current == "" {
-		return pb.add(modified, path)
+	} else if current == nil || *current == "" {
+		return pb.add(*modified, path)
 	} else {
-		return pb.replace(modified, path)
+		return pb.replace(*modified, path)
 	}
 }
 
@@ -228,6 +241,12 @@ func (pb *abstractPatchBuilder) compareBoolPointer(modified, current *bool, path
 }
 
 func (pb *abstractPatchBuilder) compareArray(modVal, curVal interface{}, path string) error {
+	if modVal == nil {
+		return pb.remove(path)
+	}
+	if curVal == nil {
+		return pb.add(modVal, path)
+	}
 	if !reflect.DeepEqual(modVal, curVal) {
 		return pb.replace(modVal, path)
 	}
@@ -377,8 +396,8 @@ func (pb *abstractPatchBuilder) replace(value any, path string) error {
 	return nil
 }
 
-func (pb *abstractPatchBuilder) valueToOperationValue(value any, path string) (sailpointBeta.JsonPatchOperationValue, error) {
-	var opValue sailpointBeta.JsonPatchOperationValue
+func (pb *abstractPatchBuilder) valueToOperationValue(value any, path string) (sailpointBeta.UpdateMultiHostSourcesRequestInnerValue, error) {
+	var opValue sailpointBeta.UpdateMultiHostSourcesRequestInnerValue
 	ref := reflect.ValueOf(value)
 	if ref.Kind() == reflect.Ptr {
 		ref = ref.Elem()
@@ -386,44 +405,44 @@ func (pb *abstractPatchBuilder) valueToOperationValue(value any, path string) (s
 	switch ref.Kind() {
 	case reflect.String:
 		v := value.(string)
-		opValue = sailpointBeta.StringAsJsonPatchOperationValue(&v)
+		opValue = sailpointBeta.StringAsUpdateMultiHostSourcesRequestInnerValue(&v)
 	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
 		v := int32(ref.Int())
-		opValue = sailpointBeta.Int32AsJsonPatchOperationValue(&v)
+		opValue = sailpointBeta.Int32AsUpdateMultiHostSourcesRequestInnerValue(&v)
 	case reflect.Float32, reflect.Float64:
 		// Patch operation does not support Float, so converting to String
 		v := strconv.FormatFloat(ref.Float(), 'f', -1, 64)
-		opValue = sailpointBeta.StringAsJsonPatchOperationValue(&v)
+		opValue = sailpointBeta.StringAsUpdateMultiHostSourcesRequestInnerValue(&v)
 	case reflect.Bool:
 		v := value.(bool)
-		opValue = sailpointBeta.BoolAsJsonPatchOperationValue(&v)
+		opValue = sailpointBeta.BoolAsUpdateMultiHostSourcesRequestInnerValue(&v)
 	case reflect.Map:
 		v := value.(map[string]interface{})
-		opValue = sailpointBeta.MapmapOfStringinterfaceAsJsonPatchOperationValue(&v)
+		opValue = sailpointBeta.MapmapOfStringAnyAsUpdateMultiHostSourcesRequestInnerValue(&v)
 	case reflect.Array, reflect.Slice:
 		jsonBytes, err := json.Marshal(value)
 		if err != nil {
-			return sailpointBeta.JsonPatchOperationValue{}, err
+			return sailpointBeta.UpdateMultiHostSourcesRequestInnerValue{}, err
 		}
 		var inner []sailpointBeta.ArrayInner
 		err = json.Unmarshal(jsonBytes, &inner)
 		if err != nil {
-			return sailpointBeta.JsonPatchOperationValue{}, err
+			return sailpointBeta.UpdateMultiHostSourcesRequestInnerValue{}, err
 		}
-		opValue = sailpointBeta.ArrayOfArrayInnerAsJsonPatchOperationValue(&inner)
+		opValue = sailpointBeta.ArrayOfArrayInnerAsUpdateMultiHostSourcesRequestInnerValue(&inner)
 	case reflect.Struct:
 		jsonBytes, err := json.Marshal(value)
 		if err != nil {
-			return sailpointBeta.JsonPatchOperationValue{}, err
+			return sailpointBeta.UpdateMultiHostSourcesRequestInnerValue{}, err
 		}
 		var inner map[string]interface{}
 		err = json.Unmarshal(jsonBytes, &inner)
 		if err != nil {
-			return sailpointBeta.JsonPatchOperationValue{}, err
+			return sailpointBeta.UpdateMultiHostSourcesRequestInnerValue{}, err
 		}
-		opValue = sailpointBeta.MapmapOfStringinterfaceAsJsonPatchOperationValue(&inner)
+		opValue = sailpointBeta.MapmapOfStringAnyAsUpdateMultiHostSourcesRequestInnerValue(&inner)
 	default:
-		return sailpointBeta.JsonPatchOperationValue{}, fmt.Errorf("valueToOperationValue unsupported kind: %s at: %s", ref.Kind(), path)
+		return sailpointBeta.UpdateMultiHostSourcesRequestInnerValue{}, fmt.Errorf("valueToOperationValue unsupported kind: %s at: %s", ref.Kind(), path)
 	}
 	return opValue, nil
 }

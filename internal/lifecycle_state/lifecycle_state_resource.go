@@ -3,6 +3,10 @@ package lifecycle_state
 import (
 	"context"
 	"fmt"
+	"terraform-provider-identitynow/internal/patch"
+	"terraform-provider-identitynow/internal/sailpoint/custom"
+	"terraform-provider-identitynow/internal/util"
+
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
@@ -17,9 +21,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	sailpoint "github.com/sailpoint-oss/golang-sdk/v2"
 	sailpointV3 "github.com/sailpoint-oss/golang-sdk/v2/api_v3"
-	"terraform-provider-identitynow/internal/patch"
-	"terraform-provider-identitynow/internal/sailpoint/custom"
-	"terraform-provider-identitynow/internal/util"
 )
 
 var (
@@ -134,7 +135,7 @@ func (r *lifeCycleResource) Schema(_ context.Context, _ resource.SchemaRequest, 
 								stringvalidator.OneOf("ENABLE", "DISABLE"),
 							},
 						},
-						"source_ids": schema.ListAttribute{
+						"source_ids": schema.SetAttribute{
 							Description: "List of unique source IDs. The sources must have the ENABLE feature or flat file source. See \"/sources\" endpoint for source features",
 							Required:    true,
 							ElementType: types.StringType,
@@ -149,77 +150,86 @@ func (r *lifeCycleResource) Schema(_ context.Context, _ resource.SchemaRequest, 
 				ElementType: types.StringType,
 				Default:     listdefault.StaticValue(types.ListValueMust(types.StringType, []attr.Value{})),
 			},
+			"identity_state": schema.StringAttribute{
+				Description: "Identity state for this lifecycle state. Allowed values: ACTIVE, INACTIVE_SHORT_TERM, INACTIVE_LONG_TERM.",
+				Optional:    true,
+				Validators: []validator.String{
+					stringvalidator.OneOf("ACTIVE", "INACTIVE_SHORT_TERM", "INACTIVE_LONG_TERM"),
+				},
+			},
 		},
 	}
 }
 
 func (r *lifeCycleResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	diagnostics := resp.Diagnostics
 	var plan lifecycleStateModel
-	diagnostics.Append(req.Plan.Get(ctx, &plan)...)
-	if diagnostics.HasError() {
-		return
-	}
-	lifecycleState := r.convertToAPIModel(&plan, &diagnostics)
-	tflog.Info(ctx, fmt.Sprintf("Creating LifeCycle State: %s", util.PrettyPrint(lifecycleState)))
-	if diagnostics.HasError() {
+	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
+	if resp.Diagnostics.HasError() {
 		return
 	}
 	identityProfileId := plan.IdentityProfileId.ValueString()
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
-	existing := r.findExisting(ctx, &plan, &diagnostics)
+	existing := r.findExisting(ctx, &plan, &resp.Diagnostics)
 	if existing == nil {
+		lifecycleState := r.convertToAPIModel(&plan, &resp.Diagnostics, true)
+		tflog.Info(ctx, fmt.Sprintf("Creating LifeCycle State in Identity Profile '%s': %s", identityProfileId, util.PrettyPrint(lifecycleState)))
 		lifecycleStateResp, spResp, err := r.apiClient.V3.LifecycleStatesAPI.CreateLifecycleState(ctx, identityProfileId).LifecycleState(lifecycleState).Execute()
 		if err != nil {
-			diagnostics.AddError(
+			resp.Diagnostics.AddError(
 				"Error Creating Lifecycle State",
 				"Could not create Lifecycle State '"+plan.Name.ValueString()+"': "+err.Error()+"\n"+util.GetBody(spResp),
 			)
 			return
 		}
-		r.mapToTerraformModel(&plan, lifecycleStateResp, &diagnostics)
-	} else {
-		if diagnostics.HasError() {
-			return
-		}
-		jsonPatch, err := patch.NewLifecycleStatePatchBuilder(&lifecycleState, existing).GenerateJsonPatch()
-		if err != nil {
-			diagnostics.AddError(
-				"Error Generating Update Patch",
-				"Could not generate update patch for Lifecycle State '"+plan.Name.ValueString()+"': "+err.Error(),
-			)
-			return
-		}
-		v3JsonPatch, err := patch.ConvertFromBetaToV3(jsonPatch)
-		if err != nil {
-			diagnostics.AddError(
-				"Error Generating Update Patch",
-				"Could not convert patch to V3 for Lifecycle State '"+plan.Name.ValueString()+"': "+err.Error(),
-			)
-			return
-		}
+		existing = lifecycleStateResp
+	}
+
+	lifecycleState := r.convertToAPIModel(&plan, &resp.Diagnostics, false)
+	jsonPatch, err := patch.NewLifecycleStatePatchBuilder(&lifecycleState, existing).GenerateJsonPatch()
+	if err != nil {
+		resp.Diagnostics.AddError(
+			"Error Generating Update Patch",
+			"Could not generate update patch for Lifecycle State '"+plan.Name.ValueString()+"': "+err.Error(),
+		)
+		return
+	}
+	v3JsonPatch, err := patch.ConvertPatchOperationFromBetaToV3(jsonPatch)
+	if err != nil {
+		resp.Diagnostics.AddError(
+			"Error Generating Update Patch",
+			"Could not convert patch to V3 for Lifecycle State '"+plan.Name.ValueString()+"': "+err.Error(),
+		)
+		return
+	}
+	if len(v3JsonPatch) > 0 {
+		tflog.Info(ctx, fmt.Sprintf("Updating LifeCycle State '%s': %s", existing.Name, util.PrettyPrint(v3JsonPatch)))
 		lifecycleStateResp, spResp, err := r.apiClient.V3.LifecycleStatesAPI.UpdateLifecycleStates(ctx, plan.IdentityProfileId.ValueString(), *existing.Id).JsonPatchOperation(v3JsonPatch).Execute()
 		if err != nil {
-			diagnostics.AddError(
+			resp.Diagnostics.AddError(
 				"Error Updating Lifecycle State",
 				"Could not update Lifecycle State '"+plan.Name.ValueString()+"': "+err.Error()+"\n"+util.GetBody(spResp),
 			)
 			return
 		}
-		r.mapToTerraformModel(&plan, lifecycleStateResp, &diagnostics)
+		existing = lifecycleStateResp
 	}
 
-	if diagnostics.HasError() {
+	r.mapToTerraformModel(&plan, existing, &resp.Diagnostics)
+
+	if resp.Diagnostics.HasError() {
 		return
 	}
 
 	// Set state to fully populated data
-	diagnostics.Append(resp.State.Set(ctx, plan)...)
+	resp.Diagnostics.Append(resp.State.Set(ctx, plan)...)
 }
 
 func (r *lifeCycleResource) findExisting(ctx context.Context, plan *lifecycleStateModel, diagnostics *diag.Diagnostics) *sailpointV3.LifecycleState {
 	identityProfileId := plan.IdentityProfileId.ValueString()
-	lifecycleStateResp, spResp, err := r.apiClient.V3.LifecycleStatesAPI.ListLifecycleStates(ctx, identityProfileId).Execute()
+	lifecycleStateResp, spResp, err := r.apiClient.V3.LifecycleStatesAPI.GetLifecycleStates(ctx, identityProfileId).Execute()
 	if err != nil {
 		diagnostics.AddError(
 			"Error Creating Lifecycle State",
@@ -243,6 +253,10 @@ func (r *lifeCycleResource) Read(ctx context.Context, req resource.ReadRequest, 
 	}
 
 	lifecycleState, spResp, err := r.apiClient.V3.LifecycleStatesAPI.GetLifecycleState(ctx, state.IdentityProfileId.ValueString(), state.Id.ValueString()).Execute()
+	if spResp.StatusCode == 404 {
+		resp.State.RemoveResource(ctx)
+		return
+	}
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error Reading Lifecycle State",
@@ -262,32 +276,31 @@ func (r *lifeCycleResource) Read(ctx context.Context, req resource.ReadRequest, 
 
 func (r *lifeCycleResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
 	var plan, state lifecycleStateModel
-	diagnostics := resp.Diagnostics
-	diagnostics.Append(req.Plan.Get(ctx, &plan)...)
-	diagnostics.Append(req.State.Get(ctx, &state)...)
-	if diagnostics.HasError() {
+	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
+	resp.Diagnostics.Append(req.State.Get(ctx, &state)...)
+	if resp.Diagnostics.HasError() {
 		return
 	}
 
-	newModel := r.convertToAPIModel(&plan, &diagnostics)
-	if diagnostics.HasError() {
+	newModel := r.convertToAPIModel(&plan, &resp.Diagnostics, false)
+	if resp.Diagnostics.HasError() {
 		return
 	}
-	oldModel := r.convertToAPIModel(&state, &diagnostics)
-	if diagnostics.HasError() {
+	oldModel := r.convertToAPIModel(&state, &resp.Diagnostics, false)
+	if resp.Diagnostics.HasError() {
 		return
 	}
 	jsonPatch, err := patch.NewLifecycleStatePatchBuilder(&newModel, &oldModel).GenerateJsonPatch()
 	if err != nil {
-		diagnostics.AddError(
+		resp.Diagnostics.AddError(
 			"Error Generating Update Patch",
 			"Could not generate update patch for Lifecycle State '"+plan.Name.ValueString()+"': "+err.Error(),
 		)
 		return
 	}
-	v3JsonPatch, err := patch.ConvertFromBetaToV3(jsonPatch)
+	v3JsonPatch, err := patch.ConvertPatchOperationFromBetaToV3(jsonPatch)
 	if err != nil {
-		diagnostics.AddError(
+		resp.Diagnostics.AddError(
 			"Error Generating Update Patch",
 			"Could not convert patch to V3 for Lifecycle State '"+plan.Name.ValueString()+"': "+err.Error(),
 		)
@@ -296,20 +309,20 @@ func (r *lifeCycleResource) Update(ctx context.Context, req resource.UpdateReque
 	tflog.Info(ctx, fmt.Sprintf("Updating LifeCycle State '%s': %s", state.Name.ValueString(), util.PrettyPrint(v3JsonPatch)))
 	lifecycleStateResp, spResp, err := r.apiClient.V3.LifecycleStatesAPI.UpdateLifecycleStates(ctx, state.IdentityProfileId.ValueString(), state.Id.ValueString()).JsonPatchOperation(v3JsonPatch).Execute()
 	if err != nil {
-		diagnostics.AddError(
+		resp.Diagnostics.AddError(
 			"Error Updating Lifecycle State",
 			"Could not update Lifecycle State '"+plan.Name.ValueString()+"': "+err.Error()+"\n"+util.GetBody(spResp),
 		)
 		return
 	}
 
-	r.mapToTerraformModel(&plan, lifecycleStateResp, &diagnostics)
-	if diagnostics.HasError() {
+	r.mapToTerraformModel(&plan, lifecycleStateResp, &resp.Diagnostics)
+	if resp.Diagnostics.HasError() {
 		return
 	}
 
 	// Set refreshed state
-	diagnostics.Append(resp.State.Set(ctx, &plan)...)
+	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
 }
 
 func (r *lifeCycleResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
@@ -329,7 +342,7 @@ func (r *lifeCycleResource) Delete(ctx context.Context, req resource.DeleteReque
 	}
 }
 
-func (r *lifeCycleResource) convertToAPIModel(model *lifecycleStateModel, _ *diag.Diagnostics) sailpointV3.LifecycleState {
+func (r *lifeCycleResource) convertToAPIModel(model *lifecycleStateModel, _ *diag.Diagnostics, isCreateOperation bool) sailpointV3.LifecycleState {
 	var emailNotificationOption *sailpointV3.EmailNotificationOption
 	if model.EmailNotificationOption != nil {
 		emailAddressList := make([]string, len(model.EmailNotificationOption.EmailAddressList))
@@ -344,7 +357,8 @@ func (r *lifeCycleResource) convertToAPIModel(model *lifecycleStateModel, _ *dia
 		}
 	}
 	var accountActions []sailpointV3.AccountAction
-	if model.AccountActions != nil {
+	// API fails when accountActions is not empty. Account Actions must be set only during modification (patch).
+	if !isCreateOperation && model.AccountActions != nil {
 		accountActions = make([]sailpointV3.AccountAction, len(model.AccountActions))
 		for i, v := range model.AccountActions {
 			sourceIds := make([]string, len(v.SourceIds))
@@ -372,6 +386,7 @@ func (r *lifeCycleResource) convertToAPIModel(model *lifecycleStateModel, _ *dia
 		EmailNotificationOption: emailNotificationOption,
 		AccountActions:          accountActions,
 		AccessProfileIds:        accessProfileIds,
+		IdentityState:           *sailpointV3.NewNullableString(model.IdentityState.ValueStringPointer()),
 	}
 }
 
@@ -392,7 +407,7 @@ func (r *lifeCycleResource) mapToTerraformModel(model *lifecycleStateModel, life
 			model.EmailNotificationOption.EmailAddressList[i] = types.StringValue(v)
 		}
 	}
-	if lifecycleState.AccountActions != nil && len(lifecycleState.AccountActions) > 0 {
+	if len(lifecycleState.AccountActions) > 0 {
 		model.AccountActions = make([]accountAction, len(lifecycleState.AccountActions))
 		for i, v := range lifecycleState.AccountActions {
 			model.AccountActions[i] = accountAction{
@@ -404,10 +419,12 @@ func (r *lifeCycleResource) mapToTerraformModel(model *lifecycleStateModel, life
 			}
 		}
 	}
-	if lifecycleState.AccessProfileIds != nil && len(lifecycleState.AccessProfileIds) > 0 {
+	if len(lifecycleState.AccessProfileIds) > 0 {
 		model.AccessProfileIds = make([]types.String, len(lifecycleState.AccessProfileIds))
 		for i, v := range lifecycleState.AccessProfileIds {
 			model.AccessProfileIds[i] = types.StringValue(v)
 		}
 	}
+	model.IdentityState = types.StringPointerValue(lifecycleState.IdentityState.Get())
+
 }

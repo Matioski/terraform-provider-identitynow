@@ -3,14 +3,13 @@
 package provider
 
 import (
-	"context"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"testing"
 )
 
 func TestIntegration_SourceAggregationScheduleResource_AccountToEntitlement(t *testing.T) {
 	t.Skip("aggregation API was disabled by SailPoint")
-	sourceCloud := getSources(1, context.Background())[0].ConnectorAttributes["cloudExternalId"].(string)
+	sourceCloud := getSources(1, "")[0].ConnectorAttributes["cloudExternalId"].(string)
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: TestAccProtoV6ProviderFactories,
@@ -51,7 +50,7 @@ resource "identitynow_source_aggregation_schedule" "test_account_schedule" {
 
 func TestIntegration_SourceAggregationScheduleResource_EntitlementToAccount(t *testing.T) {
 	t.Skip("aggregation API was disabled by SailPoint")
-	sourceCloud := getSources(1, context.Background())[0].ConnectorAttributes["cloudExternalId"].(string)
+	sourceCloud := getSources(1, "")[0].ConnectorAttributes["cloudExternalId"].(string)
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: TestAccProtoV6ProviderFactories,
@@ -93,7 +92,7 @@ resource "identitynow_source_aggregation_schedule" "test_account_schedule" {
 
 func TestIntegration_SourceAggregationScheduleResource_AccountSourceAndCronUpdate(t *testing.T) {
 	t.Skip("aggregation API was disabled by SailPoint")
-	sourceCloud := getSources(2, context.Background())
+	sourceCloud := getSources(2, "")
 	originalSourceCloudId := sourceCloud[0].ConnectorAttributes["cloudExternalId"].(string)
 	updatedSourceCloudId := sourceCloud[1].ConnectorAttributes["cloudExternalId"].(string)
 
@@ -137,7 +136,7 @@ resource "identitynow_source_aggregation_schedule" "test_account_schedule" {
 
 func TestIntegration_SourceAggregationScheduleResource_EntitlementSourceAndCronUpdate(t *testing.T) {
 	t.Skip("aggregation API was disabled by SailPoint")
-	sourceCloud := getSources(2, context.Background())
+	sourceCloud := getSources(2, "")
 	originalSourceCloudId := sourceCloud[0].ConnectorAttributes["cloudExternalId"].(string)
 	updatedSourceCloudId := sourceCloud[1].ConnectorAttributes["cloudExternalId"].(string)
 

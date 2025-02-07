@@ -3,8 +3,9 @@ package util
 import (
 	"context"
 	"fmt"
-	sailpoint "github.com/sailpoint-oss/golang-sdk/v2"
 	"time"
+
+	sailpoint "github.com/sailpoint-oss/golang-sdk/v2"
 )
 
 func WaitUntilCompletedOrFailAfter(ctx context.Context, apiClient *sailpoint.APIClient, taskId string, maxWaitTimeSec int64) error {
@@ -14,7 +15,7 @@ func WaitUntilCompletedOrFailAfter(ctx context.Context, apiClient *sailpoint.API
 		status, _, _ := apiClient.Beta.TaskManagementAPI.GetTaskStatus(ctx, taskId).Execute()
 		if status != nil {
 			lastResponse = PrettyPrint(status)
-			if status.CompletionStatus == "SUCCESS" {
+			if status.CompletionStatus.IsSet() && status.CompletionStatus.Get() != nil && *status.CompletionStatus.Get() == "SUCCESS" {
 				return nil
 			}
 		}

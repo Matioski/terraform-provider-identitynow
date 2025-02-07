@@ -3,9 +3,10 @@
 package provider
 
 import (
+	"os"
+
 	"github.com/hashicorp/terraform-plugin-framework/providerserver"
 	"github.com/hashicorp/terraform-plugin-go/tfprotov6"
-	"os"
 )
 
 const (

@@ -30,5 +30,6 @@ func (pb *LifecycleStatePatchBuilder) defineValuesToCompare() {
 		{modifiedVal: pb.modified.EmailNotificationOption, currentVal: pb.current.EmailNotificationOption, path: "/emailNotificationOption"},
 		{modifiedVal: pb.modified.AccountActions, currentVal: pb.current.AccountActions, path: "/accountActions"},
 		{modifiedVal: pb.modified.AccessProfileIds, currentVal: pb.current.AccessProfileIds, path: "/accessProfileIds"},
+		{modifiedVal: pb.modified.IdentityState, currentVal: pb.current.IdentityState, path: "/identityState"},
 	}
 }
