@@ -10,7 +10,7 @@ import (
 
 func TestIntegration_SourceSchemaResource_AddNew(t *testing.T) {
 	checkForPendingCisTask(context.Background())
-	sourceCloudId := *getSources(1, context.Background())[0].Id
+	sourceCloudId := *getSources(1, "")[0].Id
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: TestAccProtoV6ProviderFactories,

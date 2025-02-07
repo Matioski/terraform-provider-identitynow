@@ -133,6 +133,10 @@ func (r *sourceAggregationScheduleResource) Read(ctx context.Context, req resour
 		)
 		return
 	}
+	if spResp.StatusCode == 404 {
+		resp.State.RemoveResource(ctx)
+		return
+	}
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error Reading Source Aggregation Schedule",

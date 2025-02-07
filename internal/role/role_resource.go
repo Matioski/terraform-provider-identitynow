@@ -3,6 +3,10 @@ package role
 import (
 	"context"
 	"fmt"
+	"terraform-provider-identitynow/internal/patch"
+	"terraform-provider-identitynow/internal/sailpoint/custom"
+	"terraform-provider-identitynow/internal/util"
+
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
@@ -19,9 +23,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	sailpoint "github.com/sailpoint-oss/golang-sdk/v2"
 	sailpoint_v3 "github.com/sailpoint-oss/golang-sdk/v2/api_v3"
-	"terraform-provider-identitynow/internal/patch"
-	"terraform-provider-identitynow/internal/sailpoint/custom"
-	"terraform-provider-identitynow/internal/util"
 )
 
 var (
@@ -182,11 +183,59 @@ func (r *roleResource) Schema(_ context.Context, _ resource.SchemaRequest, resp 
 												"Otherwise, specifying it is an error.",
 											Optional: true,
 										},
+										"children": schema.ListNestedAttribute{
+											Description: "Array of child criteria. Required if the operation is AND or OR, otherwise it must be left null. " +
+												"A maximum of three levels of criteria are supported, including leaf nodes. " +
+												"Additionally, AND nodes can only be children or OR nodes and vice-versa.",
+											Optional: true,
+											NestedObject: schema.NestedAttributeObject{
+												Attributes: map[string]schema.Attribute{
+													"operation": schema.StringAttribute{
+														Description: "An operation",
+														Required:    true,
+														Validators: []validator.String{
+															stringvalidator.OneOf("EQUALS", "NOT_EQUALS", "CONTAINS", "STARTS_WITH", "ENDS_WITH", "AND", "OR"),
+														},
+													},
+													"key": schema.SingleNestedAttribute{
+														Description: "Refers to a specific Identity attribute, Account attribute, or Entitlement used in Role membership criteria",
+														Optional:    true,
+														Attributes: map[string]schema.Attribute{
+															"type": schema.StringAttribute{
+																Description: "Indicates whether the associated criteria represents an expression" +
+																	" on identity attributes, account attributes, or entitlements, respectively.",
+																Required: true,
+																Validators: []validator.String{
+																	stringvalidator.OneOf("IDENTITY", "ACCOUNT", "ENTITLEMENT"),
+																},
+															},
+															"property": schema.StringAttribute{
+																Description: "The name of the attribute or entitlement to which the associated criteria applies.",
+																Required:    true,
+															},
+															"source_id": schema.StringAttribute{
+																Description: "ID of the Source from which an account attribute or entitlement is drawn." +
+																	" Required if type is ACCOUNT or ENTITLEMENT",
+																Optional: true,
+															},
+														},
+													},
+													"string_value": schema.StringAttribute{
+														Description: "String value to test the Identity attribute, Account attribute, or Entitlement specified " +
+															"in the key w/r/t the specified operation. If this criteria is a leaf node, that is, if the operation" +
+															" is one of EQUALS, NOT_EQUALS, CONTAINS, STARTS_WITH, or ENDS_WITH, this field is required. " +
+															"Otherwise, specifying it is an error.",
+														Optional: true,
+													},
+												},
+											},
+										},
 									},
 								},
 							},
 						},
 					},
+					"identities": util.ResourceReferenceSetSchema("IDENTITY", false, "Defines role membership as being exclusive to the specified Identities, when type is IDENTITY_LIST."),
 				},
 			},
 			"enabled": schema.BoolAttribute{
@@ -265,12 +314,15 @@ func (r *roleResource) requestConfigSchema(description string) schema.SingleNest
 }
 
 func (r *roleResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+
 	var plan roleModel
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
+
 	role := r.convertToAPIModel(&plan, &resp.Diagnostics, ctx)
+
 	tflog.Info(ctx, fmt.Sprintf("Creating role '%s': %s", plan.Name.ValueString(), util.PrettyPrint(role)))
 	roleResp, spResp, err := r.apiClient.V3.RolesAPI.CreateRole(ctx).Role(role).Execute()
 	if err != nil {
@@ -298,6 +350,10 @@ func (r *roleResource) Read(ctx context.Context, req resource.ReadRequest, resp 
 	}
 
 	roleResp, spResp, err := r.apiClient.V3.RolesAPI.GetRole(ctx, state.Id.ValueString()).Execute()
+	if spResp.StatusCode == 404 {
+		resp.State.RemoveResource(ctx)
+		return
+	}
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error Reading Role",
@@ -404,7 +460,7 @@ func (r *roleResource) convertToAPIModel(model *roleModel, diagnostics *diag.Dia
 			Name: *sailpoint_v3.NewNullableString(util.GetTFStringPointer(entitlement.Name)),
 		}
 	}
-	membership := r.convertToMembership(model.Membership, diagnostics)
+
 	if diagnostics.HasError() {
 		return sailpoint_v3.Role{}
 	}
@@ -418,22 +474,122 @@ func (r *roleResource) convertToAPIModel(model *roleModel, diagnostics *diag.Dia
 		}
 	}
 
-	return sailpoint_v3.Role{
+	returnRole := sailpoint_v3.Role{
 		Name:                    model.Name.ValueString(),
 		Description:             *sailpoint_v3.NewNullableString(util.GetTFStringPointer(model.Description)),
 		Owner:                   owner,
 		AccessProfiles:          accessProfiles,
 		Entitlements:            entitlements,
-		Membership:              *sailpoint_v3.NewNullableRoleMembershipSelector(membership),
 		Enabled:                 model.Enabled.ValueBoolPointer(),
 		Requestable:             model.Requestable.ValueBoolPointer(),
 		AccessRequestConfig:     accessRequestConfig,
 		RevocationRequestConfig: revocationRequestConfig,
 		Segments:                segments,
 	}
+
+	if model.Membership != nil && !model.Membership.Type.IsNull() {
+		membership := r.convertToMembership(ctx, model.Membership, diagnostics)
+		returnRole.Membership = *sailpoint_v3.NewNullableRoleMembershipSelector(membership)
+	}
+
+	return returnRole
 }
 
-func (r *roleResource) convertToMembership(mMembership *roleMembership, diagnostics *diag.Diagnostics) *sailpoint_v3.RoleMembershipSelector {
+func (r *roleResource) getMembershipCriteriaLvl1(ctx context.Context, rootNode roleMembershipCriteriaLvl1) *sailpoint_v3.RoleCriteriaLevel1 {
+	// Operation
+	criteriaOperation, err := sailpoint_v3.NewRoleCriteriaOperationFromValue(rootNode.Operation.ValueString())
+	if err != nil {
+		tflog.Error(ctx, "Invalid Role Membership Type: "+err.Error())
+		return &sailpoint_v3.RoleCriteriaLevel1{}
+	}
+
+	// Key
+	var criteriaKey *sailpoint_v3.RoleCriteriaKey = nil
+	if rootNode.Key != nil {
+		criteriaKey = sailpoint_v3.NewRoleCriteriaKey(
+			sailpoint_v3.RoleCriteriaKeyType(rootNode.Key.Type.ValueString()),
+			rootNode.Key.Property.ValueString(),
+		)
+	}
+
+	// Children
+	var children []sailpoint_v3.RoleCriteriaLevel2 = nil
+	if rootNode.Children != nil {
+		children = r.getMembershipCriteriaChildrenLvl2(rootNode)
+	}
+
+	return &sailpoint_v3.RoleCriteriaLevel1{
+		Operation:   criteriaOperation,
+		Key:         *sailpoint_v3.NewNullableRoleCriteriaKey(criteriaKey),
+		StringValue: *sailpoint_v3.NewNullableString(util.GetTFStringPointer(rootNode.StringValue)),
+		Children:    children,
+	}
+}
+
+func (r *roleResource) getMembershipCriteriaChildrenLvl2(rootNode roleMembershipCriteriaLvl1) []sailpoint_v3.RoleCriteriaLevel2 {
+	childrenLvl2 := make([]sailpoint_v3.RoleCriteriaLevel2, len(rootNode.Children))
+	for i, lvl2Child := range rootNode.Children {
+		childrenLvl2[i] = r.getMembershipCriteriaLvl2(lvl2Child)
+	}
+	return childrenLvl2
+}
+
+func (r *roleResource) getMembershipCriteriaLvl2(rootNode roleMembershipCriteriaLvl2) sailpoint_v3.RoleCriteriaLevel2 {
+	// Operation
+	criteriaOperation, _ := sailpoint_v3.NewRoleCriteriaOperationFromValue(rootNode.Operation.ValueString())
+
+	// Key
+	var criteriaKey *sailpoint_v3.RoleCriteriaKey = nil
+	if rootNode.Key != nil {
+		criteriaKey = sailpoint_v3.NewRoleCriteriaKey(
+			sailpoint_v3.RoleCriteriaKeyType(rootNode.Key.Type.ValueString()),
+			rootNode.Key.Property.ValueString(),
+		)
+	}
+
+	// Children
+	var children []sailpoint_v3.RoleCriteriaLevel3 = nil
+	if rootNode.Children != nil {
+		children = r.getMembershipCriteriaChildrenLvl3(rootNode)
+	}
+
+	return sailpoint_v3.RoleCriteriaLevel2{
+		Operation:   criteriaOperation,
+		Key:         *sailpoint_v3.NewNullableRoleCriteriaKey(criteriaKey),
+		StringValue: *sailpoint_v3.NewNullableString(util.GetTFStringPointer(rootNode.StringValue)),
+		Children:    children,
+	}
+}
+
+func (r *roleResource) getMembershipCriteriaChildrenLvl3(rootNode roleMembershipCriteriaLvl2) []sailpoint_v3.RoleCriteriaLevel3 {
+	childrenLvl3 := make([]sailpoint_v3.RoleCriteriaLevel3, len(rootNode.Children))
+	for i, lvl3Child := range rootNode.Children {
+		childrenLvl3[i] = r.getMembershipCriteriaLvl3(lvl3Child)
+	}
+	return childrenLvl3
+}
+
+func (r *roleResource) getMembershipCriteriaLvl3(rootNode roleMembershipCriteriaLvl3) sailpoint_v3.RoleCriteriaLevel3 {
+	// Operation
+	criteriaOperation, _ := sailpoint_v3.NewRoleCriteriaOperationFromValue(rootNode.Operation.ValueString())
+
+	// Key
+	var criteriaKey *sailpoint_v3.RoleCriteriaKey = nil
+	if rootNode.Key != nil {
+		criteriaKey = sailpoint_v3.NewRoleCriteriaKey(
+			sailpoint_v3.RoleCriteriaKeyType(rootNode.Key.Type.ValueString()),
+			rootNode.Key.Property.ValueString(),
+		)
+	}
+
+	return sailpoint_v3.RoleCriteriaLevel3{
+		Operation:   criteriaOperation,
+		Key:         *sailpoint_v3.NewNullableRoleCriteriaKey(criteriaKey),
+		StringValue: util.GetTFStringPointer(rootNode.StringValue),
+	}
+}
+
+func (r *roleResource) convertToMembership(ctx context.Context, mMembership *roleMembership, diagnostics *diag.Diagnostics) *sailpoint_v3.RoleMembershipSelector {
 	if mMembership == nil {
 		return nil
 	}
@@ -444,45 +600,9 @@ func (r *roleResource) convertToMembership(mMembership *roleMembership, diagnost
 	}
 	var criteria *sailpoint_v3.RoleCriteriaLevel1 = nil
 	if mCriteria := mMembership.Criteria; mCriteria != nil {
-		criteriaOperation, err := sailpoint_v3.NewRoleCriteriaOperationFromValue(mCriteria.Operation.ValueString())
-		if err != nil {
-			diagnostics.AddError("Invalid Role Membership Type", err.Error())
-			return nil
-		}
-		var criteriaKey *sailpoint_v3.RoleCriteriaKey = nil
-		if mCriteria.Key != nil {
-			criteriaKey = sailpoint_v3.NewRoleCriteriaKey(
-				sailpoint_v3.RoleCriteriaKeyType(mCriteria.Key.Type.ValueString()),
-				mCriteria.Key.Type.ValueString(),
-			)
-		}
-		children := make([]sailpoint_v3.RoleCriteriaLevel2, len(mCriteria.Children))
-		for i, child := range mCriteria.Children {
-			childOperation, err := sailpoint_v3.NewRoleCriteriaOperationFromValue(child.Operation.ValueString())
-			if err != nil {
-				diagnostics.AddError("Invalid Role Membership Type", err.Error())
-				return nil
-			}
-			var childKey *sailpoint_v3.RoleCriteriaKey = nil
-			if child.Key != nil {
-				childKey = sailpoint_v3.NewRoleCriteriaKey(
-					sailpoint_v3.RoleCriteriaKeyType(child.Key.Type.ValueString()),
-					child.Key.Type.ValueString(),
-				)
-			}
-			children[i] = sailpoint_v3.RoleCriteriaLevel2{
-				Operation:   childOperation,
-				Key:         *sailpoint_v3.NewNullableRoleCriteriaKey(childKey),
-				StringValue: *sailpoint_v3.NewNullableString(util.GetTFStringPointer(child.StringValue)),
-			}
-		}
-		criteria = &sailpoint_v3.RoleCriteriaLevel1{
-			Operation:   criteriaOperation,
-			Key:         *sailpoint_v3.NewNullableRoleCriteriaKey(criteriaKey),
-			StringValue: *sailpoint_v3.NewNullableString(util.GetTFStringPointer(mCriteria.StringValue)),
-			Children:    children,
-		}
+		criteria = r.getMembershipCriteriaLvl1(ctx, *mCriteria)
 	}
+
 	identities := make([]sailpoint_v3.RoleMembershipIdentity, len(mMembership.Identities))
 	for i, identity := range mMembership.Identities {
 		dtoType, err := sailpoint_v3.NewDtoTypeFromValue(identity.Type.ValueString())
@@ -494,9 +614,9 @@ func (r *roleResource) convertToMembership(mMembership *roleMembership, diagnost
 			Type: dtoType,
 			Id:   util.GetTFStringPointer(identity.Id),
 			Name: *sailpoint_v3.NewNullableString(util.GetTFStringPointer(identity.Name)),
-			//AliasName: *sailpoint_v3.NewNullableString(util.GetTFStringPointer(identity.AliasName)),
 		}
 	}
+
 	return &sailpoint_v3.RoleMembershipSelector{
 		Type:       memType,
 		Criteria:   *sailpoint_v3.NewNullableRoleCriteriaLevel1(criteria),
@@ -631,46 +751,114 @@ func (r *roleResource) mapToRevocationRequestConfig(config *sailpoint_v3.Revocab
 	}
 }
 
+func (r *roleResource) mapToMembershipCriteriaLvl1(rootNode sailpoint_v3.RoleCriteriaLevel1) *roleMembershipCriteriaLvl1 {
+	// Operation
+	criteriaOperation := types.StringValue(string(*rootNode.Operation))
+
+	// Key
+	var criteriaKey *roleCriteriaKey = nil
+	if rootNode.Key.Get() != nil {
+		criteriaKey = &roleCriteriaKey{
+			Type:     types.StringValue(string(rootNode.Key.Get().Type)),
+			Property: types.StringValue(rootNode.Key.Get().Property),
+			SourceId: types.StringPointerValue(rootNode.Key.Get().SourceId.Get()),
+		}
+	}
+
+	// Children
+	var children []roleMembershipCriteriaLvl2 = nil
+	if rootNode.Children != nil {
+		children = r.mapToMembershipCriteriaChildrenLvl2(rootNode)
+	}
+
+	return &roleMembershipCriteriaLvl1{
+		Operation:   criteriaOperation,
+		Key:         criteriaKey,
+		StringValue: types.StringPointerValue(rootNode.StringValue.Get()),
+		Children:    children,
+	}
+}
+
+func (r *roleResource) mapToMembershipCriteriaChildrenLvl2(rootNode sailpoint_v3.RoleCriteriaLevel1) []roleMembershipCriteriaLvl2 {
+	childrenLvl2 := make([]roleMembershipCriteriaLvl2, len(rootNode.Children))
+	for i, lvl2Child := range rootNode.Children {
+		childrenLvl2[i] = r.mapToMembershipCriteriaLvl2(lvl2Child)
+	}
+	return childrenLvl2
+}
+
+func (r *roleResource) mapToMembershipCriteriaLvl2(rootNode sailpoint_v3.RoleCriteriaLevel2) roleMembershipCriteriaLvl2 {
+	// Operation
+	criteriaOperation := types.StringValue(string(*rootNode.Operation))
+
+	// Key
+	var criteriaKey *roleCriteriaKey = nil
+	if rootNode.Key.Get() != nil {
+		criteriaKey = &roleCriteriaKey{
+			Type:     types.StringValue(string(rootNode.Key.Get().Type)),
+			Property: types.StringValue(rootNode.Key.Get().Property),
+			SourceId: types.StringPointerValue(rootNode.Key.Get().SourceId.Get()),
+		}
+	}
+
+	// Children
+	var children []roleMembershipCriteriaLvl3 = nil
+	if rootNode.Children != nil {
+		children = r.mapToMembershipCriteriaChildrenLvl3(rootNode)
+	}
+
+	return roleMembershipCriteriaLvl2{
+		Operation:   criteriaOperation,
+		Key:         criteriaKey,
+		StringValue: types.StringPointerValue(rootNode.StringValue.Get()),
+		Children:    children,
+	}
+}
+
+func (r *roleResource) mapToMembershipCriteriaChildrenLvl3(rootNode sailpoint_v3.RoleCriteriaLevel2) []roleMembershipCriteriaLvl3 {
+	childrenLvl3 := make([]roleMembershipCriteriaLvl3, len(rootNode.Children))
+	for i, lvl3Child := range rootNode.Children {
+		childrenLvl3[i] = r.mapToMembershipCriteriaLvl3(lvl3Child)
+	}
+	return childrenLvl3
+}
+
+func (r *roleResource) mapToMembershipCriteriaLvl3(rootNode sailpoint_v3.RoleCriteriaLevel3) roleMembershipCriteriaLvl3 {
+	// Operation
+	criteriaOperation := types.StringValue(string(*rootNode.Operation))
+
+	// Key
+	var criteriaKey *roleCriteriaKey = nil
+	if rootNode.Key.Get() != nil {
+		criteriaKey = &roleCriteriaKey{
+			Type:     types.StringValue(string(rootNode.Key.Get().Type)),
+			Property: types.StringValue(rootNode.Key.Get().Property),
+			SourceId: types.StringPointerValue(rootNode.Key.Get().SourceId.Get()),
+		}
+	}
+
+	return roleMembershipCriteriaLvl3{
+		Operation:   criteriaOperation,
+		Key:         criteriaKey,
+		StringValue: types.StringValue(*rootNode.StringValue),
+	}
+}
+
 func (r *roleResource) mapToMembership(membership *sailpoint_v3.RoleMembershipSelector) *roleMembership {
 	if membership == nil {
 		return nil
 	}
-	var criteria *roleMembershipCriteria = nil
+	// Criteria Type
+	criteriaType := types.StringValue(string(*membership.Type))
+
+	// Criteria
+	var criteria *roleMembershipCriteriaLvl1 = nil
 	if membership.Criteria.Get() != nil {
 		membershipCriteria := membership.Criteria.Get()
-		criteriaOperation := types.StringValue(string(*membershipCriteria.Operation))
-		var criteriaKey *roleCriteriaKey = nil
-		if membershipCriteria.Key.Get() != nil {
-			criteriaKey = &roleCriteriaKey{
-				Type:     types.StringValue(string(membershipCriteria.Key.Get().Type)),
-				Property: types.StringValue(membershipCriteria.Key.Get().Property),
-				SourceId: types.StringPointerValue(membershipCriteria.Key.Get().SourceId.Get()),
-			}
-		}
-		children := make([]criteriaChildren, len(membershipCriteria.Children))
-		for i, child := range membershipCriteria.Children {
-			childOperation := types.StringValue(string(*child.Operation))
-			var childKey *roleCriteriaKey = nil
-			if child.Key.Get() != nil {
-				childKey = &roleCriteriaKey{
-					Type:     types.StringValue(string(child.Key.Get().Type)),
-					Property: types.StringValue(child.Key.Get().Property),
-					SourceId: types.StringPointerValue(child.Key.Get().SourceId.Get()),
-				}
-			}
-			children[i] = criteriaChildren{
-				Operation:   childOperation,
-				Key:         childKey,
-				StringValue: types.StringPointerValue(child.StringValue.Get()),
-			}
-		}
-		criteria = &roleMembershipCriteria{
-			Operation:   criteriaOperation,
-			Key:         criteriaKey,
-			StringValue: types.StringPointerValue(membershipCriteria.StringValue.Get()),
-			Children:    children,
-		}
+		criteria = r.mapToMembershipCriteriaLvl1(*membershipCriteria)
 	}
+
+	// Identities
 	var identities []util.ReferenceModel = nil
 	if len(membership.Identities) > 0 {
 		identities = make([]util.ReferenceModel, len(membership.Identities))
@@ -682,8 +870,9 @@ func (r *roleResource) mapToMembership(membership *sailpoint_v3.RoleMembershipSe
 			}
 		}
 	}
+
 	return &roleMembership{
-		Type:       types.StringValue(string(*membership.Type)),
+		Type:       criteriaType,
 		Criteria:   criteria,
 		Identities: identities,
 	}
@@ -698,7 +887,7 @@ func (r *roleResource) generateJsonPatch(newModel *sailpoint_v3.Role, oldModel *
 		)
 		return nil
 	}
-	v3JsonPatch, err := patch.ConvertFromBetaToV3(jsonPatch)
+	v3JsonPatch, err := patch.ConvertPatchOperationFromBetaToV3(jsonPatch)
 	if err != nil {
 		diagnostics.AddError(
 			"Error Generating Update Patch",

@@ -75,7 +75,6 @@ resource "identitynow_source" "demo_source" {
 ### Read-Only
 
 - `authoritative` (Boolean) When true indicates the source is referenced by an IdentityProfile.
-- `cloud_external_id` (String) Legacy Source ID for interacting with CC API
 - `connector_id` (String) The id of connector
 - `connector_implementation_id` (String) The connector implementation id
 - `connector_name` (String) The name of the connector that was chosen on source creation

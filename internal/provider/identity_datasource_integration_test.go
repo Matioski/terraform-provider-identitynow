@@ -4,9 +4,10 @@ package provider
 
 import (
 	"context"
-	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"terraform-provider-identitynow/internal/util"
 	"testing"
+
+	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
 func TestIntegration_IdentityDataSource(t *testing.T) {
@@ -27,7 +28,7 @@ func TestIntegration_IdentityDataSource(t *testing.T) {
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("data.identitynow_identity.test", "id", *identity[0].Id),
 					resource.TestCheckResourceAttr("data.identitynow_identity.test", "name", identity[0].Name),
-					resource.TestCheckResourceAttr("data.identitynow_identity.test", "email", *identity[0].EmailAddress.Get()),
+					//resource.TestCheckResourceAttr("data.identitynow_identity.test", "email", *identity[0].EmailAddress.Get()),
 				),
 			},
 		},

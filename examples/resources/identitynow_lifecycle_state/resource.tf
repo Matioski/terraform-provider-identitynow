@@ -3,6 +3,7 @@ resource "identitynow_lifecycle_state" "demo_active" {
   technical_name      = "active"
   identity_profile_id = "profileId"
   description         = "my test description"
+  identity_state      = "ACTIVE"
   enabled             = false
   email_notification_option = {
     notify_managers       = false
