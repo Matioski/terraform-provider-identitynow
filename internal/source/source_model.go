@@ -1,14 +1,14 @@
 package source
 
 import (
+	"terraform-provider-identitynow/internal/util"
+
 	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"terraform-provider-identitynow/internal/util"
 )
 
 type sourceModel struct {
 	Id                             types.String             `tfsdk:"id"`
-	CloudExternalId                types.String             `tfsdk:"cloud_external_id"`
 	Name                           types.String             `tfsdk:"name"`
 	Description                    types.String             `tfsdk:"description"`
 	Owner                          *util.ReferenceModel     `tfsdk:"owner"`

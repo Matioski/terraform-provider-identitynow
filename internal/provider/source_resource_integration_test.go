@@ -5,12 +5,13 @@ package provider
 import (
 	"context"
 	"fmt"
-	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
-	"github.com/hashicorp/terraform-plugin-testing/terraform"
 	"strconv"
 	"terraform-provider-identitynow/internal/util"
 	"testing"
 	"time"
+
+	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/terraform"
 )
 
 func checkSourceIsDeleted() func(state *terraform.State) error {
@@ -68,19 +69,14 @@ resource "identitynow_source" "test" {
   connector_attributes = jsonencode({
     enableLCS           = "true"
   })
-  connector_attributes_credentials = jsonencode({
-    username = "test"
-    password = "test"
-  })
   connector        = "delimited-file-angularsc"
-  connector_class  = "sailpoint.connector.DelimitedFileConnector"
+  connector_class  = "sailpoint.connector.delimitedfile.DelimitedFileConnector"
   connection_type  = "file"
   delete_threshold = 10
 }
 `,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttrSet("identitynow_source.test", "id"),
-					resource.TestCheckResourceAttrSet("identitynow_source.test", "cloud_external_id"),
 					resource.TestCheckResourceAttr("identitynow_source.test", "name", "TestIntegrationSourcePatch_ConnectorChangeRecreatesSource"+unixTimeStamp),
 					resource.TestCheckResourceAttr("identitynow_source.test", "description", "TestIntegrationSourcePatch_ConnectorChangeRecreatesSource"),
 					resource.TestCheckResourceAttr("identitynow_source.test", "owner.type", "IDENTITY"),
@@ -89,8 +85,7 @@ resource "identitynow_source" "test" {
 					resource.TestCheckResourceAttr("identitynow_source.test", "cluster.id", managedCluster.Id),
 					resource.TestCheckResourceAttr("identitynow_source.test", "cluster.name", *managedCluster.Name),
 					resource.TestCheckResourceAttr("identitynow_source.test", "connector", "delimited-file-angularsc"),
-					resource.TestCheckResourceAttr("identitynow_source.test", "connector_class", "sailpoint.connector.DelimitedFileConnector"),
-					resource.TestCheckResourceAttr("identitynow_source.test", "connector_attributes_credentials", "{\"password\":\"test\",\"username\":\"test\"}"),
+					resource.TestCheckResourceAttr("identitynow_source.test", "connector_class", "sailpoint.connector.delimitedfile.DelimitedFileConnector"),
 					resource.TestCheckResourceAttr("identitynow_source.test", "delete_threshold", "10"),
 					resource.TestCheckResourceAttr("identitynow_source.test", "connection_type", "file"),
 				),
@@ -115,9 +110,6 @@ resource "identitynow_source" "test" {
     testConnSQL  = "select * from dual"
     url          = "jdbc:mysql://localhost:3306/mysql "
   })
-  connector_attributes_credentials = jsonencode({
-    password = "duishadiusahdiuhasiudh"
-  })
   connector_files = ["ojdbc10-19.18.0.0.jar"]
   connector = "jdbc-angularsc"
   connector_class = "sailpoint.connector.JDBCConnector"
@@ -126,7 +118,6 @@ resource "identitynow_source" "test" {
 `,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttrSet("identitynow_source.test", "id"),
-					resource.TestCheckResourceAttrSet("identitynow_source.test", "cloud_external_id"),
 					resource.TestCheckResourceAttr("identitynow_source.test", "name", "Recreated TestIntegrationSourcePatch_ConnectorChangeRecreatesSource"+unixTimeStamp),
 					resource.TestCheckResourceAttr("identitynow_source.test", "description", "TestIntegrationSourcePatch_ConnectorChangeRecreatesSource"),
 					resource.TestCheckResourceAttr("identitynow_source.test", "owner.type", "IDENTITY"),
@@ -136,7 +127,6 @@ resource "identitynow_source" "test" {
 					resource.TestCheckResourceAttr("identitynow_source.test", "cluster.name", *managedCluster.Name),
 					resource.TestCheckResourceAttr("identitynow_source.test", "connector", "jdbc-angularsc"),
 					resource.TestCheckResourceAttr("identitynow_source.test", "connector_class", "sailpoint.connector.JDBCConnector"),
-					resource.TestCheckResourceAttr("identitynow_source.test", "connector_attributes_credentials", "{\"password\":\"duishadiusahdiuhasiudh\"}"),
 					resource.TestCheckResourceAttr("identitynow_source.test", "delete_threshold", "10"),
 					resource.TestCheckResourceAttr("identitynow_source.test", "connection_type", "direct"),
 				),
@@ -147,7 +137,7 @@ resource "identitynow_source" "test" {
 
 func TestIntegration_SourceResourcePatch_UpdateConnectorFiles(t *testing.T) {
 	checkForPendingCisTask(context.Background())
-	managedCluster := getManagedClusters(1, context.Background())[0]
+	managedCluster := getManagedClusters(1)[0]
 	unixTimeStamp := strconv.FormatInt(time.Now().UTC().UnixNano(), 10)
 
 	resource.Test(t, resource.TestCase{
@@ -174,9 +164,6 @@ resource "identitynow_source" "test" {
     testConnSQL  = "select * from dual"
     url          = "jdbc:mysql://localhost:3306/mysql "
   })
-  connector_attributes_credentials = jsonencode({
-    password = "duishadiusahdiuhasiudh"
-  })
   connector_files = ["ojdbc10-19.18.0.0.jar"]
   connector = "jdbc-angularsc"
   connector_class = "sailpoint.connector.JDBCConnector"
@@ -185,7 +172,6 @@ resource "identitynow_source" "test" {
 `,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttrSet("identitynow_source.test", "id"),
-					resource.TestCheckResourceAttrSet("identitynow_source.test", "cloud_external_id"),
 					resource.TestCheckResourceAttr("identitynow_source.test", "name", "TestIntegrationSourcePatch_UpdateConnectorFiles"+unixTimeStamp),
 					resource.TestCheckResourceAttr("identitynow_source.test", "description", "TestIntegrationSourcePatch_ConnectorChangeRecreatesSource"),
 					resource.TestCheckResourceAttr("identitynow_source.test", "owner.type", "IDENTITY"),
@@ -195,7 +181,6 @@ resource "identitynow_source" "test" {
 					resource.TestCheckResourceAttr("identitynow_source.test", "cluster.name", *managedCluster.Name),
 					resource.TestCheckResourceAttr("identitynow_source.test", "connector", "jdbc-angularsc"),
 					resource.TestCheckResourceAttr("identitynow_source.test", "connector_class", "sailpoint.connector.JDBCConnector"),
-					resource.TestCheckResourceAttr("identitynow_source.test", "connector_attributes_credentials", "{\"password\":\"duishadiusahdiuhasiudh\"}"),
 					resource.TestCheckResourceAttr("identitynow_source.test", "delete_threshold", "10"),
 					resource.TestCheckResourceAttr("identitynow_source.test", "connection_type", "direct"),
 					resource.TestCheckResourceAttr("identitynow_source.test", "connector_files.0", "ojdbc10-19.18.0.0.jar"),
@@ -221,9 +206,6 @@ resource "identitynow_source" "test" {
     testConnSQL  = "select * from dual"
     url          = "jdbc:mysql://localhost:3306/mysql "
   })
-  connector_attributes_credentials = jsonencode({
-    password = "duishadiusahdiuhasiudh"
-  })
   connector_files = ["ojdbc10-19.18.0.0.jar","ojdbc10-19.21.0.0.jar"]
   connector = "jdbc-angularsc"
   connector_class = "sailpoint.connector.JDBCConnector"
@@ -232,7 +214,6 @@ resource "identitynow_source" "test" {
 `,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttrSet("identitynow_source.test", "id"),
-					resource.TestCheckResourceAttrSet("identitynow_source.test", "cloud_external_id"),
 					resource.TestCheckResourceAttr("identitynow_source.test", "name", "TestIntegrationSourcePatch_UpdateConnectorFiles"+unixTimeStamp),
 					resource.TestCheckResourceAttr("identitynow_source.test", "description", "TestIntegrationSourcePatch_ConnectorChangeRecreatesSource"),
 					resource.TestCheckResourceAttr("identitynow_source.test", "owner.type", "IDENTITY"),
@@ -242,7 +223,6 @@ resource "identitynow_source" "test" {
 					resource.TestCheckResourceAttr("identitynow_source.test", "cluster.name", *managedCluster.Name),
 					resource.TestCheckResourceAttr("identitynow_source.test", "connector", "jdbc-angularsc"),
 					resource.TestCheckResourceAttr("identitynow_source.test", "connector_class", "sailpoint.connector.JDBCConnector"),
-					resource.TestCheckResourceAttr("identitynow_source.test", "connector_attributes_credentials", "{\"password\":\"duishadiusahdiuhasiudh\"}"),
 					resource.TestCheckResourceAttr("identitynow_source.test", "delete_threshold", "10"),
 					resource.TestCheckResourceAttr("identitynow_source.test", "connection_type", "direct"),
 					resource.TestCheckResourceAttr("identitynow_source.test", "connector_files.0", "ojdbc10-19.18.0.0.jar"),
@@ -255,7 +235,7 @@ resource "identitynow_source" "test" {
 
 func TestIntegration_SourceResourcePatch_AddMgmtGroup(t *testing.T) {
 	checkForPendingCisTask(context.Background())
-	managedCluster := getManagedClusters(1, context.Background())[0]
+	managedCluster := getManagedClusters(1)[0]
 	unixTimeStamp := strconv.FormatInt(time.Now().UTC().UnixNano(), 10)
 
 	resource.Test(t, resource.TestCase{
@@ -279,19 +259,14 @@ resource "identitynow_source" "test" {
   connector_attributes = jsonencode({
     enableLCS           = "true"
   })
-  connector_attributes_credentials = jsonencode({
-    username = "test"
-    password = "test"
-  })
   connector        = "delimited-file-angularsc"
-  connector_class  = "sailpoint.connector.DelimitedFileConnector"
+  connector_class  = "sailpoint.connector.delimitedfile.DelimitedFileConnector"
   connection_type  = "file"
   delete_threshold = 10
 }
 `,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttrSet("identitynow_source.test", "id"),
-					resource.TestCheckResourceAttrSet("identitynow_source.test", "cloud_external_id"),
 					resource.TestCheckResourceAttr("identitynow_source.test", "name", "TestIntegrationSourcePatch_AddMgmtGroup"+unixTimeStamp),
 					resource.TestCheckResourceAttr("identitynow_source.test", "description", "TestIntegrationSourcePatch_AddMgmtGroup"),
 					resource.TestCheckResourceAttr("identitynow_source.test", "owner.type", "IDENTITY"),
@@ -300,8 +275,7 @@ resource "identitynow_source" "test" {
 					resource.TestCheckResourceAttr("identitynow_source.test", "cluster.id", managedCluster.Id),
 					resource.TestCheckResourceAttr("identitynow_source.test", "cluster.name", *managedCluster.Name),
 					resource.TestCheckResourceAttr("identitynow_source.test", "connector", "delimited-file-angularsc"),
-					resource.TestCheckResourceAttr("identitynow_source.test", "connector_class", "sailpoint.connector.DelimitedFileConnector"),
-					resource.TestCheckResourceAttr("identitynow_source.test", "connector_attributes_credentials", "{\"password\":\"test\",\"username\":\"test\"}"),
+					resource.TestCheckResourceAttr("identitynow_source.test", "connector_class", "sailpoint.connector.delimitedfile.DelimitedFileConnector"),
 					resource.TestCheckResourceAttr("identitynow_source.test", "delete_threshold", "10"),
 					resource.TestCheckResourceAttr("identitynow_source.test", "connection_type", "file"),
 				),
@@ -323,12 +297,8 @@ resource "identitynow_source" "test" {
   connector_attributes = jsonencode({
     enableLCS           = "true"
   })
-  connector_attributes_credentials = jsonencode({
-    username = "testUpd"
-    password = "testUpd"
-  })
   connector        = "delimited-file-angularsc"
-  connector_class  = "sailpoint.connector.DelimitedFileConnector"
+  connector_class  = "sailpoint.connector.delimitedfile.DelimitedFileConnector"
   connection_type  = "file"
   delete_threshold = 15
   management_workgroup = {
@@ -338,7 +308,6 @@ resource "identitynow_source" "test" {
 `,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttrSet("identitynow_source.test", "id"),
-					resource.TestCheckResourceAttrSet("identitynow_source.test", "cloud_external_id"),
 					resource.TestCheckResourceAttr("identitynow_source.test", "name", "TestIntegrationSourcePatch_AddMgmtGroup"+unixTimeStamp),
 					resource.TestCheckResourceAttr("identitynow_source.test", "description", "TestIntegrationSourcePatch_AddMgmtGroupUpd"),
 					resource.TestCheckResourceAttr("identitynow_source.test", "owner.type", "IDENTITY"),
@@ -347,8 +316,7 @@ resource "identitynow_source" "test" {
 					resource.TestCheckResourceAttr("identitynow_source.test", "cluster.id", managedCluster.Id),
 					resource.TestCheckResourceAttr("identitynow_source.test", "cluster.name", *managedCluster.Name),
 					resource.TestCheckResourceAttr("identitynow_source.test", "connector", "delimited-file-angularsc"),
-					resource.TestCheckResourceAttr("identitynow_source.test", "connector_class", "sailpoint.connector.DelimitedFileConnector"),
-					resource.TestCheckResourceAttr("identitynow_source.test", "connector_attributes_credentials", "{\"password\":\"testUpd\",\"username\":\"testUpd\"}"),
+					resource.TestCheckResourceAttr("identitynow_source.test", "connector_class", "sailpoint.connector.delimitedfile.DelimitedFileConnector"),
 					resource.TestCheckResourceAttr("identitynow_source.test", "delete_threshold", "15"),
 					resource.TestCheckResourceAttr("identitynow_source.test", "management_workgroup.id", "786e45ee-3196-41d1-a7c1-d35aa0ebb4b0"),
 				),
@@ -359,7 +327,7 @@ resource "identitynow_source" "test" {
 
 func TestIntegration_SourceResourcePatch_CreateWithAccountCorrelationConfig(t *testing.T) {
 	checkForPendingCisTask(context.Background())
-	managedCluster := getManagedClusters(1, context.Background())[0]
+	managedCluster := getManagedClusters(1)[0]
 	unixTimeStamp := strconv.FormatInt(time.Now().UTC().UnixNano(), 10)
 
 	resource.Test(t, resource.TestCase{
@@ -383,24 +351,19 @@ resource "identitynow_source" "test" {
   connector_attributes = jsonencode({
     enableLCS           = "true"
   })
-  connector_attributes_credentials = jsonencode({
-    username = "test"
-    password = "test"
-  })
  account_correlation_config = {
         id = "ae8040c683fb4dfe8cea2770c8e7c741"
         type = "ACCOUNT_CORRELATION_CONFIG"
         name = "Active Directory Template Account Correlation Config"
     }
   connector        = "delimited-file-angularsc"
-  connector_class  = "sailpoint.connector.DelimitedFileConnector"
+  connector_class  = "sailpoint.connector.delimitedfile.DelimitedFileConnector"
   connection_type  = "file"
   delete_threshold = 10
 }
 `,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttrSet("identitynow_source.test", "id"),
-					resource.TestCheckResourceAttrSet("identitynow_source.test", "cloud_external_id"),
 					resource.TestCheckResourceAttr("identitynow_source.test", "name", "TestIntegrationSourcePatch_CreateWithAccountCorrelationConfig"+unixTimeStamp),
 					resource.TestCheckResourceAttr("identitynow_source.test", "description", "TestIntegrationSourcePatch_UpdatableValueChanged"),
 					resource.TestCheckResourceAttr("identitynow_source.test", "owner.type", "IDENTITY"),
@@ -409,8 +372,7 @@ resource "identitynow_source" "test" {
 					resource.TestCheckResourceAttr("identitynow_source.test", "cluster.id", managedCluster.Id),
 					resource.TestCheckResourceAttr("identitynow_source.test", "cluster.name", *managedCluster.Name),
 					resource.TestCheckResourceAttr("identitynow_source.test", "connector", "delimited-file-angularsc"),
-					resource.TestCheckResourceAttr("identitynow_source.test", "connector_class", "sailpoint.connector.DelimitedFileConnector"),
-					resource.TestCheckResourceAttr("identitynow_source.test", "connector_attributes_credentials", "{\"password\":\"test\",\"username\":\"test\"}"),
+					resource.TestCheckResourceAttr("identitynow_source.test", "connector_class", "sailpoint.connector.delimitedfile.DelimitedFileConnector"),
 					resource.TestCheckResourceAttr("identitynow_source.test", "delete_threshold", "10"),
 					resource.TestCheckResourceAttr("identitynow_source.test", "connection_type", "file"),
 					resource.TestCheckResourceAttr("identitynow_source.test", "account_correlation_config.id", "ae8040c683fb4dfe8cea2770c8e7c741"),
@@ -435,15 +397,11 @@ resource "identitynow_source" "test" {
   connector_attributes = jsonencode({
     enableLCS           = "true"
   })
-  connector_attributes_credentials = jsonencode({
-    username = "testUpd"
-    password = "testUpd"
-  })
   connector        = "delimited-file-angularsc"
-  connector_class  = "sailpoint.connector.DelimitedFileConnector"
+  connector_class  = "sailpoint.connector.delimitedfile.DelimitedFileConnector"
   connection_type  = "file"
   delete_threshold = 15
- account_correlation_config = {
+  account_correlation_config = {
         id = "ae8040c683fb4dfe8cea2770c8e7c741"
         type = "ACCOUNT_CORRELATION_CONFIG"
         name = "Active Directory Template Account Correlation Config"
@@ -452,7 +410,6 @@ resource "identitynow_source" "test" {
 `,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttrSet("identitynow_source.test", "id"),
-					resource.TestCheckResourceAttrSet("identitynow_source.test", "cloud_external_id"),
 					resource.TestCheckResourceAttr("identitynow_source.test", "name", "TestIntegrationSourcePatch_CreateWithAccountCorrelationConfigUpd"+unixTimeStamp),
 					resource.TestCheckResourceAttr("identitynow_source.test", "description", "TestIntegrationSourcePatch_UpdatableValueChangedUpd"),
 					resource.TestCheckResourceAttr("identitynow_source.test", "owner.type", "IDENTITY"),
@@ -461,8 +418,7 @@ resource "identitynow_source" "test" {
 					resource.TestCheckResourceAttr("identitynow_source.test", "cluster.id", managedCluster.Id),
 					resource.TestCheckResourceAttr("identitynow_source.test", "cluster.name", *managedCluster.Name),
 					resource.TestCheckResourceAttr("identitynow_source.test", "connector", "delimited-file-angularsc"),
-					resource.TestCheckResourceAttr("identitynow_source.test", "connector_class", "sailpoint.connector.DelimitedFileConnector"),
-					resource.TestCheckResourceAttr("identitynow_source.test", "connector_attributes_credentials", "{\"password\":\"testUpd\",\"username\":\"testUpd\"}"),
+					resource.TestCheckResourceAttr("identitynow_source.test", "connector_class", "sailpoint.connector.delimitedfile.DelimitedFileConnector"),
 					resource.TestCheckResourceAttr("identitynow_source.test", "delete_threshold", "15"),
 					resource.TestCheckResourceAttr("identitynow_source.test", "account_correlation_config.id", "ae8040c683fb4dfe8cea2770c8e7c741"),
 					resource.TestCheckResourceAttr("identitynow_source.test", "account_correlation_config.type", "ACCOUNT_CORRELATION_CONFIG"),
@@ -475,7 +431,7 @@ resource "identitynow_source" "test" {
 
 func TestIntegration_SourceResourcePatch_CreateWithAllFields(t *testing.T) {
 	checkForPendingCisTask(context.Background())
-	managedCluster := getManagedClusters(1, context.Background())[0]
+	managedCluster := getManagedClusters(1)[0]
 	unixTimeStamp := strconv.FormatInt(time.Now().UTC().UnixNano(), 10)
 
 	resource.Test(t, resource.TestCase{
@@ -503,24 +459,6 @@ resource "identitynow_source" "test" {
   ]
   connector_attributes = jsonencode({
     enableLCS           = "true"
-    innerObject = {
-        innerKey = "innerValue"
-    }
-    arrayOfObjects = [{
-        key1 = "value1"
-    }]
-    array = ["value1", "value2"]
-  })
-  connector_attributes_credentials = jsonencode({
-    username = "test"
-    password = "test"
-    innerObject = {
-        password = "test"
-    }
-    arrayOfObjects = [{
-        password = "test"
-    }]
-    array = ["value3"]
   })
   management_workgroup = {
     id = "786e45ee-3196-41d1-a7c1-d35aa0ebb4b0"
@@ -540,14 +478,13 @@ resource "identitynow_source" "test" {
       name = "Cloud Correlate Manager by AccountId"
   }
   connector        = "delimited-file-angularsc"
-  connector_class  = "sailpoint.connector.DelimitedFileConnector"
+  connector_class  = "sailpoint.connector.delimitedfile.DelimitedFileConnector"
   connection_type  = "file"
   delete_threshold = 10
 }
 `,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttrSet("identitynow_source.test", "id"),
-					resource.TestCheckResourceAttrSet("identitynow_source.test", "cloud_external_id"),
 					resource.TestCheckResourceAttr("identitynow_source.test", "name", "TestIntegrationSourcePatch_CreateWithAllFields"+unixTimeStamp),
 					resource.TestCheckResourceAttr("identitynow_source.test", "description", "TestIntegrationSourcePatch_UpdatableValueChanged"),
 					resource.TestCheckResourceAttr("identitynow_source.test", "owner.type", "IDENTITY"),
@@ -556,9 +493,8 @@ resource "identitynow_source" "test" {
 					resource.TestCheckResourceAttr("identitynow_source.test", "cluster.id", managedCluster.Id),
 					resource.TestCheckResourceAttr("identitynow_source.test", "cluster.name", *managedCluster.Name),
 					resource.TestCheckResourceAttr("identitynow_source.test", "connector", "delimited-file-angularsc"),
-					resource.TestCheckResourceAttr("identitynow_source.test", "connector_class", "sailpoint.connector.DelimitedFileConnector"),
-					resource.TestCheckResourceAttr("identitynow_source.test", "connector_attributes_credentials", "{\"array\":[\"value3\"],\"arrayOfObjects\":[{\"password\":\"test\"}],\"innerObject\":{\"password\":\"test\"},\"password\":\"test\",\"username\":\"test\"}"),
-					resource.TestCheckResourceAttr("identitynow_source.test", "connector_attributes", "{\"array\":[\"value1\",\"value2\"],\"arrayOfObjects\":[{\"key1\":\"value1\"}],\"enableLCS\":\"true\",\"innerObject\":{\"innerKey\":\"innerValue\"}}"),
+					resource.TestCheckResourceAttr("identitynow_source.test", "connector_class", "sailpoint.connector.delimitedfile.DelimitedFileConnector"),
+					resource.TestCheckResourceAttr("identitynow_source.test", "connector_attributes", "{\"enableLCS\":\"true\"}"),
 					resource.TestCheckResourceAttr("identitynow_source.test", "delete_threshold", "10"),
 					resource.TestCheckResourceAttr("identitynow_source.test", "connection_type", "file"),
 					resource.TestCheckResourceAttr("identitynow_source.test", "manager_correlation_mapping.account_attribute_name", "name"),
@@ -595,24 +531,6 @@ resource "identitynow_source" "test" {
   ]
   connector_attributes = jsonencode({
     enableLCS           = "true"
-    innerObject = {
-        innerKey = "innerValueUpd"
-    }
-    arrayOfObjects = [{
-        key1 = "value1Upd"
-    }]
-    array = ["value1Upd", "value2Upd"]
-  })
-  connector_attributes_credentials = jsonencode({
-    username = "testUpd"
-    password = "testUpd"
-    innerObject = {
-        password = "testUpd"
-    }
-    arrayOfObjects = [{
-        password = "testUpd"
-    }]
-    array = ["value3Upd"]
   })
   management_workgroup = {
     id = "786e45ee-3196-41d1-a7c1-d35aa0ebb4b0"
@@ -632,14 +550,13 @@ resource "identitynow_source" "test" {
       name = "Cloud Correlate Manager by AccountId"
   }
   connector        = "delimited-file-angularsc"
-  connector_class  = "sailpoint.connector.DelimitedFileConnector"
+  connector_class  = "sailpoint.connector.delimitedfile.DelimitedFileConnector"
   connection_type  = "file"
   delete_threshold = 15
 }
 `,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttrSet("identitynow_source.test", "id"),
-					resource.TestCheckResourceAttrSet("identitynow_source.test", "cloud_external_id"),
 					resource.TestCheckResourceAttr("identitynow_source.test", "name", "TestIntegrationSourcePatch_CreateWithAllFieldsUpd"+unixTimeStamp),
 					resource.TestCheckResourceAttr("identitynow_source.test", "description", "TestIntegrationSourcePatch_UpdatableValueChangedUpd"),
 					resource.TestCheckResourceAttr("identitynow_source.test", "owner.type", "IDENTITY"),
@@ -648,9 +565,8 @@ resource "identitynow_source" "test" {
 					resource.TestCheckResourceAttr("identitynow_source.test", "cluster.id", managedCluster.Id),
 					resource.TestCheckResourceAttr("identitynow_source.test", "cluster.name", *managedCluster.Name),
 					resource.TestCheckResourceAttr("identitynow_source.test", "connector", "delimited-file-angularsc"),
-					resource.TestCheckResourceAttr("identitynow_source.test", "connector_class", "sailpoint.connector.DelimitedFileConnector"),
-					resource.TestCheckResourceAttr("identitynow_source.test", "connector_attributes_credentials", "{\"array\":[\"value3Upd\"],\"arrayOfObjects\":[{\"password\":\"testUpd\"}],\"innerObject\":{\"password\":\"testUpd\"},\"password\":\"testUpd\",\"username\":\"testUpd\"}"),
-					resource.TestCheckResourceAttr("identitynow_source.test", "connector_attributes", "{\"array\":[\"value1Upd\",\"value2Upd\"],\"arrayOfObjects\":[{\"key1\":\"value1Upd\"}],\"enableLCS\":\"true\",\"innerObject\":{\"innerKey\":\"innerValueUpd\"}}"),
+					resource.TestCheckResourceAttr("identitynow_source.test", "connector_class", "sailpoint.connector.delimitedfile.DelimitedFileConnector"),
+					resource.TestCheckResourceAttr("identitynow_source.test", "connector_attributes", "{\"enableLCS\":\"true\"}"),
 					resource.TestCheckResourceAttr("identitynow_source.test", "delete_threshold", "15"),
 					resource.TestCheckResourceAttr("identitynow_source.test", "manager_correlation_mapping.account_attribute_name", "name"),
 					resource.TestCheckResourceAttr("identitynow_source.test", "manager_correlation_mapping.identity_attribute_name", "manager"),
@@ -669,9 +585,78 @@ resource "identitynow_source" "test" {
 	})
 }
 
+func TestIntegration_SourceResourcePatch_CreateCsvSource(t *testing.T) {
+	checkForPendingCisTask(context.Background())
+	managedCluster := getManagedClusters(1)[0]
+	unixTimeStamp := strconv.FormatInt(time.Now().UTC().UnixNano(), 10)
+
+	resource.Test(t, resource.TestCase{
+		ProtoV6ProviderFactories: TestAccProtoV6ProviderFactories,
+		CheckDestroy:             checkSourceIsDeleted(),
+		Steps: []resource.TestStep{
+			// Create and Read testing
+			{
+				Config: providerIntegrationConfig + `
+resource "identitynow_source" "test" {
+  name        = "TestIntegration_SourceResourcePatch_CreateCsvSource` + unixTimeStamp + `"
+  description = "TestIntegration_SourceResourcePatch_CreateCsvSource"
+  owner = {
+    id   = "` + ownerIdentityId + `"
+    name = "` + ownerIdentityName + `"
+  }
+  cluster = {
+    id   = "` + managedCluster.Id + `"
+    name = "` + *managedCluster.Name + `"
+  }
+  features = [
+      "DISCOVER_SCHEMA",
+      "DIRECT_PERMISSIONS",
+      "NO_RANDOM_ACCESS"
+  ]
+  connector_attributes = jsonencode({
+    connectionType           = "file"
+    commentCharacter         = "#"
+    partitionMode            = "disabled"
+  })
+  management_workgroup = null
+  account_correlation_config = null
+  manager_correlation_mapping = {
+       account_attribute_name = "uid"
+       identity_attribute_name = "manager"
+  }
+  manager_correlation_rule = null
+  connector        = "delimited-file-angularsc"
+  connector_class  = "sailpoint.connector.delimitedfile.DelimitedFileConnector"
+  connection_type  = "file"
+  delete_threshold = 10
+}
+`,
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckResourceAttrSet("identitynow_source.test", "id"),
+					resource.TestCheckResourceAttr("identitynow_source.test", "name", "TestIntegration_SourceResourcePatch_CreateCsvSource"+unixTimeStamp),
+					resource.TestCheckResourceAttr("identitynow_source.test", "description", "TestIntegration_SourceResourcePatch_CreateCsvSource"),
+					resource.TestCheckResourceAttr("identitynow_source.test", "owner.type", "IDENTITY"),
+					resource.TestCheckResourceAttr("identitynow_source.test", "owner.id", ownerIdentityId),
+					resource.TestCheckResourceAttr("identitynow_source.test", "owner.name", ownerIdentityName),
+					resource.TestCheckResourceAttr("identitynow_source.test", "cluster.id", managedCluster.Id),
+					resource.TestCheckResourceAttr("identitynow_source.test", "cluster.name", *managedCluster.Name),
+					resource.TestCheckResourceAttr("identitynow_source.test", "connector", "delimited-file-angularsc"),
+					resource.TestCheckResourceAttr("identitynow_source.test", "connector_class", "sailpoint.connector.delimitedfile.DelimitedFileConnector"),
+					resource.TestCheckResourceAttr("identitynow_source.test", "delete_threshold", "10"),
+					resource.TestCheckResourceAttr("identitynow_source.test", "connection_type", "file"),
+					resource.TestCheckResourceAttr("identitynow_source.test", "type", "DelimitedFile"),
+					resource.TestCheckResourceAttr("identitynow_source.test", "features.#", "3"),
+					resource.TestCheckResourceAttr("identitynow_source.test", "features.0", "DIRECT_PERMISSIONS"),
+					resource.TestCheckResourceAttr("identitynow_source.test", "features.1", "DISCOVER_SCHEMA"),
+					resource.TestCheckResourceAttr("identitynow_source.test", "features.2", "NO_RANDOM_ACCESS"),
+				),
+			},
+		},
+	})
+}
 func TestIntegration_SourceResourcePatch_UpdatableValueChanged(t *testing.T) {
 	checkForPendingCisTask(context.Background())
-	managedCluster := getManagedClusters(1, context.Background())[0]
+	managedCluster := getManagedClusters(1)[0]
 	unixTimeStamp := strconv.FormatInt(time.Now().UTC().UnixNano(), 10)
 
 	resource.Test(t, resource.TestCase{
@@ -695,19 +680,14 @@ resource "identitynow_source" "test" {
   connector_attributes = jsonencode({
     enableLCS           = "true"
   })
-  connector_attributes_credentials = jsonencode({
-    username = "test"
-    password = "test"
-  })
   connector        = "delimited-file-angularsc"
-  connector_class  = "sailpoint.connector.DelimitedFileConnector"
+  connector_class  = "sailpoint.connector.delimitedfile.DelimitedFileConnector"
   connection_type  = "file"
   delete_threshold = 10
 }
 `,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttrSet("identitynow_source.test", "id"),
-					resource.TestCheckResourceAttrSet("identitynow_source.test", "cloud_external_id"),
 					resource.TestCheckResourceAttr("identitynow_source.test", "name", "TestIntegrationSourcePatch_UpdatableValueChanged"+unixTimeStamp),
 					resource.TestCheckResourceAttr("identitynow_source.test", "description", "TestIntegrationSourcePatch_UpdatableValueChanged"),
 					resource.TestCheckResourceAttr("identitynow_source.test", "owner.type", "IDENTITY"),
@@ -716,8 +696,7 @@ resource "identitynow_source" "test" {
 					resource.TestCheckResourceAttr("identitynow_source.test", "cluster.id", managedCluster.Id),
 					resource.TestCheckResourceAttr("identitynow_source.test", "cluster.name", *managedCluster.Name),
 					resource.TestCheckResourceAttr("identitynow_source.test", "connector", "delimited-file-angularsc"),
-					resource.TestCheckResourceAttr("identitynow_source.test", "connector_class", "sailpoint.connector.DelimitedFileConnector"),
-					resource.TestCheckResourceAttr("identitynow_source.test", "connector_attributes_credentials", "{\"password\":\"test\",\"username\":\"test\"}"),
+					resource.TestCheckResourceAttr("identitynow_source.test", "connector_class", "sailpoint.connector.delimitedfile.DelimitedFileConnector"),
 					resource.TestCheckResourceAttr("identitynow_source.test", "delete_threshold", "10"),
 					resource.TestCheckResourceAttr("identitynow_source.test", "connection_type", "file"),
 				),
@@ -739,19 +718,14 @@ resource "identitynow_source" "test" {
   connector_attributes = jsonencode({
     enableLCS           = "true"
   })
-  connector_attributes_credentials = jsonencode({
-    username = "testUpd"
-    password = "testUpd"
-  })
   connector        = "delimited-file-angularsc"
-  connector_class  = "sailpoint.connector.DelimitedFileConnector"
+  connector_class  = "sailpoint.connector.delimitedfile.DelimitedFileConnector"
   connection_type  = "file"
   delete_threshold = 15
 }
 `,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttrSet("identitynow_source.test", "id"),
-					resource.TestCheckResourceAttrSet("identitynow_source.test", "cloud_external_id"),
 					resource.TestCheckResourceAttr("identitynow_source.test", "name", "TestIntegrationSourcePatch_UpdatableValueChangedUpd"+unixTimeStamp),
 					resource.TestCheckResourceAttr("identitynow_source.test", "description", "TestIntegrationSourcePatch_UpdatableValueChangedUpd"),
 					resource.TestCheckResourceAttr("identitynow_source.test", "owner.type", "IDENTITY"),
@@ -760,8 +734,7 @@ resource "identitynow_source" "test" {
 					resource.TestCheckResourceAttr("identitynow_source.test", "cluster.id", managedCluster.Id),
 					resource.TestCheckResourceAttr("identitynow_source.test", "cluster.name", *managedCluster.Name),
 					resource.TestCheckResourceAttr("identitynow_source.test", "connector", "delimited-file-angularsc"),
-					resource.TestCheckResourceAttr("identitynow_source.test", "connector_class", "sailpoint.connector.DelimitedFileConnector"),
-					resource.TestCheckResourceAttr("identitynow_source.test", "connector_attributes_credentials", "{\"password\":\"testUpd\",\"username\":\"testUpd\"}"),
+					resource.TestCheckResourceAttr("identitynow_source.test", "connector_class", "sailpoint.connector.delimitedfile.DelimitedFileConnector"),
 					resource.TestCheckResourceAttr("identitynow_source.test", "delete_threshold", "15"),
 					resource.TestCheckResourceAttr("identitynow_source.test", "connection_type", "file"),
 				),
@@ -772,7 +745,7 @@ resource "identitynow_source" "test" {
 
 func TestIntegration_SourceResourcePatch_DefaultValues_DontBreak(t *testing.T) {
 	checkForPendingCisTask(context.Background())
-	managedCluster := getManagedClusters(1, context.Background())[0]
+	managedCluster := getManagedClusters(1)[0]
 	unixTimeStamp := strconv.FormatInt(time.Now().UTC().UnixNano(), 10)
 
 	resource.Test(t, resource.TestCase{
@@ -803,7 +776,6 @@ resource "identitynow_source" "test" {
 `,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttrSet("identitynow_source.test", "id"),
-					resource.TestCheckResourceAttrSet("identitynow_source.test", "cloud_external_id"),
 					resource.TestCheckResourceAttr("identitynow_source.test", "name", "TestIntegration_SourceResourcePatch_DefaultValues_DontBreak"+unixTimeStamp),
 					resource.TestCheckResourceAttr("identitynow_source.test", "description", "TestIntegration_SourceResourcePatch_DefaultValues_DontBreak"),
 					resource.TestCheckResourceAttr("identitynow_source.test", "owner.type", "IDENTITY"),
@@ -850,7 +822,6 @@ resource "identitynow_source" "test" {
 `,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttrSet("identitynow_source.test", "id"),
-					resource.TestCheckResourceAttrSet("identitynow_source.test", "cloud_external_id"),
 					resource.TestCheckResourceAttr("identitynow_source.test", "name", "TestIntegration_SourceResourcePatch_DefaultValues_DontBreak"+unixTimeStamp),
 					resource.TestCheckResourceAttr("identitynow_source.test", "description", "TestIntegration_SourceResourcePatch_DefaultValues_DontBreak"),
 					resource.TestCheckResourceAttr("identitynow_source.test", "owner.type", "IDENTITY"),
@@ -875,7 +846,7 @@ resource "identitynow_source" "test" {
 
 func TestIntegration_SourceResourcePatch_RemoveOptionalFields(t *testing.T) {
 	checkForPendingCisTask(context.Background())
-	managedCluster := getManagedClusters(1, context.Background())[0]
+	managedCluster := getManagedClusters(1)[0]
 	unixTimeStamp := strconv.FormatInt(time.Now().UTC().UnixNano(), 10)
 
 	resource.Test(t, resource.TestCase{
@@ -903,24 +874,6 @@ resource "identitynow_source" "test" {
   ]
   connector_attributes = jsonencode({
     enableLCS           = "true"
-    innerObject = {
-        innerKey = "innerValue"
-    }
-    arrayOfObjects = [{
-        key1 = "value1"
-    }]
-    array = ["value1", "value2"]
-  })
-  connector_attributes_credentials = jsonencode({
-    username = "test"
-    password = "test"
-    innerObject = {
-        password = "test"
-    }
-    arrayOfObjects = [{
-        password = "test"
-    }]
-    array = ["value3"]
   })
   management_workgroup = {
     id = "786e45ee-3196-41d1-a7c1-d35aa0ebb4b0"
@@ -940,14 +893,13 @@ resource "identitynow_source" "test" {
       name = "Cloud Correlate Manager by AccountId"
   }
   connector        = "delimited-file-angularsc"
-  connector_class  = "sailpoint.connector.DelimitedFileConnector"
+  connector_class  = "sailpoint.connector.delimitedfile.DelimitedFileConnector"
   connection_type  = "file"
   delete_threshold = 10
 }
 `,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttrSet("identitynow_source.test", "id"),
-					resource.TestCheckResourceAttrSet("identitynow_source.test", "cloud_external_id"),
 					resource.TestCheckResourceAttr("identitynow_source.test", "name", "TestIntegrationSourcePatch_CreateWithAllFields"+unixTimeStamp),
 					resource.TestCheckResourceAttr("identitynow_source.test", "description", "TestIntegrationSourcePatch_UpdatableValueChanged"),
 					resource.TestCheckResourceAttr("identitynow_source.test", "owner.type", "IDENTITY"),
@@ -956,9 +908,8 @@ resource "identitynow_source" "test" {
 					resource.TestCheckResourceAttr("identitynow_source.test", "cluster.id", managedCluster.Id),
 					resource.TestCheckResourceAttr("identitynow_source.test", "cluster.name", *managedCluster.Name),
 					resource.TestCheckResourceAttr("identitynow_source.test", "connector", "delimited-file-angularsc"),
-					resource.TestCheckResourceAttr("identitynow_source.test", "connector_class", "sailpoint.connector.DelimitedFileConnector"),
-					resource.TestCheckResourceAttr("identitynow_source.test", "connector_attributes_credentials", "{\"array\":[\"value3\"],\"arrayOfObjects\":[{\"password\":\"test\"}],\"innerObject\":{\"password\":\"test\"},\"password\":\"test\",\"username\":\"test\"}"),
-					resource.TestCheckResourceAttr("identitynow_source.test", "connector_attributes", "{\"array\":[\"value1\",\"value2\"],\"arrayOfObjects\":[{\"key1\":\"value1\"}],\"enableLCS\":\"true\",\"innerObject\":{\"innerKey\":\"innerValue\"}}"),
+					resource.TestCheckResourceAttr("identitynow_source.test", "connector_class", "sailpoint.connector.delimitedfile.DelimitedFileConnector"),
+					resource.TestCheckResourceAttr("identitynow_source.test", "connector_attributes", "{\"enableLCS\":\"true\"}"),
 					resource.TestCheckResourceAttr("identitynow_source.test", "delete_threshold", "10"),
 					resource.TestCheckResourceAttr("identitynow_source.test", "connection_type", "file"),
 					resource.TestCheckResourceAttr("identitynow_source.test", "manager_correlation_mapping.account_attribute_name", "name"),
@@ -995,37 +946,18 @@ resource "identitynow_source" "test" {
   ]
   connector_attributes = jsonencode({
     enableLCS           = "true"
-    innerObject = {
-        innerKey = "innerValueUpd"
-    }
-    arrayOfObjects = [{
-        key1 = "value1Upd"
-    }]
-    array = ["value1Upd", "value2Upd"]
-  })
-  connector_attributes_credentials = jsonencode({
-    username = "testUpd"
-    password = "testUpd"
-    innerObject = {
-        password = "testUpd"
-    }
-    arrayOfObjects = [{
-        password = "testUpd"
-    }]
-    array = ["value3Upd"]
   })
   management_workgroup = {
     id = "786e45ee-3196-41d1-a7c1-d35aa0ebb4b0"
   }
   connector        = "delimited-file-angularsc"
-  connector_class  = "sailpoint.connector.DelimitedFileConnector"
+  connector_class  = "sailpoint.connector.delimitedfile.DelimitedFileConnector"
   connection_type  = "file"
   delete_threshold = 15
 }
 `,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttrSet("identitynow_source.test", "id"),
-					resource.TestCheckResourceAttrSet("identitynow_source.test", "cloud_external_id"),
 					resource.TestCheckResourceAttr("identitynow_source.test", "name", "TestIntegrationSourcePatch_CreateWithAllFieldsUpd"+unixTimeStamp),
 					resource.TestCheckResourceAttr("identitynow_source.test", "description", "TestIntegrationSourcePatch_UpdatableValueChangedUpd"),
 					resource.TestCheckResourceAttr("identitynow_source.test", "owner.type", "IDENTITY"),
@@ -1034,9 +966,8 @@ resource "identitynow_source" "test" {
 					resource.TestCheckResourceAttr("identitynow_source.test", "cluster.id", managedCluster.Id),
 					resource.TestCheckResourceAttr("identitynow_source.test", "cluster.name", *managedCluster.Name),
 					resource.TestCheckResourceAttr("identitynow_source.test", "connector", "delimited-file-angularsc"),
-					resource.TestCheckResourceAttr("identitynow_source.test", "connector_class", "sailpoint.connector.DelimitedFileConnector"),
-					resource.TestCheckResourceAttr("identitynow_source.test", "connector_attributes_credentials", "{\"array\":[\"value3Upd\"],\"arrayOfObjects\":[{\"password\":\"testUpd\"}],\"innerObject\":{\"password\":\"testUpd\"},\"password\":\"testUpd\",\"username\":\"testUpd\"}"),
-					resource.TestCheckResourceAttr("identitynow_source.test", "connector_attributes", "{\"array\":[\"value1Upd\",\"value2Upd\"],\"arrayOfObjects\":[{\"key1\":\"value1Upd\"}],\"enableLCS\":\"true\",\"innerObject\":{\"innerKey\":\"innerValueUpd\"}}"),
+					resource.TestCheckResourceAttr("identitynow_source.test", "connector_class", "sailpoint.connector.delimitedfile.DelimitedFileConnector"),
+					resource.TestCheckResourceAttr("identitynow_source.test", "connector_attributes", "{\"enableLCS\":\"true\"}"),
 					resource.TestCheckResourceAttr("identitynow_source.test", "delete_threshold", "15"),
 					resource.TestCheckResourceAttr("identitynow_source.test", "features.#", "1"),
 					resource.TestCheckResourceAttr("identitynow_source.test", "features.0", "DISCOVER_SCHEMA"),

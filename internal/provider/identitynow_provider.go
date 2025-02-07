@@ -2,13 +2,6 @@ package provider
 
 import (
 	"context"
-	"github.com/hashicorp/terraform-plugin-framework/datasource"
-	"github.com/hashicorp/terraform-plugin-framework/path"
-	"github.com/hashicorp/terraform-plugin-framework/provider"
-	"github.com/hashicorp/terraform-plugin-framework/provider/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource"
-	"github.com/hashicorp/terraform-plugin-framework/types"
-	"github.com/hashicorp/terraform-plugin-log/tflog"
 	"terraform-provider-identitynow/internal/cluster"
 	"terraform-provider-identitynow/internal/connector"
 	"terraform-provider-identitynow/internal/connector_rule"
@@ -17,15 +10,26 @@ import (
 	"terraform-provider-identitynow/internal/identity_attribute"
 	"terraform-provider-identitynow/internal/identity_profile"
 	"terraform-provider-identitynow/internal/lifecycle_state"
+	"terraform-provider-identitynow/internal/org_config"
 	"terraform-provider-identitynow/internal/role"
 	"terraform-provider-identitynow/internal/sailpoint/custom"
 	"terraform-provider-identitynow/internal/source"
+	"terraform-provider-identitynow/internal/source_aggregation_schedule"
 	"terraform-provider-identitynow/internal/source_schema"
 	"terraform-provider-identitynow/internal/transform"
 	"terraform-provider-identitynow/internal/workflow"
 
-	sailpoint "github.com/sailpoint-oss/golang-sdk/v2"
+	"github.com/hashicorp/terraform-plugin-framework/datasource"
+	"github.com/hashicorp/terraform-plugin-framework/path"
+	"github.com/hashicorp/terraform-plugin-framework/provider"
+	"github.com/hashicorp/terraform-plugin-framework/provider/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource"
+	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
+
 	"os"
+
+	sailpoint "github.com/sailpoint-oss/golang-sdk/v2"
 )
 
 // Ensure identityNowProvider satisfies various provider interfaces.
@@ -202,10 +206,12 @@ func (p *identityNowProvider) Resources(_ context.Context) []func() resource.Res
 		source.NewSourceResource,
 		identity_profile.NewIdentityProfileResource,
 		source_schema.NewSourceSchemaResource,
+		source_aggregation_schedule.NewSourceAggregationScheduleResource,
 		lifecycle_state.NewLifecycleStateResource,
 		connector_rule.NewConnectorRuleResource,
 		workflow.NewWorkflowResource,
 		role.NewRoleResource,
+		org_config.NewOrgConfigResource,
 	}
 }
 

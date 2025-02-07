@@ -3,10 +3,11 @@ package patch
 import (
 	"encoding/json"
 	"fmt"
+	"testing"
+
 	sailpointBeta "github.com/sailpoint-oss/golang-sdk/v2/api_beta"
 	sailpointV3 "github.com/sailpoint-oss/golang-sdk/v2/api_v3"
 	"github.com/stretchr/testify/assert"
-	"testing"
 )
 
 func TestConvertFromBetaToV3(t *testing.T) {
@@ -14,6 +15,11 @@ func TestConvertFromBetaToV3(t *testing.T) {
 	json.Unmarshal([]byte("[\"TEST\"]"), &arrayBeta)
 	var arrayV3 []sailpointV3.ArrayInner
 	json.Unmarshal([]byte("[\"TEST\"]"), &arrayV3)
+
+	attrMap := map[string]interface{}{
+		"id": "newId",
+	}
+	attrMapValue := sailpointBeta.MapmapOfStringAnyAsUpdateMultiHostSourcesRequestInnerValue(&attrMap)
 
 	type args struct {
 		beta []sailpointBeta.JsonPatchOperation
@@ -30,39 +36,35 @@ func TestConvertFromBetaToV3(t *testing.T) {
 				{
 					Op:   "add",
 					Path: "/attrString",
-					Value: &sailpointBeta.JsonPatchOperationValue{
+					Value: &sailpointBeta.UpdateMultiHostSourcesRequestInnerValue{
 						String: sailpointBeta.PtrString("newValue"),
 					},
 				},
 				{
 					Op:   "replace",
 					Path: "/attrBool",
-					Value: &sailpointBeta.JsonPatchOperationValue{
+					Value: &sailpointBeta.UpdateMultiHostSourcesRequestInnerValue{
 						Bool: sailpointBeta.PtrBool(true),
 					},
 				},
 				{
 					Op:   "replace",
 					Path: "/attrInt",
-					Value: &sailpointBeta.JsonPatchOperationValue{
+					Value: &sailpointBeta.UpdateMultiHostSourcesRequestInnerValue{
 						Int32: sailpointBeta.PtrInt32(222),
 					},
 				},
 				{
 					Op:   "replace",
 					Path: "/attrArray",
-					Value: &sailpointBeta.JsonPatchOperationValue{
+					Value: &sailpointBeta.UpdateMultiHostSourcesRequestInnerValue{
 						ArrayOfArrayInner: &arrayBeta,
 					},
 				},
 				{
-					Op:   "add",
-					Path: "/attrMap",
-					Value: &sailpointBeta.JsonPatchOperationValue{
-						MapmapOfStringinterface: &map[string]interface{}{
-							"id": "newId",
-						},
-					},
+					Op:    "add",
+					Path:  "/attrMap",
+					Value: &attrMapValue,
 				},
 			}},
 			want: []sailpointV3.JsonPatchOperation{
@@ -98,7 +100,7 @@ func TestConvertFromBetaToV3(t *testing.T) {
 					Op:   "add",
 					Path: "/attrMap",
 					Value: &sailpointV3.JsonPatchOperationValue{
-						MapmapOfStringinterface: &map[string]interface{}{
+						MapmapOfStringAny: &map[string]interface{}{
 							"id": "newId",
 						},
 					},
@@ -111,7 +113,7 @@ func TestConvertFromBetaToV3(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := ConvertFromBetaToV3(tt.args.beta)
+			got, err := ConvertPatchOperationFromBetaToV3(tt.args.beta)
 			if !tt.wantErr(t, err, fmt.Sprintf("ConvertFromBetaToV3(%v)", tt.args.beta)) {
 				return
 			}

@@ -2,14 +2,15 @@ package patch
 
 import (
 	"encoding/json"
+
 	sailpointBeta "github.com/sailpoint-oss/golang-sdk/v2/api_beta"
 	sailpointV3 "github.com/sailpoint-oss/golang-sdk/v2/api_v3"
 )
 
-func ConvertFromBetaToV3(beta []sailpointBeta.JsonPatchOperation) ([]sailpointV3.JsonPatchOperation, error) {
+func ConvertPatchOperationFromBetaToV3(beta []sailpointBeta.JsonPatchOperation) ([]sailpointV3.JsonPatchOperation, error) {
 	v3 := make([]sailpointV3.JsonPatchOperation, len(beta))
 	for i, b := range beta {
-		value, err := convertValue(b.Value)
+		value, err := convertPatchValueFromBetaToV3(b.Value)
 		if err != nil {
 			return nil, err
 		}
@@ -22,7 +23,7 @@ func ConvertFromBetaToV3(beta []sailpointBeta.JsonPatchOperation) ([]sailpointV3
 	return v3, nil
 }
 
-func convertValue(value *sailpointBeta.JsonPatchOperationValue) (*sailpointV3.JsonPatchOperationValue, error) {
+func convertPatchValueFromBetaToV3(value *sailpointBeta.UpdateMultiHostSourcesRequestInnerValue) (*sailpointV3.JsonPatchOperationValue, error) {
 	if value == nil {
 		return nil, nil
 	}
@@ -40,10 +41,10 @@ func convertValue(value *sailpointBeta.JsonPatchOperationValue) (*sailpointV3.Js
 		arrayInnerPtr = &arrayInner
 	}
 	return &sailpointV3.JsonPatchOperationValue{
-		ArrayOfArrayInner:       arrayInnerPtr,
-		Int32:                   value.Int32,
-		MapmapOfStringinterface: value.MapmapOfStringinterface,
-		String:                  value.String,
-		Bool:                    value.Bool,
+		ArrayOfArrayInner: arrayInnerPtr,
+		Int32:             value.Int32,
+		MapmapOfStringAny: value.MapmapOfStringAny,
+		String:            value.String,
+		Bool:              value.Bool,
 	}, nil
 }

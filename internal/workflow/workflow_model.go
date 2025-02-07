@@ -1,9 +1,10 @@
 package workflow
 
 import (
+	"terraform-provider-identitynow/internal/util"
+
 	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"terraform-provider-identitynow/internal/util"
 )
 
 type workflowModel struct {
@@ -28,11 +29,15 @@ type trigger struct {
 
 // One of values sets is applicable
 type triggerAttributes struct {
-	Id     types.String `tfsdk:"id" json:"id"`
-	Filter types.String `tfsdk:"filter" json:"filter.$"`
+	// Fields for EVENT type of trigger
+	Id                types.String `tfsdk:"id" json:"id"`
+	Filter            types.String `tfsdk:"filter" json:"filter.$"`
+	AttributeToFilter types.String `tfsdk:"attribute_to_filter" json:"attributeToFilter"`
 
+	// Fields for EXTERNAL type of trigger
 	Name        types.String `tfsdk:"name" json:"name"`
 	Description types.String `tfsdk:"description" json:"description"`
 
+	// Fields for SCHEDULED type of trigger
 	CronString types.String `tfsdk:"cron_string" json:"cronString"`
 }

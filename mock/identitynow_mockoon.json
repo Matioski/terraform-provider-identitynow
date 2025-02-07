@@ -1,6 +1,6 @@
 {
   "uuid": "a0ee9e02-2856-4081-a60e-11b09e0d2b78",
-  "lastMigration": 32,
+  "lastMigration": 33,
   "name": "Identitynow mock",
   "endpointPrefix": "",
   "latency": 0,
@@ -182,6 +182,20 @@
           "uuid": "b8914249-9499-431e-a154-bcc7cfcc2629"
         }
       ]
+    },
+    {
+      "uuid": "f30457d9-1bf3-4d82-8e34-b227d6bde8a9",
+      "name": "Org-config",
+      "children": [
+        {
+          "type": "route",
+          "uuid": "ecf02b79-c9a8-4120-bc0e-23836bc8cdde"
+        },
+        {
+          "type": "route",
+          "uuid": "fa71d457-6079-4859-913f-720d35e09cc7"
+        }
+      ]
     }
   ],
   "routes": [
@@ -212,7 +226,9 @@
           "callbacks": []
         }
       ],
-      "responseMode": null
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
     },
     {
       "uuid": "01d55c6f-9b8f-4f64-8d78-586c60ebfff0",
@@ -254,7 +270,9 @@
           "callbacks": []
         }
       ],
-      "responseMode": null
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
     },
     {
       "uuid": "9799f15d-1c76-4b93-860e-4b62c156b98a",
@@ -283,7 +301,9 @@
           "callbacks": []
         }
       ],
-      "responseMode": null
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
     },
     {
       "uuid": "ee233951-1096-4207-8759-43c10677334c",
@@ -312,7 +332,9 @@
           "callbacks": []
         }
       ],
-      "responseMode": null
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
     },
     {
       "uuid": "b29bb58a-d3f2-4903-8b51-b0fda4604e4c",
@@ -379,7 +401,9 @@
           "callbacks": []
         }
       ],
-      "responseMode": "SEQUENTIAL"
+      "responseMode": "SEQUENTIAL",
+      "streamingMode": null,
+      "streamingInterval": 0
     },
     {
       "uuid": "f43d1479-e9ca-4bd2-bae1-d4c87e7db172",
@@ -408,7 +432,9 @@
           "callbacks": []
         }
       ],
-      "responseMode": null
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
     },
     {
       "uuid": "c5d1dc4d-7407-4991-95f1-4a566f7e3579",
@@ -456,7 +482,9 @@
           "callbacks": []
         }
       ],
-      "responseMode": "SEQUENTIAL"
+      "responseMode": "SEQUENTIAL",
+      "streamingMode": null,
+      "streamingInterval": 0
     },
     {
       "uuid": "086f40cc-8825-43b3-af86-c7b6e5f36440",
@@ -493,7 +521,9 @@
           "callbacks": []
         }
       ],
-      "responseMode": null
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
     },
     {
       "uuid": "7f7ecfa5-b6b1-46f0-8974-050b07cfef45",
@@ -571,7 +601,9 @@
           "callbacks": []
         }
       ],
-      "responseMode": null
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
     },
     {
       "uuid": "cdcbaee2-996e-41b2-a1b2-7eb7508c60de",
@@ -600,7 +632,9 @@
           "callbacks": []
         }
       ],
-      "responseMode": null
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
     },
     {
       "uuid": "237b1083-7268-4686-8255-e5d18efa2865",
@@ -667,7 +701,9 @@
           "callbacks": []
         }
       ],
-      "responseMode": "SEQUENTIAL"
+      "responseMode": "SEQUENTIAL",
+      "streamingMode": null,
+      "streamingInterval": 0
     },
     {
       "uuid": "edc1d83c-3111-4749-abf1-5e1893d2e548",
@@ -696,7 +732,9 @@
           "callbacks": []
         }
       ],
-      "responseMode": null
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
     },
     {
       "uuid": "d03c750c-0142-4e34-a57e-200c7d54e65b",
@@ -752,7 +790,9 @@
           "callbacks": []
         }
       ],
-      "responseMode": null
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
     },
     {
       "uuid": "60480140-b7f6-45e9-bec6-d1599aab5a20",
@@ -781,7 +821,9 @@
           "callbacks": []
         }
       ],
-      "responseMode": null
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
     },
     {
       "uuid": "5370bebc-55f3-4fb1-bb17-3c2487fdb9f4",
@@ -848,7 +890,9 @@
           "callbacks": []
         }
       ],
-      "responseMode": "SEQUENTIAL"
+      "responseMode": "SEQUENTIAL",
+      "streamingMode": null,
+      "streamingInterval": 0
     },
     {
       "uuid": "19dbf610-29f9-4b75-8126-896ef05d5ef4",
@@ -877,7 +921,9 @@
           "callbacks": []
         }
       ],
-      "responseMode": null
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
     },
     {
       "uuid": "64bc72c2-c308-4552-8765-31551e261223",
@@ -933,7 +979,9 @@
           "callbacks": []
         }
       ],
-      "responseMode": null
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
     },
     {
       "uuid": "b1980fd0-a007-42db-8d9b-b8c30775ccad",
@@ -962,7 +1010,9 @@
           "callbacks": []
         }
       ],
-      "responseMode": "SEQUENTIAL"
+      "responseMode": "SEQUENTIAL",
+      "streamingMode": null,
+      "streamingInterval": 0
     },
     {
       "uuid": "67cd2d68-fb28-40d9-be13-5b56eebb2fb7",
@@ -991,7 +1041,9 @@
           "callbacks": []
         }
       ],
-      "responseMode": null
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
     },
     {
       "uuid": "705a1e6c-de94-456f-b83f-2da5f4cf0edb",
@@ -1058,7 +1110,9 @@
           "callbacks": []
         }
       ],
-      "responseMode": "SEQUENTIAL"
+      "responseMode": "SEQUENTIAL",
+      "streamingMode": null,
+      "streamingInterval": 0
     },
     {
       "uuid": "a483eb8d-4eb2-4cbc-8645-62db014f92d4",
@@ -1087,7 +1141,9 @@
           "callbacks": []
         }
       ],
-      "responseMode": null
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
     },
     {
       "uuid": "84e5dcf6-e71a-4bb2-bbde-d99ea1a3930d",
@@ -1143,7 +1199,9 @@
           "callbacks": []
         }
       ],
-      "responseMode": null
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
     },
     {
       "uuid": "c2ec98a6-753e-415f-8626-7233060f6cd6",
@@ -1172,7 +1230,9 @@
           "callbacks": []
         }
       ],
-      "responseMode": null
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
     },
     {
       "uuid": "3aff9b7f-3791-4aca-9ca5-b37cf71ee34b",
@@ -1190,7 +1250,7 @@
           "headers": [],
           "bodyType": "DATABUCKET",
           "filePath": "",
-          "databucketID": "cpru",
+          "databucketID": "7oo6",
           "sendFileAsBody": false,
           "rules": [],
           "rulesOperator": "OR",
@@ -1209,7 +1269,7 @@
           "headers": [],
           "bodyType": "DATABUCKET",
           "filePath": "",
-          "databucketID": "cpru",
+          "databucketID": "7oo6",
           "sendFileAsBody": false,
           "rules": [],
           "rulesOperator": "OR",
@@ -1239,7 +1299,9 @@
           "callbacks": []
         }
       ],
-      "responseMode": "SEQUENTIAL"
+      "responseMode": "SEQUENTIAL",
+      "streamingMode": null,
+      "streamingInterval": 0
     },
     {
       "uuid": "a4edd4f2-40c1-4d49-8f5b-05f79506a81d",
@@ -1268,7 +1330,9 @@
           "callbacks": []
         }
       ],
-      "responseMode": null
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
     },
     {
       "uuid": "88f65324-d04f-4ca8-a483-e711df9a36db",
@@ -1286,7 +1350,7 @@
           "headers": [],
           "bodyType": "DATABUCKET",
           "filePath": "",
-          "databucketID": "ujaz",
+          "databucketID": "7oo6",
           "sendFileAsBody": false,
           "rules": [],
           "rulesOperator": "OR",
@@ -1295,9 +1359,30 @@
           "default": true,
           "crudKey": "id",
           "callbacks": []
+        },
+        {
+          "uuid": "2770f9fe-ddac-4cd4-94bc-c80352ddd1d1",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "ugsd",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
         }
       ],
-      "responseMode": null
+      "responseMode": "SEQUENTIAL",
+      "streamingMode": null,
+      "streamingInterval": 0
     },
     {
       "uuid": "b8397aa0-efcf-4ed2-933c-4b763d633936",
@@ -1326,7 +1411,9 @@
           "callbacks": []
         }
       ],
-      "responseMode": "SEQUENTIAL"
+      "responseMode": "SEQUENTIAL",
+      "streamingMode": null,
+      "streamingInterval": 0
     },
     {
       "uuid": "1a0a1c6a-56f4-499b-b843-d7219848afa8",
@@ -1355,7 +1442,9 @@
           "callbacks": []
         }
       ],
-      "responseMode": null
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
     },
     {
       "uuid": "d498e888-007f-4221-9f3e-e7d79eb62f38",
@@ -1422,7 +1511,9 @@
           "callbacks": []
         }
       ],
-      "responseMode": "SEQUENTIAL"
+      "responseMode": "SEQUENTIAL",
+      "streamingMode": null,
+      "streamingInterval": 0
     },
     {
       "uuid": "b77584b8-1fb5-4fbf-ae78-5890eb8247ab",
@@ -1451,7 +1542,9 @@
           "callbacks": []
         }
       ],
-      "responseMode": null
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
     },
     {
       "uuid": "522d26d8-049b-4b50-80a9-d4d1c69943f9",
@@ -1507,7 +1600,9 @@
           "callbacks": []
         }
       ],
-      "responseMode": null
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
     },
     {
       "uuid": "5910cf00-9bbd-4be6-8ca7-969cfdf2c977",
@@ -1536,7 +1631,9 @@
           "callbacks": []
         }
       ],
-      "responseMode": null
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
     },
     {
       "uuid": "acdda775-52cc-4cab-b7c4-c78be1b15846",
@@ -1603,7 +1700,9 @@
           "callbacks": []
         }
       ],
-      "responseMode": "SEQUENTIAL"
+      "responseMode": "SEQUENTIAL",
+      "streamingMode": null,
+      "streamingInterval": 0
     },
     {
       "uuid": "69c7c7ca-8ea4-483e-910c-6cf3d1170ed1",
@@ -1632,7 +1731,9 @@
           "callbacks": []
         }
       ],
-      "responseMode": null
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
     },
     {
       "uuid": "135cae6e-4099-411e-b63d-7778d14d7bae",
@@ -1661,7 +1762,9 @@
           "callbacks": []
         }
       ],
-      "responseMode": null
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
     },
     {
       "uuid": "9340631a-417c-4420-9725-1e667c745f51",
@@ -1695,7 +1798,9 @@
           "callbacks": []
         }
       ],
-      "responseMode": null
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
     },
     {
       "uuid": "382c0d8e-e4ec-49ff-8b53-f540943e2785",
@@ -1743,7 +1848,9 @@
           "callbacks": []
         }
       ],
-      "responseMode": "SEQUENTIAL"
+      "responseMode": "SEQUENTIAL",
+      "streamingMode": null,
+      "streamingInterval": 0
     },
     {
       "uuid": "b8914249-9499-431e-a154-bcc7cfcc2629",
@@ -1811,7 +1918,128 @@
           "callbacks": []
         }
       ],
-      "responseMode": null
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
+    },
+    {
+      "uuid": "fa71d457-6079-4859-913f-720d35e09cc7",
+      "type": "http",
+      "documentation": "Patch Organization Configuration",
+      "method": "patch",
+      "endpoint": "beta/org-config",
+      "responses": [
+        {
+          "uuid": "e5ff57d5-c27f-414f-b7c2-a63eb8918300",
+          "body": "{\r\n    \"orgName\": \"swissre-nonprod1-mockoon\",\r\n    \"timeZone\": \"{{data 'tenant_timezone'}}\",\r\n    \"lcsChangeHonorsSourceEnableFeature\": false,\r\n    \"armCustomerId\": null,\r\n    \"armAuth\": null,\r\n    \"armDb\": null,\r\n    \"armSsoUrl\": null,\r\n    \"iaiEnableCertificationRecommendations\": true,\r\n    \"sodReportConfigs\": [],\r\n    \"iaiEnableAccessRequestRecommendations\": true,\r\n    \"segmentationEnabled\": false\r\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "kxbo",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "133438a7-a7b9-4bec-9e2f-511a6e6730c9",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "xy24",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": "SEQUENTIAL",
+      "streamingMode": null,
+      "streamingInterval": 0
+    },
+    {
+      "uuid": "ecf02b79-c9a8-4120-bc0e-23836bc8cdde",
+      "type": "http",
+      "documentation": "Patch Organization Configuration",
+      "method": "get",
+      "endpoint": "beta/org-config",
+      "responses": [
+        {
+          "uuid": "54cc7e94-3fd2-4d5b-b2fd-68619d737d0e",
+          "body": "{\r\n    \"orgName\": \"swissre-nonprod1-mockoon\",\r\n    \"timeZone\": \"UTC\",\r\n    \"lcsChangeHonorsSourceEnableFeature\": false,\r\n    \"armCustomerId\": null,\r\n    \"armSapSystemIdMappings\": null,\r\n    \"armAuth\": null,\r\n    \"armDb\": null,\r\n    \"armSsoUrl\": null,\r\n    \"iaiEnableCertificationRecommendations\": true,\r\n    \"sodReportConfigs\": [],\r\n    \"iaiEnableAccessRequestRecommendations\": true,\r\n    \"segmentationEnabled\": false\r\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "rmsc",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "dadbaf72-00b8-40b5-b46e-25c4ad97c0b9",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "kxbo",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "7e30b827-b546-4109-9c4c-3755a164ee83",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "4waj",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": "SEQUENTIAL",
+      "streamingMode": null,
+      "streamingInterval": 0
     }
   ],
   "rootChildren": [
@@ -1870,6 +2098,10 @@
     {
       "type": "folder",
       "uuid": "b5f63d82-909f-4a70-8886-4e5cee92d686"
+    },
+    {
+      "type": "folder",
+      "uuid": "f30457d9-1bf3-4d82-8e34-b227d6bde8a9"
     }
   ],
   "proxyMode": false,
@@ -2021,21 +2253,21 @@
       "id": "cpru",
       "name": "Lifecycle State",
       "documentation": "",
-      "value": "{\r\n  \"enabled\": {{body 'enabled'}},\r\n  \"technicalName\": \"{{body 'technicalName'}}\",\r\n  \"description\": \"{{body 'description'}}\",\r\n  \"identityCount\": 0,\r\n  \"emailNotificationOption\": {\r\n    \"notifyManagers\": {{body 'emailNotificationOption.notifyManagers'}},\r\n    \"notifyAllAdmins\": {{body 'emailNotificationOption.notifyAllAdmins'}},\r\n    \"notifySpecificUsers\": {{body 'emailNotificationOption.notifySpecificUsers'}},\r\n    \"emailAddressList\": [\"{{body 'emailNotificationOption.emailAddressList.0'}}\", \"{{body 'emailNotificationOption.emailAddressList.1'}}\"]\r\n  },\r\n  \"accountActions\": [\r\n    {\r\n      \"action\": \"{{body 'accountActions.0.action'}}\",\r\n      \"sourceIds\": [\"{{body 'accountActions.0.sourceIds.0'}}\", \"{{body 'accountActions.0.sourceIds.1'}}\"]\r\n    },\r\n    {\r\n      \"action\": \"{{body 'accountActions.1.action'}}\",\r\n      \"sourceIds\": [\"{{body 'accountActions.1.sourceIds.0'}}\", \"{{body 'accountActions.1.sourceIds.1'}}\"]\r\n    }\r\n  ],\r\n  \"accessProfileIds\": [\"{{body 'accessProfileIds.0'}}\", \"{{body 'accessProfileIds.1'}}\"],\r\n  \"identityState\": null,\r\n  \"id\": \"randomId\",\r\n  \"name\": \"{{body 'name'}}\",\r\n  \"created\": \"2024-02-15T09:50:48.565Z\",\r\n  \"modified\": \"2024-02-15T09:53:02.701Z\"\r\n}"
+      "value": "{\r\n  \"enabled\": {{body 'enabled'}},\r\n  \"technicalName\": \"{{body 'technicalName'}}\",\r\n  \"description\": \"{{body 'description'}}\",\r\n  \"identityCount\": 0,\r\n  \"emailNotificationOption\": {\r\n    \"notifyManagers\": {{body 'emailNotificationOption.notifyManagers'}},\r\n    \"notifyAllAdmins\": {{body 'emailNotificationOption.notifyAllAdmins'}},\r\n    \"notifySpecificUsers\": {{body 'emailNotificationOption.notifySpecificUsers'}},\r\n    \"emailAddressList\": [\"{{body 'emailNotificationOption.emailAddressList.0'}}\", \"{{body 'emailNotificationOption.emailAddressList.1'}}\"]\r\n  },\r\n  \"accessProfileIds\": [\"{{body 'accessProfileIds.0'}}\", \"{{body 'accessProfileIds.1'}}\"],\r\n  \"identityState\": \"{{body 'identityState'}}\",\r\n  \"id\": \"randomId\",\r\n  \"name\": \"{{body 'name'}}\",\r\n  \"created\": \"2024-02-15T09:50:48.565Z\",\r\n  \"modified\": \"2024-02-15T09:53:02.701Z\"\r\n}"
     },
     {
-      "uuid": "a457e7f5-99b1-4268-85fb-1cf84488ecf1",
-      "id": "ujaz",
-      "name": "Lifecycle State Patch",
+      "uuid": "fdecac99-1899-45ec-bb1e-fbfd0d3aea78",
+      "id": "7oo6",
+      "name": "Lifecycle State After Create",
       "documentation": "",
-      "value": "{\r\n  \"enabled\": {{body '0.value'}},\r\n  \"technicalName\": \"{{dataRaw 'cpru' 'technicalName'}}\",\r\n  \"description\": \"{{body '1.value'}}\",\r\n  \"identityCount\": 0,\r\n  \"emailNotificationOption\": {\r\n    \"notifyManagers\": {{body '2.value'}},\r\n    \"notifyAllAdmins\": {{body '3.value'}},\r\n    \"notifySpecificUsers\": {{body '4.value'}},\r\n    \"emailAddressList\": {{body '5.value'}}\r\n  },\r\n  \"accountActions\": {{body '6.value'}},\r\n  \"accessProfileIds\": {{body '7.value'}},\r\n  \"identityState\": null,\r\n  \"id\": \"randomId\",\r\n  \"name\": \"{{dataRaw 'cpru' 'name'}}\",\r\n  \"created\": \"2024-02-15T09:50:48.565Z\",\r\n  \"modified\": \"2024-02-15T09:53:02.701Z\"\r\n}"
+      "value": "{\r\n  \"enabled\": false,\r\n  \"technicalName\": \"active\",\r\n  \"description\": \"my test description\",\r\n  \"identityCount\": 0,\r\n  \"emailNotificationOption\": {\r\n    \"notifyManagers\": false,\r\n    \"notifyAllAdmins\": true,\r\n    \"notifySpecificUsers\": true,\r\n    \"emailAddressList\": [\"email1\", \"email2\"]\r\n  },\r\n  \"accountActions\": [{\"action\":\"ENABLE\",\"sourceIds\":[\"sourceId2\", \"sourceId1\"]}, {\"action\":\"DISABLE\",\"sourceIds\":[\"sourceId4\", \"sourceId3\"]}],\r\n  \"accessProfileIds\": [\"accessProfileId1\", \"accessProfileId2\"],\r\n  \"identityState\": \"ACTIVE\",\r\n  \"id\": \"randomId\",\r\n  \"name\": \"Active\",\r\n  \"created\": \"2024-02-15T09:50:48.565Z\",\r\n  \"modified\": \"2024-02-15T09:53:02.701Z\"\r\n}"
     },
     {
       "uuid": "55a06970-a1fa-4400-af3a-f72dcd40e60c",
       "id": "ugsd",
       "name": "Lifecycle State After Patch",
       "documentation": "",
-      "value": "{\r\n  \"enabled\": true,\r\n  \"technicalName\": \"active\",\r\n  \"description\": \"my test descriptionUpd\",\r\n  \"identityCount\": 0,\r\n  \"emailNotificationOption\": {\r\n    \"notifyManagers\": true,\r\n    \"notifyAllAdmins\": false,\r\n    \"notifySpecificUsers\": false,\r\n    \"emailAddressList\": [\"email1\"]\r\n  },\r\n  \"accountActions\": [{\"action\":\"ENABLE\",\"sourceIds\":[\"sourceId1\"]}],\r\n  \"accessProfileIds\": [\"accessProfileId1\",\"accessProfileId2\",\"accessProfileId3\"],\r\n  \"identityState\": null,\r\n  \"id\": \"randomId\",\r\n  \"name\": \"Active\",\r\n  \"created\": \"2024-02-15T09:50:48.565Z\",\r\n  \"modified\": \"2024-02-15T09:53:02.701Z\"\r\n}"
+      "value": "{\r\n  \"enabled\": true,\r\n  \"technicalName\": \"active\",\r\n  \"description\": \"my test descriptionUpd\",\r\n  \"identityCount\": 0,\r\n  \"emailNotificationOption\": {\r\n    \"notifyManagers\": true,\r\n    \"notifyAllAdmins\": false,\r\n    \"notifySpecificUsers\": false,\r\n    \"emailAddressList\": [\"email1\"]\r\n  },\r\n  \"accountActions\": [{\"action\":\"ENABLE\",\"sourceIds\":[\"sourceId1\"]}],\r\n  \"accessProfileIds\": [\"accessProfileId1\",\"accessProfileId2\",\"accessProfileId3\"],\r\n  \"identityState\": \"INACTIVE_SHORT_TERM\",\r\n  \"id\": \"randomId\",\r\n  \"name\": \"Active\",\r\n  \"created\": \"2024-02-15T09:50:48.565Z\",\r\n  \"modified\": \"2024-02-15T09:53:02.701Z\"\r\n}"
     },
     {
       "uuid": "8869ea6a-69f7-45ff-8ff1-7a9cdb6f9249",
@@ -2063,21 +2295,42 @@
       "id": "bujc",
       "name": "Workflow",
       "documentation": "",
-      "value": "{\r\n  \"id\": \"workflowId\",\r\n  \"name\": \"{{body 'name'}}\",\r\n  \"description\": \"{{body 'description'}}\",\r\n  \"created\": \"2024-02-16T12:19:04.26101544Z\",\r\n  \"modified\": \"2024-02-16T12:19:30.783054232Z\",\r\n  \"modifiedBy\": {\r\n    \"type\": \"IDENTITY\",\r\n    \"id\": \"id\",\r\n    \"name\": \"name\"\r\n  },\r\n  \"definition\": {{body 'definition'}},\r\n  \"enabled\": {{body 'enabled'}},\r\n  \"executionCount\": 0,\r\n  \"failureCount\": 0,\r\n  \"creator\": {\r\n    \"type\": \"IDENTITY\",\r\n    \"id\": \"id\",\r\n    \"name\": \"name\"\r\n  },\r\n  \"owner\": {{body 'owner'}},\r\n  \"trigger\": {{body 'trigger'}}\r\n}"
+      "value": "{\r\n    \"id\": \"workflowId\",\r\n    \"name\": \"test workflow\",\r\n    \"description\": \"test workflow from terraform\",\r\n    \"created\": \"2024-12-10T14:06:02.222429121Z\",\r\n    \"modified\": \"2024-12-10T14:06:02.222429121Z\",\r\n    \"modifiedBy\": {\r\n        \"type\": \"IDENTITY\",\r\n        \"id\": \"modifierId\",\r\n        \"name\": \"modifierName\"\r\n    },\r\n    \"definition\": {\r\n        \"start\": \"Get List of Identities\",\r\n        \"steps\": {\r\n            \"End Step\": {\r\n                \"displayName\": \"\",\r\n                \"type\": \"success\"\r\n            },\r\n            \"Get List of Identities\": {\r\n                \"actionId\": \"sp:get-identities\",\r\n                \"attributes\": {\r\n                    \"inputQuery\": \"*\",\r\n                    \"searchBy\": \"searchQuery\"\r\n                },\r\n                \"displayName\": \"Get List of Identities\",\r\n                \"nextStep\": \"End Step\",\r\n                \"type\": \"action\",\r\n                \"versionNumber\": 1\r\n            }\r\n        }\r\n    },\r\n    \"enabled\": true,\r\n    \"executionCount\": 0,\r\n    \"failureCount\": 0,\r\n    \"creator\": {\r\n        \"type\": \"IDENTITY\",\r\n        \"id\": \"creatorId\",\r\n        \"name\": \"creatorName\"\r\n    },\r\n    \"owner\": {\r\n        \"type\": \"IDENTITY\",\r\n        \"id\": \"ownerId\",\r\n        \"name\": \"ownerName\"\r\n    },\r\n    \"trigger\": {\r\n        \"type\": \"EVENT\",\r\n        \"attributes\": {\r\n            \"filter.$\": \"$.changes[?(@.attribute== \\\"cloudLifecycleState\\\")]\",\r\n            \"id\": \"idn:identity-attributes-changed\"\r\n        }\r\n    }\r\n}"
     },
     {
       "uuid": "76594130-5090-4449-9629-c4529c00f65f",
       "id": "eajj",
       "name": "Workflow Patch",
       "documentation": "",
-      "value": "{\r\n  \"id\": \"workflowId\",\r\n  \"name\": \"{{body '0.value'}}\",\r\n  \"description\": \"{{body '1.value'}}\",\r\n  \"created\": \"2024-02-16T12:19:04.26101544Z\",\r\n  \"modified\": \"2024-02-16T12:19:30.783054232Z\",\r\n  \"modifiedBy\": {\r\n    \"type\": \"IDENTITY\",\r\n    \"id\": \"id\",\r\n    \"name\": \"name\"\r\n  },\r\n  \"definition\":{\r\n    \"start\": \"{{body '3.value'}}\",\r\n    \"steps\": {\r\n      \"End Step\": {\r\n        \"displayName\": \"\",\r\n        \"type\": \"success\"\r\n      },\r\n      \"Get List of Identities\": {\r\n        \"actionId\": \"sp:get-identities\",\r\n        \"attributes\": {\r\n          \"inputQuery\": \"*\",\r\n          \"searchBy\": \"searchQuery\"\r\n        },\r\n        \"displayName\": \"{{body '4.value'}}\",\r\n        \"nextStep\": \"End Step\",\r\n        \"type\": \"action\",\r\n        \"versionNumber\": \"2\"\r\n      }\r\n    }\r\n  },\r\n  \"enabled\": {{body '2.value'}},\r\n  \"executionCount\": 0,\r\n  \"failureCount\": 0,\r\n  \"creator\": {\r\n    \"type\": \"IDENTITY\",\r\n    \"id\": \"id\",\r\n    \"name\": \"name\"\r\n  },\r\n  \"owner\": {\r\n    \"id\": \"{{dataRaw 'bujc' 'owner.id'}}\",\r\n    \"name\": \"\",\r\n    \"type\": \"IDENTITY\"\r\n  },\r\n  \"trigger\": {\r\n    \"attributes\": {\r\n      \"cronString\": \"cron stringUpd\",\r\n      \"description\": \"descriptionUpd\",\r\n      \"filter.$\": \"filterUpd\",\r\n      \"id\": \"idn:identity-createdUpd\",\r\n      \"name\": \"nameUpd\"\r\n    },\r\n    \"type\": \"{{body '5.value'}}\"\r\n  }\r\n}"
+      "value": "{\r\n  \"id\": \"workflowId\",\r\n  \"name\": \"test workflowUpd\",\r\n  \"description\": \"test workflow from terraformUpd\",\r\n  \"created\": \"2024-02-16T12:19:04.26101544Z\",\r\n  \"modified\": \"2024-02-16T12:19:30.783054232Z\",\r\n  \"modifiedBy\": {\r\n    \"type\": \"IDENTITY\",\r\n    \"id\": \"id\",\r\n    \"name\": \"name\"\r\n  },\r\n  \"definition\": {\r\n    \"start\": \"Get List of IdentitiesUpd\",\r\n    \"steps\": {\r\n      \"End Step\": {\r\n        \"displayName\": \"\",\r\n        \"type\": \"success\"\r\n      },\r\n      \"Get List of Identities\": {\r\n        \"actionId\": \"sp:get-identities\",\r\n        \"attributes\": {\r\n          \"inputQuery\": \"*\",\r\n          \"searchBy\": \"searchQuery\"\r\n        },\r\n        \"displayName\": \"Get List of IdentitiesUpd\",\r\n        \"nextStep\": \"End Step\",\r\n        \"type\": \"action\",\r\n        \"versionNumber\": 2\r\n      }\r\n    }\r\n  },\r\n  \"enabled\": true,\r\n  \"executionCount\": 0,\r\n  \"failureCount\": 0,\r\n  \"creator\": {\r\n    \"type\": \"IDENTITY\",\r\n    \"id\": \"id\",\r\n    \"name\": \"name\"\r\n  },\r\n  \"owner\": {\r\n    \"id\": \"ownerId\",\r\n    \"name\": \"ownerName\",\r\n    \"type\": \"IDENTITY\"\r\n  },\r\n  \"trigger\": {\r\n    \"attributes\": {\r\n      \"description\": \"externalDescription\",\r\n      \"name\": \"externalName\"\r\n    },\r\n    \"type\": \"EXTERNAL\"\r\n  }\r\n}"
     },
     {
       "uuid": "2b456800-5ea5-4a6e-bc79-35bf4ff1906b",
       "id": "tl3p",
       "name": "Workflow After Patch",
       "documentation": "",
-      "value": "{\r\n  \"id\": \"workflowId\",\r\n  \"name\": \"test workflowUpd\",\r\n  \"description\": \"test workflow from terraformUpd\",\r\n  \"created\": \"2024-02-16T12:19:04.26101544Z\",\r\n  \"modified\": \"2024-02-16T12:19:30.783054232Z\",\r\n  \"modifiedBy\": {\r\n    \"type\": \"IDENTITY\",\r\n    \"id\": \"id\",\r\n    \"name\": \"name\"\r\n  },\r\n  \"definition\": {\r\n    \"start\": \"Get List of IdentitiesUpd\",\r\n    \"steps\": {\r\n      \"End Step\": {\r\n        \"displayName\": \"\",\r\n        \"type\": \"success\"\r\n      },\r\n      \"Get List of Identities\": {\r\n        \"actionId\": \"sp:get-identities\",\r\n        \"attributes\": {\r\n          \"inputQuery\": \"*\",\r\n          \"searchBy\": \"searchQuery\"\r\n        },\r\n        \"displayName\": \"Get List of IdentitiesUpd\",\r\n        \"nextStep\": \"End Step\",\r\n        \"type\": \"action\",\r\n        \"versionNumber\": \"2\"\r\n      }\r\n    }\r\n  },\r\n  \"enabled\": true,\r\n  \"executionCount\": 0,\r\n  \"failureCount\": 0,\r\n  \"creator\": {\r\n    \"type\": \"IDENTITY\",\r\n    \"id\": \"id\",\r\n    \"name\": \"name\"\r\n  },\r\n  \"owner\": {\r\n    \"id\": \"ownerId\",\r\n    \"name\": \"\",\r\n    \"type\": \"IDENTITY\"\r\n  },\r\n  \"trigger\": {\r\n    \"attributes\": {\r\n      \"cronString\": \"cron stringUpd\",\r\n      \"description\": \"descriptionUpd\",\r\n      \"filter.$\": \"filterUpd\",\r\n      \"id\": \"idn:identity-createdUpd\",\r\n      \"name\": \"nameUpd\"\r\n    },\r\n    \"type\": \"EXTERNAL\"\r\n  }\r\n}"
+      "value": "{\r\n  \"id\": \"workflowId\",\r\n  \"name\": \"test workflowUpd\",\r\n  \"description\": \"test workflow from terraformUpd\",\r\n  \"created\": \"2024-02-16T12:19:04.26101544Z\",\r\n  \"modified\": \"2024-02-16T12:19:30.783054232Z\",\r\n  \"modifiedBy\": {\r\n    \"type\": \"IDENTITY\",\r\n    \"id\": \"id\",\r\n    \"name\": \"name\"\r\n  },\r\n  \"definition\": {\r\n    \"start\": \"Get List of IdentitiesUpd\",\r\n    \"steps\": {\r\n      \"End Step\": {\r\n        \"displayName\": \"\",\r\n        \"type\": \"success\"\r\n      },\r\n      \"Get List of Identities\": {\r\n        \"actionId\": \"sp:get-identities\",\r\n        \"attributes\": {\r\n          \"inputQuery\": \"*\",\r\n          \"searchBy\": \"searchQuery\"\r\n        },\r\n        \"displayName\": \"Get List of IdentitiesUpd\",\r\n        \"nextStep\": \"End Step\",\r\n        \"type\": \"action\",\r\n        \"versionNumber\": 2\r\n      }\r\n    }\r\n  },\r\n  \"enabled\": true,\r\n  \"executionCount\": 0,\r\n  \"failureCount\": 0,\r\n  \"creator\": {\r\n    \"type\": \"IDENTITY\",\r\n    \"id\": \"id\",\r\n    \"name\": \"name\"\r\n  },\r\n  \"owner\": {\r\n    \"id\": \"ownerId\",\r\n    \"name\": \"ownerName\",\r\n    \"type\": \"IDENTITY\"\r\n  },\r\n  \"trigger\": {\r\n    \"attributes\": {\r\n      \"description\": \"externalDescription\",\r\n      \"name\": \"externalName\"\r\n    },\r\n    \"type\": \"EXTERNAL\"\r\n  }\r\n}"
+    },
+    {
+      "uuid": "a168050a-3e31-4dae-ae86-b80d31a344e6",
+      "id": "rmsc",
+      "name": "Org. Config Default",
+      "documentation": "",
+      "value": "{\r\n    \"orgName\": \"swissre-nonprod1-mockoon\",\r\n    \"timeZone\": \"UTC\",\r\n    \"lcsChangeHonorsSourceEnableFeature\": false,\r\n    \"armCustomerId\": null,\r\n    \"armSapSystemIdMappings\": null,\r\n    \"armAuth\": null,\r\n    \"armDb\": null,\r\n    \"armSsoUrl\": null,\r\n    \"iaiEnableCertificationRecommendations\": true,\r\n    \"sodReportConfigs\": [],\r\n    \"iaiEnableAccessRequestRecommendations\": true,\r\n    \"segmentationEnabled\": false\r\n}"
+    },
+    {
+      "uuid": "1cc57030-12e3-433d-8eba-3a033fc3f8f7",
+      "id": "kxbo",
+      "name": "Org. Config Patch",
+      "documentation": "",
+      "value": "{\r\n    \"orgName\": \"swissre-nonprod1-mockoon\",\r\n    \"timeZone\": \"Europe/Zurich\",\r\n    \"lcsChangeHonorsSourceEnableFeature\": false,\r\n    \"armCustomerId\": null,\r\n    \"armSapSystemIdMappings\": null,\r\n    \"armAuth\": null,\r\n    \"armDb\": null,\r\n    \"armSsoUrl\": null,\r\n    \"iaiEnableCertificationRecommendations\": true,\r\n    \"sodReportConfigs\": [],\r\n    \"iaiEnableAccessRequestRecommendations\": true,\r\n    \"segmentationEnabled\": false\r\n}"
+    },
+    {
+      "uuid": "e0f1aa58-0518-4ef2-b58d-ac369de07d99",
+      "id": "4waj",
+      "name": "Org. Config After Patch",
+      "documentation": "",
+      "value": "{\r\n    \"orgName\": \"swissre-nonprod1-mockoon\",\r\n    \"timeZone\": \"UTC\",\r\n    \"lcsChangeHonorsSourceEnableFeature\": false,\r\n    \"armCustomerId\": null,\r\n    \"armSapSystemIdMappings\": null,\r\n    \"armAuth\": null,\r\n    \"armDb\": null,\r\n    \"armSsoUrl\": null,\r\n    \"iaiEnableCertificationRecommendations\": true,\r\n    \"sodReportConfigs\": [],\r\n    \"iaiEnableAccessRequestRecommendations\": true,\r\n    \"segmentationEnabled\": false\r\n}"
     }
   ],
   "callbacks": []

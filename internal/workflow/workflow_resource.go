@@ -3,6 +3,12 @@ package workflow
 import (
 	"context"
 	"fmt"
+	"net/http"
+	"strconv"
+	"terraform-provider-identitynow/internal/patch"
+	"terraform-provider-identitynow/internal/sailpoint/custom"
+	"terraform-provider-identitynow/internal/util"
+
 	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
@@ -16,11 +22,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	sailpoint "github.com/sailpoint-oss/golang-sdk/v2"
+	"github.com/sailpoint-oss/golang-sdk/v2/api_beta"
 	sailpointBeta "github.com/sailpoint-oss/golang-sdk/v2/api_beta"
-	"net/http"
-	"terraform-provider-identitynow/internal/patch"
-	"terraform-provider-identitynow/internal/sailpoint/custom"
-	"terraform-provider-identitynow/internal/util"
 )
 
 var (
@@ -149,10 +152,16 @@ func (r *workflowResource) Schema(ctx context.Context, req resource.SchemaReques
 								Optional:    true,
 							},
 
+							"attribute_to_filter": schema.StringAttribute{
+								Description: "For events triggered by attribute changes, the name of the attribute that changed. EVENT trigger type",
+								Optional:    true,
+							},
+
 							"name": schema.StringAttribute{
 								Description: "A unique name for the external trigger. EXTERNAL trigger type",
 								Optional:    true,
 							},
+
 							"description": schema.StringAttribute{
 								Description: "Additonal context about the external trigger. EXTERNAL trigger type",
 								Optional:    true,
@@ -176,7 +185,16 @@ func (r *workflowResource) Create(ctx context.Context, req resource.CreateReques
 	if resp.Diagnostics.HasError() {
 		return
 	}
+
 	workflow := r.convertToAPIModel(&plan, &resp.Diagnostics)
+	enabledAfterCreation := false
+	if *workflow.Enabled == true {
+		tflog.Info(ctx, "Disabling Workflow '"+workflow.Name+"' before creation. Will be enabled after creation.")
+		enabledAfterCreation = true
+		workflow.Enabled = sailpointBeta.PtrBool(false)
+		plan.Enabled = types.BoolValue(false)
+	}
+
 	tflog.Info(ctx, "Creating Workflow "+util.PrettyPrint(workflow))
 	workflowResp, spResp, err := r.apiClient.Beta.WorkflowsAPI.CreateWorkflow(ctx).CreateWorkflowRequest(workflow).Execute()
 	if err != nil && spResp.StatusCode != http.StatusCreated {
@@ -185,6 +203,19 @@ func (r *workflowResource) Create(ctx context.Context, req resource.CreateReques
 			"Could not create Workflow '"+plan.Name.ValueString()+"': "+err.Error()+"\n"+util.GetBody(spResp),
 		)
 		return
+	}
+
+	if enabledAfterCreation == true {
+		tflog.Info(ctx, "Enabling Workflow '"+*workflowResp.Name+"' after creation")
+		errorMsg, err := r.enableDisableWorkflowById(*workflowResp.Id, true)
+		if err != nil {
+			resp.Diagnostics.AddError(
+				"Error enabling Workflow after creation",
+				errorMsg,
+			)
+			return
+		}
+		workflowResp.Enabled = sailpointBeta.PtrBool(true)
 	}
 
 	r.mapToTerraformModel(&plan, workflowResp, &resp.Diagnostics)
@@ -204,6 +235,10 @@ func (r *workflowResource) Read(ctx context.Context, req resource.ReadRequest, r
 	}
 
 	workflowResp, spResp, err := r.apiClient.Beta.WorkflowsAPI.GetWorkflow(ctx, state.Id.ValueString()).Execute()
+	if spResp.StatusCode == 404 {
+		resp.State.RemoveResource(ctx)
+		return
+	}
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error Reading Workflow",
@@ -229,6 +264,23 @@ func (r *workflowResource) Update(ctx context.Context, req resource.UpdateReques
 		return
 	}
 
+	// If we are patching and the workflow is enabled, but we need to disable it first.
+	// In case we need to re-enable it after the PATCH, that will be handled automatically by the PATCH,
+	// as it always adds the enabled operations in the last place.
+	if state.Enabled.ValueBool() {
+		tflog.Info(ctx, "Disabling Workflow '"+state.Name.ValueString()+"' before PATCH.")
+		errorMsg, err := r.enableDisableWorkflow(state, false)
+		if err != nil {
+			tflog.Error(ctx, "Error disabling Workflow '"+state.Name.ValueString()+"' before PATCH: "+errorMsg)
+			resp.Diagnostics.AddError(
+				"Error Disabling Workflow",
+				errorMsg,
+			)
+			return
+		}
+		state.Enabled = types.BoolValue(false)
+	}
+
 	newModel := r.convertToAPIModel(&plan, &resp.Diagnostics)
 	if resp.Diagnostics.HasError() {
 		return
@@ -246,7 +298,7 @@ func (r *workflowResource) Update(ctx context.Context, req resource.UpdateReques
 		)
 		return
 	}
-	tflog.Info(ctx, "Updating Workflow "+util.PrettyPrint(jsonPatch))
+	tflog.Info(ctx, "Patches to apply: "+util.PrettyPrint(jsonPatch))
 
 	workflowResp, spResp, err := r.apiClient.Beta.WorkflowsAPI.PatchWorkflow(ctx, state.Id.ValueString()).JsonPatchOperation(jsonPatch).Execute()
 	if err != nil || (spResp != nil && spResp.StatusCode != http.StatusOK) {
@@ -275,19 +327,12 @@ func (r *workflowResource) Delete(ctx context.Context, req resource.DeleteReques
 
 	id := state.Id.ValueString()
 	if state.Enabled.ValueBool() == true {
-		value := sailpointBeta.BoolAsJsonPatchOperationValue(sailpointBeta.PtrBool(false))
 		tflog.Info(ctx, "Disabling Workflow '"+state.Name.ValueString()+"' before deletion")
-		_, spResp, err := r.apiClient.Beta.WorkflowsAPI.PatchWorkflow(context.Background(), id).JsonPatchOperation([]sailpointBeta.JsonPatchOperation{
-			{
-				Op:    "replace",
-				Path:  "/enabled",
-				Value: &value,
-			},
-		}).Execute()
+		errorMsg, err := r.enableDisableWorkflow(state, false)
 		if err != nil {
 			resp.Diagnostics.AddError(
 				"Error Disabling Workflow",
-				"Could not disable Workflow '"+state.Name.ValueString()+"': "+err.Error()+"\n"+util.GetBody(spResp),
+				errorMsg,
 			)
 			return
 		}
@@ -300,6 +345,31 @@ func (r *workflowResource) Delete(ctx context.Context, req resource.DeleteReques
 		)
 		return
 	}
+}
+
+func (r *workflowResource) enableDisableWorkflow(state workflowModel, status bool) (string, error) {
+	id := state.Id.ValueString()
+	errorMsg, err := r.enableDisableWorkflowById(id, status)
+	if err != nil {
+		return errorMsg, err
+	}
+	return "", nil
+}
+
+func (r *workflowResource) enableDisableWorkflowById(id string, status bool) (string, error) {
+	value := sailpointBeta.BoolAsUpdateMultiHostSourcesRequestInnerValue(sailpointBeta.PtrBool(status))
+	_, spResp, err := r.apiClient.Beta.WorkflowsAPI.PatchWorkflow(context.Background(), id).JsonPatchOperation([]sailpointBeta.JsonPatchOperation{
+		{
+			Op:    "replace",
+			Path:  "/enabled",
+			Value: &value,
+		},
+	}).Execute()
+	if err != nil {
+		errorMsg := "Could not set status = '" + strconv.FormatBool(status) + "' for Workflow with id '" + id + "': " + err.Error() + "\n" + util.GetBody(spResp)
+		return errorMsg, err
+	}
+	return "", nil
 }
 
 func (r *workflowResource) convertToAPIModel(model *workflowModel, diagnostics *diag.Diagnostics) sailpointBeta.CreateWorkflowRequest {
@@ -316,7 +386,7 @@ func (r *workflowResource) convertToAPIModel(model *workflowModel, diagnostics *
 	}
 	var wfTrigger *sailpointBeta.WorkflowTrigger
 	if model.Trigger != nil {
-		attributes := util.ConvertTFModelToMap(model.Trigger.Attributes)
+		attributes := r.convertFromTriggerAttributes(model.Trigger.Attributes)
 		wfTrigger = &sailpointBeta.WorkflowTrigger{
 			Type:       model.Trigger.Type.ValueString(),
 			Attributes: attributes,
@@ -336,6 +406,37 @@ func (r *workflowResource) convertToAPIModel(model *workflowModel, diagnostics *
 	}
 }
 
+func (r *workflowResource) convertFromTriggerAttributes(attributes triggerAttributes) api_beta.NullableWorkflowTriggerAttributes {
+	eventAttributes := api_beta.NewEventAttributes(attributes.Id.ValueString())
+
+	if attributes.Id.ValueString() == "idn:identity-attributes-changed" {
+		if attributes.Filter.ValueString() == "" && attributes.AttributeToFilter.ValueString() != "" {
+			filterValue := "$.changes[?(@.attribute== \"" + attributes.AttributeToFilter.ValueString() + "\")]"
+			eventAttributes.Filter = &filterValue
+		} else if attributes.Filter.ValueString() != "" {
+			eventAttributes.Filter = attributes.Filter.ValueStringPointer()
+		}
+	} else {
+		eventAttributes.Filter = attributes.Filter.ValueStringPointer()
+	}
+	eventAttributes.Description = attributes.Description.ValueStringPointer()
+
+	externalAttributes := api_beta.NewExternalAttributesWithDefaults()
+	externalAttributes.Name = attributes.Name.ValueStringPointer()
+	externalAttributes.Description = attributes.Description.ValueStringPointer()
+
+	scheduledAttributes := api_beta.NewScheduledAttributesWithDefaults()
+	scheduledAttributes.CronString = attributes.CronString.ValueStringPointer()
+
+	wfTriggerAttrs := &sailpointBeta.WorkflowTriggerAttributes{
+		EventAttributes:     eventAttributes,
+		ExternalAttributes:  externalAttributes,
+		ScheduledAttributes: scheduledAttributes,
+	}
+
+	return *api_beta.NewNullableWorkflowTriggerAttributes(wfTriggerAttrs)
+}
+
 func (r *workflowResource) mapToTerraformModel(model *workflowModel, workflow *sailpointBeta.Workflow, diagnostic *diag.Diagnostics) {
 	model.Id = types.StringPointerValue(workflow.Id)
 	model.Name = types.StringPointerValue(workflow.Name)
@@ -351,19 +452,51 @@ func (r *workflowResource) mapToTerraformModel(model *workflowModel, workflow *s
 	if workflow.Trigger != nil && workflow.Trigger.Type != "" {
 		model.Trigger = &trigger{
 			Type:       types.StringValue(workflow.Trigger.Type),
-			Attributes: r.convertToTriggerAttributes(workflow.Trigger.Attributes),
+			Attributes: r.convertToTriggerAttributes(workflow.Trigger.Type, workflow.Trigger.Attributes),
 		}
 	}
 }
 
-func (r *workflowResource) convertToTriggerAttributes(attributes map[string]interface{}) triggerAttributes {
-	return triggerAttributes{
-		Id:          r.getTFString(attributes, "id"),
-		Filter:      r.getTFString(attributes, "filter.$"),
-		Name:        r.getTFString(attributes, "name"),
-		Description: r.getTFString(attributes, "description"),
-		CronString:  r.getTFString(attributes, "cronString"),
+func (r *workflowResource) convertToTriggerAttributes(triggerType string, attributes api_beta.NullableWorkflowTriggerAttributes) triggerAttributes {
+	returnObject := triggerAttributes{}
+
+	triggerDescription := ""
+
+	if triggerType == "EVENT" {
+		eventAttrs := attributes.Get().EventAttributes
+		returnObject.Id = types.StringValue(eventAttrs.Id)
+		returnObject.Filter = types.StringValue(*eventAttrs.Filter)
+		if attributes.Get().ExternalAttributes != nil && attributes.Get().ExternalAttributes.Description != nil {
+			triggerDescription = *attributes.Get().ExternalAttributes.Description
+		}
+		if attributes.Get().EventAttributes != nil && attributes.Get().EventAttributes.Description != nil {
+			triggerDescription = *attributes.Get().EventAttributes.Description
+		}
+		if triggerDescription != "" {
+			returnObject.Description = types.StringValue(triggerDescription)
+		}
+	} else if triggerType == "EXTERNAL" {
+		externalAttrs := attributes.Get().ExternalAttributes
+		returnObject.Name = types.StringPointerValue(externalAttrs.Name)
+		if attributes.Get().EventAttributes != nil && attributes.Get().EventAttributes.Description != nil {
+			triggerDescription = *attributes.Get().EventAttributes.Description
+		}
+		if attributes.Get().ExternalAttributes != nil && attributes.Get().ExternalAttributes.Description != nil {
+			triggerDescription = *attributes.Get().ExternalAttributes.Description
+		}
+		if triggerDescription != "" {
+			returnObject.Description = types.StringValue(triggerDescription)
+		}
+	} else {
+		scheduledAttrs := attributes.Get().ScheduledAttributes
+		cron := ""
+		if scheduledAttrs != nil && scheduledAttrs.CronString != nil {
+			cron = *scheduledAttrs.CronString
+		}
+		returnObject.CronString = types.StringValue(cron)
 	}
+
+	return returnObject
 }
 
 func (r *workflowResource) getTFString(attributes map[string]interface{}, key string) types.String {

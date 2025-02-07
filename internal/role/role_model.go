@@ -1,8 +1,9 @@
 package role
 
 import (
-	"github.com/hashicorp/terraform-plugin-framework/types"
 	"terraform-provider-identitynow/internal/util"
+
+	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
 type roleModel struct {
@@ -21,28 +22,35 @@ type roleModel struct {
 }
 
 type roleMembership struct {
-	Type       types.String            `tfsdk:"type"`
-	Criteria   *roleMembershipCriteria `tfsdk:"criteria"`
-	Identities []util.ReferenceModel   `tfsdk:"identities"`
+	Type       types.String                `tfsdk:"type"`
+	Criteria   *roleMembershipCriteriaLvl1 `tfsdk:"criteria"`
+	Identities []util.ReferenceModel       `tfsdk:"identities"`
 }
 
-type roleMembershipCriteria struct {
-	Operation   types.String       `tfsdk:"operation"`
-	Key         *roleCriteriaKey   `tfsdk:"key"`
-	StringValue types.String       `tfsdk:"string_value"`
-	Children    []criteriaChildren `tfsdk:"children"`
+type roleMembershipCriteriaLvl1 struct {
+	Operation   types.String                 `tfsdk:"operation"`
+	Key         *roleCriteriaKey             `tfsdk:"key"`
+	StringValue types.String                 `tfsdk:"string_value"`
+	Children    []roleMembershipCriteriaLvl2 `tfsdk:"children"`
+}
+
+type roleMembershipCriteriaLvl2 struct {
+	Operation   types.String                 `tfsdk:"operation"`
+	Key         *roleCriteriaKey             `tfsdk:"key"`
+	StringValue types.String                 `tfsdk:"string_value"`
+	Children    []roleMembershipCriteriaLvl3 `tfsdk:"children"`
+}
+
+type roleMembershipCriteriaLvl3 struct {
+	Operation   types.String     `tfsdk:"operation"`
+	Key         *roleCriteriaKey `tfsdk:"key"`
+	StringValue types.String     `tfsdk:"string_value"`
 }
 
 type roleCriteriaKey struct {
 	Type     types.String `tfsdk:"type"`
 	Property types.String `tfsdk:"property"`
 	SourceId types.String `tfsdk:"source_id"`
-}
-
-type criteriaChildren struct {
-	Operation   types.String     `tfsdk:"operation"`
-	Key         *roleCriteriaKey `tfsdk:"key"`
-	StringValue types.String     `tfsdk:"string_value"`
 }
 
 type requestConfig struct {
