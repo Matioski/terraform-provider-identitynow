@@ -21,8 +21,8 @@ import (
 )
 
 var (
-	_ resource.Resource              = &transformResource{}
-	_ resource.ResourceWithConfigure = &transformResource{}
+	_ resource.Resource                = &transformResource{}
+	_ resource.ResourceWithConfigure   = &transformResource{}
 	_ resource.ResourceWithImportState = &transformResource{}
 )
 
@@ -202,6 +202,6 @@ func (r *transformResource) mapToTerraformModel(tfModel *transformModel, transfo
 }
 
 func (r *transformResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-    // Retrieve import ID and save to id attribute
-    resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
+	// Retrieve import ID and save to id attribute
+	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
 }

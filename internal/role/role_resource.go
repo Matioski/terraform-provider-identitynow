@@ -25,8 +25,8 @@ import (
 )
 
 var (
-	_ resource.Resource              = &roleResource{}
-	_ resource.ResourceWithConfigure = &roleResource{}
+	_ resource.Resource                = &roleResource{}
+	_ resource.ResourceWithConfigure   = &roleResource{}
 	_ resource.ResourceWithImportState = &roleResource{}
 )
 
@@ -709,8 +709,7 @@ func (r *roleResource) generateJsonPatch(newModel *sailpoint_v3.Role, oldModel *
 	return v3JsonPatch
 }
 
-
 func (r *roleResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-    // Retrieve import ID and save to id attribute
-    resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
+	// Retrieve import ID and save to id attribute
+	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
 }
