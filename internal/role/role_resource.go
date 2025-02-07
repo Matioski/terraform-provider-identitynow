@@ -687,7 +687,7 @@ func (r *roleResource) mapToTerraformModel(model *roleModel, role *sailpoint_v3.
 		}
 	}
 
-	model.Membership = r.mapToMembership(ctx, role.Membership.Get())
+	model.Membership = r.mapToMembership(role.Membership.Get())
 	model.Enabled = types.BoolPointerValue(role.Enabled)
 	model.Requestable = types.BoolPointerValue(role.Requestable)
 	model.AccessRequestConfig = r.mapToAccessRequestConfig(role.AccessRequestConfig)
@@ -842,7 +842,7 @@ func (r *roleResource) mapToMembershipCriteriaLvl3(rootNode sailpoint_v3.RoleCri
 	}
 }
 
-func (r *roleResource) mapToMembership(ctx context.Context, membership *sailpoint_v3.RoleMembershipSelector) *roleMembership {
+func (r *roleResource) mapToMembership(membership *sailpoint_v3.RoleMembershipSelector) *roleMembership {
 	if membership == nil {
 		return nil
 	}
