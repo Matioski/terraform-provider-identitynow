@@ -901,4 +901,34 @@ func (r *roleResource) generateJsonPatch(newModel *sailpoint_v3.Role, oldModel *
 func (r *roleResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	// Retrieve import ID and save to id attribute
 	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
+	// Check for errors from the passthrough function
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	// Fetch nested attributes from the state
+	var ownerId, ownerName, ownerType string
+
+	// Read the nested attributes safely
+	 resp.State.GetAttribute(ctx, path.Root("owner").AtName("id"),&ownerId)
+	
+	 resp.State.GetAttribute(ctx, path.Root("owner").AtName("name"),&ownerName)
+	
+	 resp.State.GetAttribute(ctx, path.Root("owner").AtName("type"),&ownerType)
+
+	// Create a new ReferenceModel for the owner
+	updatedOwner := util.ReferenceModel{
+		Type: types.StringValue(ownerType),
+		Id:   types.StringValue(ownerId),
+		Name: types.StringValue(ownerName),
+	}
+
+	// Set the updated owner back into the state
+	err := resp.State.SetAttribute(ctx, path.Root("owner"), updatedOwner)
+	if err != nil {
+		resp.Diagnostics.AddError(
+			"Error setting updated owner",
+			fmt.Sprintf("Failed to set updated owner attribute: %s", err),
+		)
+	}
 }
