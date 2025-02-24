@@ -5,9 +5,10 @@ package provider
 import (
 	"context"
 	"fmt"
+	"testing"
+
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
-	"testing"
 )
 
 func checkIdentityAttributeIsDeleted() func(state *terraform.State) error {
@@ -37,9 +38,9 @@ func TestIntegration_IdentityAttributeResource_Rule(t *testing.T) {
 			{
 				Config: providerIntegrationConfig + `
 resource "identitynow_identity_attribute" "test" {
-  name         = "TestIdentityAttributeResourceIntegration_Rule"
+  name         = "testIdentityAttribute_Rule"
   display_name = "att_IdentityAttribute"
-  standard     = false
+  standard     = true
   multi        = false
   type         = "string"
   searchable   = false
@@ -56,9 +57,9 @@ resource "identitynow_identity_attribute" "test" {
 }
 `,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("identitynow_identity_attribute.test", "name", "TestIdentityAttributeResourceIntegration_Rule"),
+					resource.TestCheckResourceAttr("identitynow_identity_attribute.test", "name", "testIdentityAttribute_Rule"),
 					resource.TestCheckResourceAttr("identitynow_identity_attribute.test", "display_name", "att_IdentityAttribute"),
-					resource.TestCheckResourceAttr("identitynow_identity_attribute.test", "standard", "false"),
+					resource.TestCheckResourceAttr("identitynow_identity_attribute.test", "standard", "true"),
 					resource.TestCheckResourceAttr("identitynow_identity_attribute.test", "type", "string"),
 					resource.TestCheckResourceAttr("identitynow_identity_attribute.test", "multi", "false"),
 					resource.TestCheckResourceAttr("identitynow_identity_attribute.test", "searchable", "false"),
@@ -71,9 +72,9 @@ resource "identitynow_identity_attribute" "test" {
 			{
 				Config: providerIntegrationConfig + `
 resource "identitynow_identity_attribute" "test" {
-  name         = "TestIdentityAttributeResourceIntegration_Rule"
+  name         = "testIdentityAttribute_Rule"
   display_name = "att_IdentityAttribute_RuleUpd"
-  standard     = true
+  standard     = false
   type         = "string"
   searchable   = true
   sources      = [
@@ -88,9 +89,9 @@ resource "identitynow_identity_attribute" "test" {
 }
 `,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("identitynow_identity_attribute.test", "name", "TestIdentityAttributeResourceIntegration_Rule"),
+					resource.TestCheckResourceAttr("identitynow_identity_attribute.test", "name", "testIdentityAttribute_Rule"),
 					resource.TestCheckResourceAttr("identitynow_identity_attribute.test", "display_name", "att_IdentityAttribute_RuleUpd"),
-					resource.TestCheckResourceAttr("identitynow_identity_attribute.test", "standard", "true"),
+					resource.TestCheckResourceAttr("identitynow_identity_attribute.test", "standard", "false"),
 					resource.TestCheckResourceAttr("identitynow_identity_attribute.test", "type", "string"),
 					resource.TestCheckResourceAttr("identitynow_identity_attribute.test", "multi", "false"),
 					resource.TestCheckResourceAttr("identitynow_identity_attribute.test", "searchable", "true"),
@@ -102,7 +103,7 @@ resource "identitynow_identity_attribute" "test" {
 			{
 				Config: providerIntegrationConfig + `
 resource "identitynow_identity_attribute" "test" {
-  name         = "TestIdentityAttributeResourceIntegration_Rule"
+  name         = "testIdentityAttribute_Rule"
   display_name = "att_IdentityAttribute_RuleUpd"
   standard     = false
   type         = "string"
@@ -121,7 +122,7 @@ resource "identitynow_identity_attribute" "test" {
 }
 `,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("identitynow_identity_attribute.test", "name", "TestIdentityAttributeResourceIntegration_Rule"),
+					resource.TestCheckResourceAttr("identitynow_identity_attribute.test", "name", "testIdentityAttribute_Rule"),
 					resource.TestCheckResourceAttr("identitynow_identity_attribute.test", "display_name", "att_IdentityAttribute_RuleUpd"),
 					//standard has to be false for delete operation to work
 					resource.TestCheckResourceAttr("identitynow_identity_attribute.test", "standard", "false"),
@@ -138,7 +139,7 @@ resource "identitynow_identity_attribute" "test" {
 	})
 }
 func TestIntegration_IdentityAttributeResource_ApplicationMapping(t *testing.T) {
-	sourceCloud := getSources(2, context.Background())
+	sourceCloud := getSources(2, "")
 	source1 := sourceCloud[0].ConnectorAttributes["cloudDisplayName"].(string)
 	source2 := sourceCloud[1].ConnectorAttributes["cloudDisplayName"].(string)
 
@@ -150,9 +151,9 @@ func TestIntegration_IdentityAttributeResource_ApplicationMapping(t *testing.T) 
 			{
 				Config: providerIntegrationConfig + `
 resource "identitynow_identity_attribute" "test" {
-  name         = "TestIdentityAttributeResourceIntegration_appMapping"
+  name         = "testIdentityAttribute_appMapping"
   display_name = "att_IdentityAttribute_appMapping"
-  standard     = false
+  standard     = true
   multi        = false
   type         = "string"
   searchable   = false
@@ -176,9 +177,9 @@ resource "identitynow_identity_attribute" "test" {
 }
 `,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("identitynow_identity_attribute.test", "name", "TestIdentityAttributeResourceIntegration_appMapping"),
+					resource.TestCheckResourceAttr("identitynow_identity_attribute.test", "name", "testIdentityAttribute_appMapping"),
 					resource.TestCheckResourceAttr("identitynow_identity_attribute.test", "display_name", "att_IdentityAttribute_appMapping"),
-					resource.TestCheckResourceAttr("identitynow_identity_attribute.test", "standard", "false"),
+					resource.TestCheckResourceAttr("identitynow_identity_attribute.test", "standard", "true"),
 					resource.TestCheckResourceAttr("identitynow_identity_attribute.test", "type", "string"),
 					resource.TestCheckResourceAttr("identitynow_identity_attribute.test", "multi", "false"),
 					resource.TestCheckResourceAttr("identitynow_identity_attribute.test", "searchable", "false"),
@@ -193,9 +194,9 @@ resource "identitynow_identity_attribute" "test" {
 			{
 				Config: providerIntegrationConfig + `
 resource "identitynow_identity_attribute" "test" {
-  name         = "TestIdentityAttributeResourceIntegration_appMapping"
+  name         = "testIdentityAttribute_appMapping"
   display_name = "att_IdentityAttributeUpd"
-  standard     = true
+  standard     = false
   type         = "string"
   searchable   = true
   sources      = [
@@ -210,9 +211,9 @@ resource "identitynow_identity_attribute" "test" {
 }
 `,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("identitynow_identity_attribute.test", "name", "TestIdentityAttributeResourceIntegration_appMapping"),
+					resource.TestCheckResourceAttr("identitynow_identity_attribute.test", "name", "testIdentityAttribute_appMapping"),
 					resource.TestCheckResourceAttr("identitynow_identity_attribute.test", "display_name", "att_IdentityAttributeUpd"),
-					resource.TestCheckResourceAttr("identitynow_identity_attribute.test", "standard", "true"),
+					resource.TestCheckResourceAttr("identitynow_identity_attribute.test", "standard", "false"),
 					resource.TestCheckResourceAttr("identitynow_identity_attribute.test", "type", "string"),
 					resource.TestCheckResourceAttr("identitynow_identity_attribute.test", "multi", "false"),
 					resource.TestCheckResourceAttr("identitynow_identity_attribute.test", "searchable", "true"),
@@ -225,7 +226,7 @@ resource "identitynow_identity_attribute" "test" {
 			{
 				Config: providerIntegrationConfig + `
 resource "identitynow_identity_attribute" "test" {
-  name         = "TestIdentityAttributeResourceIntegration_appMapping"
+  name         = "testIdentityAttribute_appMapping"
   display_name = "att_IdentityAttribute_appMappingUpd"
   standard     = false
   type         = "string"
@@ -244,7 +245,7 @@ resource "identitynow_identity_attribute" "test" {
 }
 `,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("identitynow_identity_attribute.test", "name", "TestIdentityAttributeResourceIntegration_appMapping"),
+					resource.TestCheckResourceAttr("identitynow_identity_attribute.test", "name", "testIdentityAttribute_appMapping"),
 					resource.TestCheckResourceAttr("identitynow_identity_attribute.test", "display_name", "att_IdentityAttribute_appMappingUpd"),
 					//standard has to be false for delete operation to work
 					resource.TestCheckResourceAttr("identitynow_identity_attribute.test", "standard", "false"),

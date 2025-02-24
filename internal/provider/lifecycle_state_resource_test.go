@@ -3,8 +3,9 @@
 package provider
 
 import (
-	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"testing"
+
+	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
 func TestLifecycleStateResource(t *testing.T) {
@@ -20,6 +21,7 @@ resource "identitynow_lifecycle_state" "test" {
   identity_profile_id = "profileId"
   description = "my test description"
   enabled = false
+  identity_state = "ACTIVE"
   email_notification_option = {
     notify_managers = false
     notify_all_admins = true
@@ -33,7 +35,7 @@ resource "identitynow_lifecycle_state" "test" {
     },
     {
       action = "DISABLE"
-      source_ids = ["sourceId3", "sourceId4"]
+      source_ids = ["sourceId3", "sourceId4"] 
     }
   ]
   access_profile_ids = ["accessProfileId1", "accessProfileId2"]
@@ -59,6 +61,7 @@ resource "identitynow_lifecycle_state" "test" {
 					resource.TestCheckResourceAttr("identitynow_lifecycle_state.test", "account_actions.1.source_ids.1", "sourceId4"),
 					resource.TestCheckResourceAttr("identitynow_lifecycle_state.test", "access_profile_ids.0", "accessProfileId1"),
 					resource.TestCheckResourceAttr("identitynow_lifecycle_state.test", "access_profile_ids.1", "accessProfileId2"),
+					resource.TestCheckResourceAttr("identitynow_lifecycle_state.test", "identity_state", "ACTIVE"),
 				),
 			},
 			// Update and Read testing
@@ -70,6 +73,7 @@ resource "identitynow_lifecycle_state" "test" {
   identity_profile_id = "profileId"
   description         = "my test descriptionUpd"
   enabled             = true
+  identity_state      = "INACTIVE_SHORT_TERM"
   email_notification_option = {
     notify_managers       = true
     notify_all_admins     = false
@@ -101,6 +105,7 @@ resource "identitynow_lifecycle_state" "test" {
 					resource.TestCheckResourceAttr("identitynow_lifecycle_state.test", "access_profile_ids.0", "accessProfileId1"),
 					resource.TestCheckResourceAttr("identitynow_lifecycle_state.test", "access_profile_ids.1", "accessProfileId2"),
 					resource.TestCheckResourceAttr("identitynow_lifecycle_state.test", "access_profile_ids.2", "accessProfileId3"),
+					resource.TestCheckResourceAttr("identitynow_lifecycle_state.test", "identity_state", "INACTIVE_SHORT_TERM"),
 				),
 			},
 			// Delete testing automatically occurs in TestCase

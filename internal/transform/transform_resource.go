@@ -6,6 +6,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
+	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
@@ -20,8 +21,9 @@ import (
 )
 
 var (
-	_ resource.Resource              = &transformResource{}
-	_ resource.ResourceWithConfigure = &transformResource{}
+	_ resource.Resource                = &transformResource{}
+	_ resource.ResourceWithConfigure   = &transformResource{}
+	_ resource.ResourceWithImportState = &transformResource{}
 )
 
 func NewTransformResource() resource.Resource {
@@ -113,6 +115,10 @@ func (r *transformResource) Read(ctx context.Context, req resource.ReadRequest, 
 	}
 
 	transformRead, spResp, err := r.apiClient.V3.TransformsAPI.GetTransform(ctx, state.Id.ValueString()).Execute()
+	if spResp.StatusCode == 404 {
+		resp.State.RemoveResource(ctx)
+		return
+	}
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error Reading Transform",
@@ -197,4 +203,9 @@ func (r *transformResource) mapToTerraformModel(tfModel *transformModel, transfo
 	tfModel.Name = types.StringValue(transformRead.Name)
 	tfModel.Type = types.StringValue(transformRead.Type)
 	tfModel.Attributes = util.MarshalToJsonType(transformRead.Attributes, diagnostics)
+}
+
+func (r *transformResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+	// Retrieve import ID and save to id attribute
+	resource.ImportStatePassthroughID(ctx, path.Root("id"), req, resp)
 }

@@ -3,6 +3,9 @@ package identity_attribute
 import (
 	"context"
 	"fmt"
+	"terraform-provider-identitynow/internal/sailpoint/custom"
+	"terraform-provider-identitynow/internal/util"
+
 	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -13,8 +16,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 	sailpoint "github.com/sailpoint-oss/golang-sdk/v2"
 	sailpoint_beta "github.com/sailpoint-oss/golang-sdk/v2/api_beta"
-	"terraform-provider-identitynow/internal/sailpoint/custom"
-	"terraform-provider-identitynow/internal/util"
 )
 
 var (
@@ -158,6 +159,10 @@ func (r *identityAttributeResource) Read(ctx context.Context, req resource.ReadR
 
 	name := state.Name.ValueString()
 	identityAttribute, spResp, err := r.apiClient.Beta.IdentityAttributesAPI.GetIdentityAttribute(ctx, name).Execute()
+	if spResp.StatusCode == 404 {
+		resp.State.RemoveResource(ctx)
+		return
+	}
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Error Reading Identity Attribute",
@@ -242,7 +247,7 @@ func (r *identityAttributeResource) convertToAPIModel(tfModel *identityAttribute
 		Name:        tfModel.Name.ValueString(),
 		DisplayName: tfModel.DisplayName.ValueStringPointer(),
 		Standard:    tfModel.Standard.ValueBoolPointer(),
-		Type:        tfModel.Type.ValueStringPointer(),
+		Type:        *sailpoint_beta.NewNullableString(tfModel.Type.ValueStringPointer()),
 		Multi:       tfModel.Multi.ValueBoolPointer(),
 		Searchable:  tfModel.Searchable.ValueBoolPointer(),
 		System:      tfModel.System.ValueBoolPointer(),
@@ -255,7 +260,7 @@ func (r *identityAttributeResource) mapToTerraformModel(tfModel *identityAttribu
 	tfModel.Name = types.StringValue(identityAttribute.Name)
 	tfModel.DisplayName = types.StringPointerValue(identityAttribute.DisplayName)
 	tfModel.Standard = types.BoolPointerValue(identityAttribute.Standard)
-	tfModel.Type = types.StringPointerValue(identityAttribute.Type)
+	tfModel.Type = types.StringPointerValue(identityAttribute.Type.Get())
 	tfModel.Multi = types.BoolPointerValue(identityAttribute.Multi)
 	tfModel.Searchable = types.BoolPointerValue(identityAttribute.Searchable)
 	tfModel.System = types.BoolPointerValue(identityAttribute.System)

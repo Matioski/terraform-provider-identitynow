@@ -12,6 +12,7 @@ type lifecycleStateModel struct {
 	EmailNotificationOption *emailNotificationOption `tfsdk:"email_notification_option"`
 	AccountActions          []accountAction          `tfsdk:"account_actions"`
 	AccessProfileIds        []types.String           `tfsdk:"access_profile_ids"`
+	IdentityState           types.String             `tfsdk:"identity_state"`
 }
 
 type emailNotificationOption struct {

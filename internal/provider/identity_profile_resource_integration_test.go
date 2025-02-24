@@ -6,6 +6,7 @@ import (
 	"context"
 	"fmt"
 	"testing"
+	"time"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
@@ -23,6 +24,11 @@ func checkIdentityProfileIsDeleted() func(state *terraform.State) error {
 				return nil
 			}
 			SPApiClient.V3.IdentityProfilesAPI.DeleteIdentityProfile(context.Background(), id).Execute()
+			time.Sleep(10 * time.Second)
+			_, secondResponse, _ := SPApiClient.V3.IdentityProfilesAPI.GetIdentityProfile(context.Background(), id).Execute()
+			if secondResponse != nil && secondResponse.StatusCode == 404 {
+				return nil
+			}
 			return fmt.Errorf("identity profile still exists: %s", id)
 		}
 		return nil
@@ -31,8 +37,6 @@ func checkIdentityProfileIsDeleted() func(state *terraform.State) error {
 
 func TestIntegration_IdentityProfileResource(t *testing.T) {
 	//auth source has to be hardcoded since it should not be attached to an identity profile and there's a need to know which attributes are available in the source
-	authSource := "760ac507e72a4fb7ade1ffa7ddeca00d"
-	authSourceName := "Terraform Integration Source"
 
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: TestAccProtoV6ProviderFactories,
@@ -50,8 +54,7 @@ resource "identitynow_identity_profile" "test" {
     name   = "` + ownerIdentityName + `"
   }
   authoritative_source = {
-    id = "` + authSource + `"
-    #name = "` + authSourceName + `"
+    id = "` + AUTH_SOURCE_ID + `"
   }
   identity_attribute_config = {
     enabled = true
@@ -63,7 +66,7 @@ resource "identitynow_identity_profile" "test" {
           attributes = jsonencode({
             sourceName    = "Terraform Integration Source"
             attributeName = "name"
-            sourceId      = "` + authSource + `"
+            sourceId      = "` + AUTH_SOURCE_ID + `"
           })
         }
       }
@@ -77,11 +80,11 @@ resource "identitynow_identity_profile" "test" {
 					resource.TestCheckResourceAttr("identitynow_identity_profile.test", "description", "Test Identity Profile Description"),
 					resource.TestCheckResourceAttr("identitynow_identity_profile.test", "priority", "102"),
 					resource.TestCheckResourceAttr("identitynow_identity_profile.test", "owner.id", ownerIdentityId),
-					resource.TestCheckResourceAttr("identitynow_identity_profile.test", "authoritative_source.id", authSource),
+					resource.TestCheckResourceAttr("identitynow_identity_profile.test", "authoritative_source.id", AUTH_SOURCE_ID),
 					resource.TestCheckResourceAttr("identitynow_identity_profile.test", "identity_attribute_config.enabled", "true"),
 					resource.TestCheckResourceAttr("identitynow_identity_profile.test", "identity_attribute_config.attribute_transforms.0.identity_attribute_name", "name"),
 					resource.TestCheckResourceAttr("identitynow_identity_profile.test", "identity_attribute_config.attribute_transforms.0.transform_definition.type", "accountAttribute"),
-					resource.TestCheckResourceAttr("identitynow_identity_profile.test", "identity_attribute_config.attribute_transforms.0.transform_definition.attributes", "{\"attributeName\":\"name\",\"sourceId\":\"760ac507e72a4fb7ade1ffa7ddeca00d\",\"sourceName\":\"Terraform Integration Source\"}"),
+					resource.TestCheckResourceAttr("identitynow_identity_profile.test", "identity_attribute_config.attribute_transforms.0.transform_definition.attributes", "{\"attributeName\":\"name\",\"sourceId\":\""+AUTH_SOURCE_ID+"\",\"sourceName\":\"Terraform Integration Source\"}"),
 				),
 			},
 			// Update and Read testing
@@ -96,7 +99,7 @@ resource "identitynow_identity_profile" "test" {
     name   = "` + updatedOwnerIdentityName + `"
   }
   authoritative_source = {
-    id = "` + authSource + `"
+    id = "` + AUTH_SOURCE_ID + `"
   }
  identity_attribute_config = {
     enabled = false
@@ -108,7 +111,7 @@ resource "identitynow_identity_profile" "test" {
           attributes = jsonencode({
             sourceName    = "Terraform Integration Source"
             attributeName = "name"
-            sourceId      = "` + authSource + `"
+            sourceId      = "` + AUTH_SOURCE_ID + `"
           })
         }
       }
@@ -122,11 +125,11 @@ resource "identitynow_identity_profile" "test" {
 					resource.TestCheckResourceAttr("identitynow_identity_profile.test", "description", "Test Identity Profile Description UPDATED"),
 					resource.TestCheckResourceAttr("identitynow_identity_profile.test", "priority", "107"),
 					resource.TestCheckResourceAttr("identitynow_identity_profile.test", "owner.id", updatedOwnerIdentityId),
-					resource.TestCheckResourceAttr("identitynow_identity_profile.test", "authoritative_source.id", authSource),
+					resource.TestCheckResourceAttr("identitynow_identity_profile.test", "authoritative_source.id", AUTH_SOURCE_ID),
 					resource.TestCheckResourceAttr("identitynow_identity_profile.test", "identity_attribute_config.enabled", "false"),
 					resource.TestCheckResourceAttr("identitynow_identity_profile.test", "identity_attribute_config.attribute_transforms.0.identity_attribute_name", "name"),
 					resource.TestCheckResourceAttr("identitynow_identity_profile.test", "identity_attribute_config.attribute_transforms.0.transform_definition.type", "accountAttribute"),
-					resource.TestCheckResourceAttr("identitynow_identity_profile.test", "identity_attribute_config.attribute_transforms.0.transform_definition.attributes", "{\"attributeName\":\"name\",\"sourceId\":\"760ac507e72a4fb7ade1ffa7ddeca00d\",\"sourceName\":\"Terraform Integration Source\"}"),
+					resource.TestCheckResourceAttr("identitynow_identity_profile.test", "identity_attribute_config.attribute_transforms.0.transform_definition.attributes", "{\"attributeName\":\"name\",\"sourceId\":\""+AUTH_SOURCE_ID+"\",\"sourceName\":\"Terraform Integration Source\"}"),
 				),
 			},
 			// Delete testing automatically occurs in TestCase

@@ -12,7 +12,7 @@ resource "identitynow_workflow" "test" {
         displayName   = "Get List of Identities"
         type          = "action"
         actionId      = "sp:get-identities"
-        versionNumber = "2"
+        versionNumber = 2
         attributes = {
           inputQuery = "*"
           searchBy   = "searchQuery"

@@ -20,8 +20,10 @@ resource "identitynow_workflow" "test" {
   description = "test workflow from terraform"
   owner = {
     id = "ownerId"
+    name = "ownerName"
+    type = "IDENTITY"
   }
-  enabled = false
+  enabled = true
   definition = {
     start = "Get List of Identities"
     steps = jsonencode({
@@ -29,7 +31,7 @@ resource "identitynow_workflow" "test" {
         displayName   = "Get List of Identities"
         type          = "action"
         actionId      = "sp:get-identities"
-        versionNumber = "2"
+        versionNumber = 1
         attributes = {
           inputQuery = "*"
           searchBy   = "searchQuery"
@@ -45,13 +47,8 @@ resource "identitynow_workflow" "test" {
   trigger = {
     type = "EVENT"
     attributes = {
-      id = "idn:identity-created"
-      filter = "filter"
-
-      name = "name"
-      description = "description"
-
-      cron_string = "cron string"
+      id = "idn:identity-attributes-changed"
+      filter = "$.changes[?(@.attribute== \"cloudLifecycleState\")]"
     }
   }
 }
@@ -62,15 +59,12 @@ resource "identitynow_workflow" "test" {
 					resource.TestCheckResourceAttr("identitynow_workflow.test", "description", "test workflow from terraform"),
 					resource.TestCheckResourceAttr("identitynow_workflow.test", "owner.type", "IDENTITY"),
 					resource.TestCheckResourceAttr("identitynow_workflow.test", "owner.id", "ownerId"),
-					resource.TestCheckResourceAttr("identitynow_workflow.test", "enabled", "false"),
+					resource.TestCheckResourceAttr("identitynow_workflow.test", "enabled", "true"),
 					resource.TestCheckResourceAttr("identitynow_workflow.test", "definition.start", "Get List of Identities"),
-					resource.TestCheckResourceAttr("identitynow_workflow.test", "definition.steps", "{\"End Step\":{\"displayName\":\"\",\"type\":\"success\"},\"Get List of Identities\":{\"actionId\":\"sp:get-identities\",\"attributes\":{\"inputQuery\":\"*\",\"searchBy\":\"searchQuery\"},\"displayName\":\"Get List of Identities\",\"nextStep\":\"End Step\",\"type\":\"action\",\"versionNumber\":\"2\"}}"),
+					resource.TestCheckResourceAttr("identitynow_workflow.test", "definition.steps", "{\"End Step\":{\"displayName\":\"\",\"type\":\"success\"},\"Get List of Identities\":{\"actionId\":\"sp:get-identities\",\"attributes\":{\"inputQuery\":\"*\",\"searchBy\":\"searchQuery\"},\"displayName\":\"Get List of Identities\",\"nextStep\":\"End Step\",\"type\":\"action\",\"versionNumber\":1}}"),
 					resource.TestCheckResourceAttr("identitynow_workflow.test", "trigger.type", "EVENT"),
-					resource.TestCheckResourceAttr("identitynow_workflow.test", "trigger.attributes.id", "idn:identity-created"),
-					resource.TestCheckResourceAttr("identitynow_workflow.test", "trigger.attributes.filter", "filter"),
-					resource.TestCheckResourceAttr("identitynow_workflow.test", "trigger.attributes.name", "name"),
-					resource.TestCheckResourceAttr("identitynow_workflow.test", "trigger.attributes.description", "description"),
-					resource.TestCheckResourceAttr("identitynow_workflow.test", "trigger.attributes.cron_string", "cron string"),
+					resource.TestCheckResourceAttr("identitynow_workflow.test", "trigger.attributes.id", "idn:identity-attributes-changed"),
+					resource.TestCheckResourceAttr("identitynow_workflow.test", "trigger.attributes.filter", "$.changes[?(@.attribute== \"cloudLifecycleState\")]"),
 				),
 			},
 			// Update and Read testing
@@ -81,6 +75,8 @@ resource "identitynow_workflow" "test" {
   description = "test workflow from terraformUpd"
   owner = {
     id = "ownerId"
+    name = "ownerName"
+    type = "IDENTITY"    
   }
   enabled = true
   definition = {
@@ -90,7 +86,7 @@ resource "identitynow_workflow" "test" {
         displayName   = "Get List of IdentitiesUpd"
         type          = "action"
         actionId      = "sp:get-identities"
-        versionNumber = "2"
+        versionNumber = 2
         attributes = {
           inputQuery = "*"
           searchBy   = "searchQuery"
@@ -106,13 +102,8 @@ resource "identitynow_workflow" "test" {
   trigger = {
     type = "EXTERNAL"
     attributes = {
-      id = "idn:identity-createdUpd"
-      filter = "filterUpd"
-
-      name = "nameUpd"
-      description = "descriptionUpd"
-
-      cron_string = "cron stringUpd"
+      name = "externalName"
+      description = "externalDescription"
     }
   }
 }
@@ -123,15 +114,13 @@ resource "identitynow_workflow" "test" {
 					resource.TestCheckResourceAttr("identitynow_workflow.test", "description", "test workflow from terraformUpd"),
 					resource.TestCheckResourceAttr("identitynow_workflow.test", "owner.type", "IDENTITY"),
 					resource.TestCheckResourceAttr("identitynow_workflow.test", "owner.id", "ownerId"),
+					resource.TestCheckResourceAttr("identitynow_workflow.test", "owner.name", "ownerName"),
 					resource.TestCheckResourceAttr("identitynow_workflow.test", "enabled", "true"),
 					resource.TestCheckResourceAttr("identitynow_workflow.test", "definition.start", "Get List of IdentitiesUpd"),
-					resource.TestCheckResourceAttr("identitynow_workflow.test", "definition.steps", "{\"End Step\":{\"displayName\":\"\",\"type\":\"success\"},\"Get List of Identities\":{\"actionId\":\"sp:get-identities\",\"attributes\":{\"inputQuery\":\"*\",\"searchBy\":\"searchQuery\"},\"displayName\":\"Get List of IdentitiesUpd\",\"nextStep\":\"End Step\",\"type\":\"action\",\"versionNumber\":\"2\"}}"),
+					resource.TestCheckResourceAttr("identitynow_workflow.test", "definition.steps", "{\"End Step\":{\"displayName\":\"\",\"type\":\"success\"},\"Get List of Identities\":{\"actionId\":\"sp:get-identities\",\"attributes\":{\"inputQuery\":\"*\",\"searchBy\":\"searchQuery\"},\"displayName\":\"Get List of IdentitiesUpd\",\"nextStep\":\"End Step\",\"type\":\"action\",\"versionNumber\":2}}"),
 					resource.TestCheckResourceAttr("identitynow_workflow.test", "trigger.type", "EXTERNAL"),
-					resource.TestCheckResourceAttr("identitynow_workflow.test", "trigger.attributes.id", "idn:identity-createdUpd"),
-					resource.TestCheckResourceAttr("identitynow_workflow.test", "trigger.attributes.filter", "filterUpd"),
-					resource.TestCheckResourceAttr("identitynow_workflow.test", "trigger.attributes.name", "nameUpd"),
-					resource.TestCheckResourceAttr("identitynow_workflow.test", "trigger.attributes.description", "descriptionUpd"),
-					resource.TestCheckResourceAttr("identitynow_workflow.test", "trigger.attributes.cron_string", "cron stringUpd"),
+					resource.TestCheckResourceAttr("identitynow_workflow.test", "trigger.attributes.name", "externalName"),
+					resource.TestCheckResourceAttr("identitynow_workflow.test", "trigger.attributes.description", "externalDescription"),
 				),
 			},
 			// Delete testing automatically occurs in TestCase

@@ -13,7 +13,7 @@ func TestSourceResource(t *testing.T) {
 	resource.Test(t, resource.TestCase{
 		ProtoV6ProviderFactories: TestAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
-			// Create and Read testing
+			// Create and Read testing (non DelimitedFile source)
 			{
 				Config: providerConfig + `
 resource "identitynow_source" "test" {
@@ -93,6 +93,70 @@ resource "identitynow_source" "test" {
 					resource.TestCheckResourceAttr("identitynow_source.test", "connector_files.0", "ojdbc10-19.18.0.0.txt"),
 				),
 			},
+
+			// Create and Read testing (DelimitedFile source)
+			{
+				Config: providerConfig + `
+resource "identitynow_source" "test" {
+  name         = "test csv source"
+  description  = "Creating from integration tests"
+  owner = {
+    id   =  "ownerId"
+  }
+  cluster = {
+    id   = "clusterId"
+    name   = "clusterName"
+  }
+    account_correlation_config = {
+        id = "accCorId"
+    }
+    account_correlation_rule = {
+        id = "accCorRuleId"
+    }
+    manager_correlation_mapping = {
+        account_attribute_name = "manAccAttr"
+        identity_attribute_name = "manIdentAttr"
+    }
+    manager_correlation_rule = {
+        id = "manCorRuleId"
+    }
+  features = ["ENABLE"]
+  connection_type = "file"
+  connector_attributes = jsonencode({
+    enableLCS           = true
+    inherited = {
+      first   = "1"
+      seconds = "2"
+    }
+  })
+  connector        = "delimited-file-angularsc"
+  delete_threshold = 10
+}
+`,
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckResourceAttrSet("identitynow_source.test", "id"),
+					resource.TestCheckResourceAttrSet("identitynow_source.test", "cloud_external_id"),
+					resource.TestCheckResourceAttr("identitynow_source.test", "name", "test csv source"),
+					resource.TestCheckResourceAttr("identitynow_source.test", "description", "Creating from integration tests"),
+					resource.TestCheckResourceAttr("identitynow_source.test", "owner.type", "IDENTITY"),
+					resource.TestCheckResourceAttr("identitynow_source.test", "owner.id", "ownerId"),
+					resource.TestCheckResourceAttr("identitynow_source.test", "cluster.id", "clusterId"),
+					resource.TestCheckResourceAttr("identitynow_source.test", "account_correlation_config.type", "ACCOUNT_CORRELATION_CONFIG"),
+					resource.TestCheckResourceAttr("identitynow_source.test", "account_correlation_config.id", "accCorId"),
+					resource.TestCheckResourceAttr("identitynow_source.test", "account_correlation_rule.type", "RULE"),
+					resource.TestCheckResourceAttr("identitynow_source.test", "account_correlation_rule.id", "accCorRuleId"),
+					resource.TestCheckResourceAttr("identitynow_source.test", "manager_correlation_mapping.account_attribute_name", "manAccAttr"),
+					resource.TestCheckResourceAttr("identitynow_source.test", "manager_correlation_mapping.identity_attribute_name", "manIdentAttr"),
+					resource.TestCheckResourceAttr("identitynow_source.test", "manager_correlation_rule.type", "RULE"),
+					resource.TestCheckResourceAttr("identitynow_source.test", "manager_correlation_rule.id", "manCorRuleId"),
+					resource.TestCheckResourceAttr("identitynow_source.test", "features.0", "ENABLE"),
+					resource.TestCheckResourceAttr("identitynow_source.test", "type", "DelimitedFile"),
+					resource.TestCheckResourceAttr("identitynow_source.test", "connector", "custom connector"),
+					resource.TestCheckResourceAttr("identitynow_source.test", "connector_attributes", "{\"enableLCS\":true,\"inherited\":{\"first\":\"1\",\"seconds\":\"2\"}}"),
+					resource.TestCheckResourceAttr("identitynow_source.test", "delete_threshold", "10"),
+				),
+			},
+
 			// Update and Read testing
 			{
 				Config: providerConfig + `

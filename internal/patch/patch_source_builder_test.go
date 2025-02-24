@@ -4,11 +4,12 @@ package patch
 
 import (
 	"encoding/json"
+	"strconv"
+	"testing"
+
 	sailpointBeta "github.com/sailpoint-oss/golang-sdk/v2/api_beta"
 	sailpointV3 "github.com/sailpoint-oss/golang-sdk/v2/api_v3"
 	"github.com/stretchr/testify/assert"
-	"strconv"
-	"testing"
 )
 
 func Test_Source_OwnerPatch_Match_NoPatch(t *testing.T) {
@@ -59,6 +60,8 @@ func Test_Source_OwnerPatch_ReplacePatch(t *testing.T) {
 }
 
 func connectorAttributesPatch_expectedResult() []sailpointBeta.JsonPatchOperation {
+	var newArray []sailpointBeta.ArrayInner
+	json.Unmarshal([]byte("[\"n\"]"), &newArray)
 	var innerArray []sailpointBeta.ArrayInner
 	json.Unmarshal([]byte("[\"C\",\"D\"]"), &innerArray)
 	var arrayChanged []sailpointBeta.ArrayInner
@@ -67,18 +70,19 @@ func connectorAttributesPatch_expectedResult() []sailpointBeta.JsonPatchOperatio
 		"anotherParam":  "asd",
 		"anotherParam2": true,
 	}
+	inner3AddedValue := sailpointBeta.MapmapOfStringAnyAsUpdateMultiHostSourcesRequestInnerValue(&inner3Added)
 	return []sailpointBeta.JsonPatchOperation{
 		{
 			Op:   "replace",
 			Path: "/connectorAttributes/inner1/inner2/asd",
-			Value: &sailpointBeta.JsonPatchOperationValue{
+			Value: &sailpointBeta.UpdateMultiHostSourcesRequestInnerValue{
 				String: sailpointBeta.PtrString("test-update"),
 			},
 		},
 		{
 			Op:   "add",
 			Path: "/connectorAttributes/inner1/inner2/innerArray",
-			Value: &sailpointBeta.JsonPatchOperationValue{
+			Value: &sailpointBeta.UpdateMultiHostSourcesRequestInnerValue{
 				ArrayOfArrayInner: &innerArray,
 			},
 		},
@@ -93,14 +97,14 @@ func connectorAttributesPatch_expectedResult() []sailpointBeta.JsonPatchOperatio
 		{
 			Op:   "add",
 			Path: "/connectorAttributes/intValue",
-			Value: &sailpointBeta.JsonPatchOperationValue{
+			Value: &sailpointBeta.UpdateMultiHostSourcesRequestInnerValue{
 				Int32: sailpointBeta.PtrInt32(123),
 			},
 		},
 		{
 			Op:   "replace",
 			Path: "/connectorAttributes/boolValue",
-			Value: &sailpointBeta.JsonPatchOperationValue{
+			Value: &sailpointBeta.UpdateMultiHostSourcesRequestInnerValue{
 				Bool: sailpointBeta.PtrBool(true),
 			},
 		},
@@ -111,20 +115,40 @@ func connectorAttributesPatch_expectedResult() []sailpointBeta.JsonPatchOperatio
 		{
 			Op:   "replace",
 			Path: "/connectorAttributes/arrayChanged",
-			Value: &sailpointBeta.JsonPatchOperationValue{
+			Value: &sailpointBeta.UpdateMultiHostSourcesRequestInnerValue{
 				ArrayOfArrayInner: &arrayChanged,
 			},
 		},
 		{
-			Op:   "add",
-			Path: "/connectorAttributes/inner1/inner3Added",
-			Value: &sailpointBeta.JsonPatchOperationValue{
-				MapmapOfStringinterface: &inner3Added,
-			},
+			Op:    "add",
+			Path:  "/connectorAttributes/inner1/inner3Added",
+			Value: &inner3AddedValue,
 		},
 		{
 			Op:   "remove",
 			Path: "/connectorAttributes/inner1/inner4Removed",
+		},
+		{
+			Op:   "add",
+			Path: "/connectorAttributes/newArray",
+			Value: &sailpointBeta.UpdateMultiHostSourcesRequestInnerValue{
+				ArrayOfArrayInner: &newArray,
+			},
+		},
+		{
+			Op:   "add",
+			Path: "/connectorAttributes/newValue",
+			Value: &sailpointBeta.UpdateMultiHostSourcesRequestInnerValue{
+				String: sailpointBeta.PtrString("new"),
+			},
+		},
+		{
+			Op:   "remove",
+			Path: "/connectorAttributes/removeArray",
+		},
+		{
+			Op:   "remove",
+			Path: "/connectorAttributes/removeValue",
 		},
 	}
 }
@@ -146,6 +170,10 @@ func Test_Source_ConnectorAttributesPatch_ReplaceMultiple(t *testing.T) {
 		"newStringVal": "newString",
 		"array":        []string{"a", "b", "c"},
 		"arrayChanged": []string{"a", "c", "c", "g"},
+		"removeArray":  nil,
+		"removeValue":  nil,
+		"newArray":     []string{"n"},
+		"newValue":     "new",
 	}
 
 	curAttr := map[string]interface{}{
@@ -162,6 +190,10 @@ func Test_Source_ConnectorAttributesPatch_ReplaceMultiple(t *testing.T) {
 		"oldStringValue": "oldValue",
 		"array":          []string{"a", "b", "c"},
 		"arrayChanged":   []string{"a", "b", "c"},
+		"removeArray":    []string{"o"},
+		"removeValue":    "val",
+		"newArray":       nil,
+		"newValue":       nil,
 	}
 
 	mod := sailpointV3.Source{ConnectorAttributes: modAttr}
@@ -175,107 +207,115 @@ func MultipleAttributeAdd_expectedResult() []sailpointBeta.JsonPatchOperation {
 
 	var features []sailpointBeta.ArrayInner
 	json.Unmarshal([]byte("[\"AUTHENTICATE\"]"), &features)
+
+	cluster := map[string]interface{}{
+		"type": "CLUSTER",
+		"id":   "newCluster",
+		"name": "newClusterName",
+	}
+	clusterValue := sailpointBeta.MapmapOfStringAnyAsUpdateMultiHostSourcesRequestInnerValue(&cluster)
+
+	accountCorrConfig := map[string]interface{}{
+		"id": "newAccountCorrelationConfig",
+	}
+	accountCorrConfigValue := sailpointBeta.MapmapOfStringAnyAsUpdateMultiHostSourcesRequestInnerValue(&accountCorrConfig)
+
+	accountCorrRule := map[string]interface{}{
+		"id": "newAccountCorrelationRule",
+	}
+	accountCorrelationRuleValue := sailpointBeta.MapmapOfStringAnyAsUpdateMultiHostSourcesRequestInnerValue(&accountCorrRule)
+
+	managerCorrMapping := map[string]interface{}{
+		"accountAttributeName":  "newAccountAttribute",
+		"identityAttributeName": "newIdentityAttribute",
+	}
+	managerCorrMappingValue := sailpointBeta.MapmapOfStringAnyAsUpdateMultiHostSourcesRequestInnerValue(&managerCorrMapping)
+
+	managerCorrRule := map[string]interface{}{
+		"id": "newManagerCorrelationRule",
+	}
+	managerCorrRuleValue := sailpointBeta.MapmapOfStringAnyAsUpdateMultiHostSourcesRequestInnerValue(&managerCorrRule)
+
+	anagementWorkgroup := map[string]interface{}{
+		"id": "newManagementWorkgroup",
+	}
+	managementWorkgroupValue := sailpointBeta.MapmapOfStringAnyAsUpdateMultiHostSourcesRequestInnerValue(&anagementWorkgroup)
+
+	beforeProvisioningRule := map[string]interface{}{
+		"id": "newBeforeProvisioningRule",
+	}
+	beforeProvisioningRulevalue := sailpointBeta.MapmapOfStringAnyAsUpdateMultiHostSourcesRequestInnerValue(&beforeProvisioningRule)
+
 	return []sailpointBeta.JsonPatchOperation{
 		{
 			Op:   "add",
 			Path: "/name",
-			Value: &sailpointBeta.JsonPatchOperationValue{
+			Value: &sailpointBeta.UpdateMultiHostSourcesRequestInnerValue{
 				String: sailpointBeta.PtrString("newName"),
 			},
 		},
 		{
 			Op:   "add",
 			Path: "/description",
-			Value: &sailpointBeta.JsonPatchOperationValue{
+			Value: &sailpointBeta.UpdateMultiHostSourcesRequestInnerValue{
 				String: sailpointBeta.PtrString("newDescription"),
 			},
 		},
 		{
 			Op:   "replace",
 			Path: "/owner/id",
-			Value: &sailpointBeta.JsonPatchOperationValue{
+			Value: &sailpointBeta.UpdateMultiHostSourcesRequestInnerValue{
 				String: sailpointBeta.PtrString("newOwner"),
 			},
 		},
 		{
-			Op:   "add",
-			Path: "/cluster",
-			Value: &sailpointBeta.JsonPatchOperationValue{
-				MapmapOfStringinterface: &map[string]interface{}{
-					"type": "CLUSTER",
-					"id":   "newCluster",
-					"name": "newClusterName",
-				},
-			},
+			Op:    "add",
+			Path:  "/cluster",
+			Value: &clusterValue,
 		},
 		{
-			Op:   "add",
-			Path: "/accountCorrelationConfig",
-			Value: &sailpointBeta.JsonPatchOperationValue{
-				MapmapOfStringinterface: &map[string]interface{}{
-					"id": "newAccountCorrelationConfig",
-				},
-			},
+			Op:    "add",
+			Path:  "/accountCorrelationConfig",
+			Value: &accountCorrConfigValue,
 		},
 		{
-			Op:   "add",
-			Path: "/accountCorrelationRule",
-			Value: &sailpointBeta.JsonPatchOperationValue{
-				MapmapOfStringinterface: &map[string]interface{}{
-					"id": "newAccountCorrelationRule",
-				},
-			},
+			Op:    "add",
+			Path:  "/accountCorrelationRule",
+			Value: &accountCorrelationRuleValue,
 		},
 		{
-			Op:   "add",
-			Path: "/managerCorrelationMapping",
-			Value: &sailpointBeta.JsonPatchOperationValue{
-				MapmapOfStringinterface: &map[string]interface{}{
-					"accountAttributeName":  "newAccountAttribute",
-					"identityAttributeName": "newIdentityAttribute",
-				},
-			},
+			Op:    "add",
+			Path:  "/managerCorrelationMapping",
+			Value: &managerCorrMappingValue,
 		},
 		{
-			Op:   "add",
-			Path: "/managerCorrelationRule",
-			Value: &sailpointBeta.JsonPatchOperationValue{
-				MapmapOfStringinterface: &map[string]interface{}{
-					"id": "newManagerCorrelationRule",
-				},
-			},
+			Op:    "add",
+			Path:  "/managerCorrelationRule",
+			Value: &managerCorrRuleValue,
 		},
 		{
 			Op:   "replace",
 			Path: "/features",
-			Value: &sailpointBeta.JsonPatchOperationValue{
+			Value: &sailpointBeta.UpdateMultiHostSourcesRequestInnerValue{
 				ArrayOfArrayInner: &features,
 			},
 		},
 		{
 			Op:   "add",
 			Path: "/deleteThreshold",
-			Value: &sailpointBeta.JsonPatchOperationValue{
+			Value: &sailpointBeta.UpdateMultiHostSourcesRequestInnerValue{
 				Int32: sailpointBeta.PtrInt32(99),
 			},
 		},
 		{
-			Op:   "add",
-			Path: "/managementWorkgroup",
-			Value: &sailpointBeta.JsonPatchOperationValue{
-				MapmapOfStringinterface: &map[string]interface{}{
-					"id": "newManagementWorkgroup",
-				},
-			},
+			Op:    "add",
+			Path:  "/managementWorkgroup",
+			Value: &managementWorkgroupValue,
 		},
 		{
-			Op:   "add",
-			Path: "/beforeProvisioningRule",
-			Value: &sailpointBeta.JsonPatchOperationValue{
-				MapmapOfStringinterface: &map[string]interface{}{
-					"id": "newBeforeProvisioningRule",
-				},
-			},
+			Op:    "add",
+			Path:  "/beforeProvisioningRule",
+			Value: &beforeProvisioningRulevalue,
 		},
 	}
 }
@@ -329,63 +369,63 @@ func MultipleAttributeReplace_expectedResult() []sailpointBeta.JsonPatchOperatio
 		{
 			Op:   "replace",
 			Path: "/name",
-			Value: &sailpointBeta.JsonPatchOperationValue{
+			Value: &sailpointBeta.UpdateMultiHostSourcesRequestInnerValue{
 				String: sailpointBeta.PtrString("newName"),
 			},
 		},
 		{
 			Op:   "replace",
 			Path: "/description",
-			Value: &sailpointBeta.JsonPatchOperationValue{
+			Value: &sailpointBeta.UpdateMultiHostSourcesRequestInnerValue{
 				String: sailpointBeta.PtrString("newDescription"),
 			},
 		},
 		{
 			Op:   "replace",
 			Path: "/owner/id",
-			Value: &sailpointBeta.JsonPatchOperationValue{
+			Value: &sailpointBeta.UpdateMultiHostSourcesRequestInnerValue{
 				String: sailpointBeta.PtrString("newOwner"),
 			},
 		},
 		{
 			Op:   "replace",
 			Path: "/cluster/id",
-			Value: &sailpointBeta.JsonPatchOperationValue{
+			Value: &sailpointBeta.UpdateMultiHostSourcesRequestInnerValue{
 				String: sailpointBeta.PtrString("newCluster"),
 			},
 		},
 		{
 			Op:   "replace",
 			Path: "/accountCorrelationConfig/id",
-			Value: &sailpointBeta.JsonPatchOperationValue{
+			Value: &sailpointBeta.UpdateMultiHostSourcesRequestInnerValue{
 				String: sailpointBeta.PtrString("newAccountCorrelationConfig"),
 			},
 		},
 		{
 			Op:   "replace",
 			Path: "/accountCorrelationRule/id",
-			Value: &sailpointBeta.JsonPatchOperationValue{
+			Value: &sailpointBeta.UpdateMultiHostSourcesRequestInnerValue{
 				String: sailpointBeta.PtrString("newAccountCorrelationRule"),
 			},
 		},
 		{
 			Op:   "replace",
 			Path: "/managerCorrelationMapping/accountAttributeName",
-			Value: &sailpointBeta.JsonPatchOperationValue{
+			Value: &sailpointBeta.UpdateMultiHostSourcesRequestInnerValue{
 				String: sailpointBeta.PtrString("newAccountAttribute"),
 			},
 		},
 		{
 			Op:   "replace",
 			Path: "/managerCorrelationMapping/identityAttributeName",
-			Value: &sailpointBeta.JsonPatchOperationValue{
+			Value: &sailpointBeta.UpdateMultiHostSourcesRequestInnerValue{
 				String: sailpointBeta.PtrString("newIdentityAttribute"),
 			},
 		},
 		{
 			Op:   "replace",
 			Path: "/managerCorrelationRule/id",
-			Value: &sailpointBeta.JsonPatchOperationValue{
+			Value: &sailpointBeta.UpdateMultiHostSourcesRequestInnerValue{
 				String: sailpointBeta.PtrString("newManagerCorrelationRule"),
 			},
 		},
@@ -393,56 +433,56 @@ func MultipleAttributeReplace_expectedResult() []sailpointBeta.JsonPatchOperatio
 		{
 			Op:   "replace",
 			Path: "/features",
-			Value: &sailpointBeta.JsonPatchOperationValue{
+			Value: &sailpointBeta.UpdateMultiHostSourcesRequestInnerValue{
 				ArrayOfArrayInner: &features,
 			},
 		},
 		{
 			Op:   "replace",
 			Path: "/deleteThreshold",
-			Value: &sailpointBeta.JsonPatchOperationValue{
+			Value: &sailpointBeta.UpdateMultiHostSourcesRequestInnerValue{
 				Int32: sailpointBeta.PtrInt32(99),
 			},
 		},
 		{
 			Op:   "replace",
 			Path: "/managementWorkgroup/id",
-			Value: &sailpointBeta.JsonPatchOperationValue{
+			Value: &sailpointBeta.UpdateMultiHostSourcesRequestInnerValue{
 				String: sailpointBeta.PtrString("newManagementWorkgroup"),
 			},
 		},
 		{
 			Op:   "replace",
 			Path: "/beforeProvisioningRule/id",
-			Value: &sailpointBeta.JsonPatchOperationValue{
+			Value: &sailpointBeta.UpdateMultiHostSourcesRequestInnerValue{
 				String: sailpointBeta.PtrString("newBeforeProvisioningRule"),
 			},
 		},
 		{
 			Op:   "replace",
 			Path: "/connectorAttributes/a",
-			Value: &sailpointBeta.JsonPatchOperationValue{
+			Value: &sailpointBeta.UpdateMultiHostSourcesRequestInnerValue{
 				String: sailpointBeta.PtrString("aa"),
 			},
 		},
 		{
 			Op:   "replace",
 			Path: "/connectorAttributes/b",
-			Value: &sailpointBeta.JsonPatchOperationValue{
+			Value: &sailpointBeta.UpdateMultiHostSourcesRequestInnerValue{
 				Int32: sailpointBeta.PtrInt32(12),
 			},
 		},
 		{
 			Op:   "replace",
 			Path: "/connectorAttributes/c",
-			Value: &sailpointBeta.JsonPatchOperationValue{
+			Value: &sailpointBeta.UpdateMultiHostSourcesRequestInnerValue{
 				String: sailpointBeta.PtrString("12.2"),
 			},
 		},
 		{
 			Op:   "replace",
 			Path: "/connectorAttributes/d",
-			Value: &sailpointBeta.JsonPatchOperationValue{
+			Value: &sailpointBeta.UpdateMultiHostSourcesRequestInnerValue{
 				Bool: sailpointBeta.PtrBool(true),
 			},
 		},
